@@ -7,6 +7,7 @@ import 'package:becaring/View/rewards.dart';
 import 'package:flutter/material.dart';
 import 'VideosViewer/VideosScreen.dart';
 import 'calenderView.dart';
+import 'complete_signup.dart';
 import 'helpScreen.dart';
 import 'inbox_list.dart';
 import 'notifications.dart';
@@ -150,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: ListTile(
                     title: Text('Rewards'),
-                    leading: Icon(Icons.home, color: Colors.blue),
+                    leading: Icon(Icons.stars_rounded, color: Colors.blue),
                   ),
                 ),
                 InkWell(
@@ -159,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                       context,
                       new MaterialPageRoute(
                         builder: (context) =>
-                        new AccountPage(),
+                        new DataInputPage(),
                       ),
                     );
                   },
