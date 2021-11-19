@@ -3,6 +3,7 @@ import 'package:becaring/View/myDay.dart';
 import 'package:becaring/View/inbox.dart';
 import 'package:becaring/View/earnings.dart';
 import 'package:becaring/View/feedback.dart';
+import 'package:becaring/View/rewards.dart';
 import 'package:flutter/material.dart';
 import 'VideosViewer/VideosScreen.dart';
 import 'calenderView.dart';
@@ -135,6 +136,21 @@ class _HomePageState extends State<HomePage> {
                   child: ListTile(
                     title: Text('Earnings'),
                     leading: Icon(Icons.monetization_on_outlined, color: Colors.blue),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) =>
+                              RewardsScreen()
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    title: Text('Rewards'),
+                    leading: Icon(Icons.home, color: Colors.blue),
                   ),
                 ),
                 InkWell(

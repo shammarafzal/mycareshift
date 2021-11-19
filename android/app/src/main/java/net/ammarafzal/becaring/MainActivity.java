@@ -1,4 +1,4 @@
-package net.ammarafzal.becaring;
+package uk.co.mycareshift;
 
 import io.flutter.embedding.android.FlutterActivity;
 
