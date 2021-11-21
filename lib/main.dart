@@ -13,6 +13,7 @@ import 'View/homePage.dart';
 import 'View/inbox.dart';
 import 'View/inbox_list.dart';
 import 'View/navigation.dart';
+import 'View/new_signup.dart';
 import 'View/patientsView.dart';
 
 Future<void> main() async {
@@ -26,11 +27,12 @@ Future<void> main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       // initialRoute: isLoggedIn! ? 'home' : 'home',
-      initialRoute: 'intro_screen',
+      initialRoute: 'signup_screen',
       theme: ThemeData(primarySwatch: Colors.blue),
       routes: {
+
         'login': (context) => SignIn(),
-        'signup_screen': (context) => SignUp(),
+        'signup_screen': (context) => SignupUser(),
         'intro_screen': (context) => IntroScreen(),
         'home': (context) => HomePage(),
         'verify_code': (context) => VerificationCode(email: 'test'),
@@ -43,6 +45,17 @@ Future<void> main() async {
         'proof_work': (context) => ProofWork(),
         'inbox': (context) => Inbox(),
         'inbox_list': (context) => ChatList(),
+        'custom_email': (context) => CustomEmail(),
+        'custom_otp': (context) => CustomOTP(),
+        'custom_password': (context) => CustomPassword(),
+        'custom_name': (context) => CustomName(),
+        'custom_dob': (context) => CustomDob(),
+        'custom_address': (context) => CustomAddress(),
+        'custom_phone': (context) => CustomPhone(),
+        'custom_agree_list': (context) => CustomAgree(),
+        'custom_doc_list': (context) => CustomDoc(),
+        'custom_interview': (context) => CustomInterview(),
+
       },
     ),
   );
