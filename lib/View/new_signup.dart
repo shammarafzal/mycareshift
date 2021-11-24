@@ -1,28 +1,52 @@
+import 'dart:io';
+
+import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:becaring/Settings/alert_dialog.dart';
+import 'package:becaring/View/license_agreement.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 Widget _buildImage(String assetName, [double width = 350]) {
   return Image.asset('assets/$assetName', width: width);
 }
-TextEditingController otp = TextEditingController();
+
+final _fitstName = TextEditingController();
+final _lastName = TextEditingController();
+final _email = TextEditingController();
+final _password = TextEditingController();
+final _otp = TextEditingController();
+final _postal_code = TextEditingController();
+final _address = TextEditingController();
+final _phone = TextEditingController();
+late String dob;
+late String interview_date;
+late File imagePath;
+late File identification_document;
+late File dbs_certificate;
+late File care_qualification_certificate;
+
 int pinLength = 4;
 bool hasError = false;
 
 DateTime? _chosenDateTime;
+DateTime? _chosenDateTime1;
 CupertinoDatePickerMode mode = CupertinoDatePickerMode.date;
 
 String radius = 'Select Radius';
-var items_radius =  ['Select Radius','0-10 Miles','11-20 Miles','21-30 Miles'];
+var items_radius = [
+  'Select Radius',
+  '0-10 Miles',
+  '11-20 Miles',
+  '21-30 Miles'
+];
 
 bool IDOK = false;
 bool DBSOK = false;
 bool CareOK = false;
-
-
 
 class SignupUser extends StatefulWidget {
   const SignupUser({Key? key}) : super(key: key);
@@ -34,11 +58,9 @@ class SignupUser extends StatefulWidget {
 class _SignupUserState extends State<SignupUser> {
   @override
   Widget build(BuildContext context) {
-    return  CustomEmail();
+    return CustomEmail();
   }
 }
-
-
 
 class CustomEmail extends StatelessWidget {
   const CustomEmail({Key? key}) : super(key: key);
@@ -56,7 +78,9 @@ class CustomEmail extends StatelessWidget {
               Column(
                 children: [
                   _buildImage('logo-app.png', 40),
-                  Container(height: 40,),
+                  Container(
+                    height: 40,
+                  ),
                   Text(
                     'What\'s your Email?',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -83,6 +107,7 @@ class CustomEmail extends StatelessWidget {
                         Container(
                           width: 250,
                           child: TextField(
+                            controller: _email,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -100,9 +125,23 @@ class CustomEmail extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_otp');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () async {
+                      if (_email.text == "") {
+                        alertScreen()
+                            .showAlertMsgDialog(context, "Please Enter Email");
+                      } else {
+                        var response = await Utils().verifyEmail(_email.text);
+                        if (response['status'] == false) {
+                          alertScreen()
+                              .showAlertMsgDialog(context, response['message']);
+                        } else {
+                          Navigator.of(context)
+                              .pushReplacementNamed('custom_otp');
+                        }
+                      }
+                    }),
               )
             ],
           ),
@@ -132,7 +171,9 @@ class _CustomOTPState extends State<CustomOTP> {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_email',),
+                  CustomHeader(
+                    routeName: 'custom_email',
+                  ),
                   Text(
                     'OTP Veification',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -153,13 +194,14 @@ class _CustomOTPState extends State<CustomOTP> {
                         height: 100.0,
                         child: PinCodeTextField(
                           autofocus: true,
-                          controller: otp,
+                          controller: _otp,
                           hideCharacter: true,
                           highlight: true,
                           highlightColor: Colors.grey,
                           defaultBorderColor: Colors.grey,
                           hasTextBorderColor: Colors.grey,
-                          highlightPinBoxColor: Color.fromRGBO(246, 247, 249, 1),
+                          highlightPinBoxColor:
+                              Color.fromRGBO(246, 247, 249, 1),
                           maxLength: pinLength,
                           hasError: hasError,
                           maskCharacter: "*",
@@ -172,12 +214,12 @@ class _CustomOTPState extends State<CustomOTP> {
                           pinBoxHeight: 64,
                           wrapAlignment: WrapAlignment.spaceAround,
                           pinBoxDecoration:
-                          ProvidedPinBoxDecoration.defaultPinBoxDecoration,
+                              ProvidedPinBoxDecoration.defaultPinBoxDecoration,
                           pinTextAnimatedSwitcherTransition:
-                          ProvidedPinBoxTextAnimation.scalingTransition,
+                              ProvidedPinBoxTextAnimation.scalingTransition,
                           pinBoxColor: Color.fromRGBO(246, 247, 249, 1),
                           pinTextAnimatedSwitcherDuration:
-                          Duration(milliseconds: 300),
+                              Duration(milliseconds: 300),
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -191,9 +233,23 @@ class _CustomOTPState extends State<CustomOTP> {
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_password');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () async {
+                      if (_otp.text == "") {
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Enter Verification Code");
+                      } else {
+                        var response = await Utils().checkToken(_otp.text);
+                        if (response['status'] == false) {
+                          alertScreen()
+                              .showAlertMsgDialog(context, response['message']);
+                        } else {
+                          Navigator.of(context)
+                              .pushReplacementNamed('custom_password');
+                        }
+                      }
+                    }),
               )
             ],
           ),
@@ -218,7 +274,9 @@ class CustomPassword extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_otp',),
+                  CustomHeader(
+                    routeName: 'custom_otp',
+                  ),
                   Text(
                     'Choose a password',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -245,6 +303,8 @@ class CustomPassword extends StatelessWidget {
                         Container(
                             width: 250,
                             child: TextField(
+                              controller: _password,
+                              obscureText: true,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                               ),
@@ -260,9 +320,17 @@ class CustomPassword extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_name');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      if (_password.text == "") {
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Enter Password");
+                      } else {
+                        Navigator.of(context)
+                            .pushReplacementNamed('custom_name');
+                      }
+                    }),
               )
             ],
           ),
@@ -271,7 +339,6 @@ class CustomPassword extends StatelessWidget {
     );
   }
 }
-
 
 class CustomName extends StatelessWidget {
   const CustomName({Key? key}) : super(key: key);
@@ -288,7 +355,9 @@ class CustomName extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_password',),
+                  CustomHeader(
+                    routeName: 'custom_password',
+                  ),
                   Text(
                     'What\'s your legal name',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -315,6 +384,7 @@ class CustomName extends StatelessWidget {
                         Container(
                             width: 250,
                             child: TextField(
+                              controller: _fitstName,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                               ),
@@ -339,6 +409,7 @@ class CustomName extends StatelessWidget {
                         Container(
                             width: 250,
                             child: TextField(
+                              controller: _lastName,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                               ),
@@ -350,9 +421,20 @@ class CustomName extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_dob');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      if (_fitstName.text == "") {
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Enter First Name");
+                      } else if (_lastName.text == "") {
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Enter Last Name");
+                      } else {
+                        Navigator.of(context)
+                            .pushReplacementNamed('custom_dob');
+                      }
+                    }),
               )
             ],
           ),
@@ -361,7 +443,6 @@ class CustomName extends StatelessWidget {
     );
   }
 }
-
 
 class CustomDob extends StatefulWidget {
   const CustomDob({Key? key}) : super(key: key);
@@ -374,8 +455,7 @@ class _CustomDobState extends State<CustomDob> {
   void _showDatePicker(ctx) {
     showCupertinoModalPopup(
         context: ctx,
-        builder: (_) =>
-            Container(
+        builder: (_) => Container(
               height: 350,
               color: Color.fromARGB(255, 255, 255, 255),
               child: Column(
@@ -388,6 +468,8 @@ class _CustomDobState extends State<CustomDob> {
                         onDateTimeChanged: (val) {
                           setState(() {
                             _chosenDateTime = val;
+                            dob =
+                                '${val!.day.toString()} ${val!.month.toString()} ${val!.year.toString()}';
                           });
                         }),
                   ),
@@ -401,6 +483,7 @@ class _CustomDobState extends State<CustomDob> {
               ),
             ));
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -413,7 +496,9 @@ class _CustomDobState extends State<CustomDob> {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_name',),
+                  CustomHeader(
+                    routeName: 'custom_name',
+                  ),
                   Text(
                     'When\'s your birthday?',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -439,7 +524,7 @@ class _CustomDobState extends State<CustomDob> {
                         ),
                         Center(
                           child: InkWell(
-                            onTap: (){
+                            onTap: () {
                               _showDatePicker(context);
                             },
                             child: Text(_chosenDateTime != null
@@ -454,9 +539,17 @@ class _CustomDobState extends State<CustomDob> {
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_address');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      if (_chosenDateTime == null) {
+                        alertScreen()
+                            .showAlertMsgDialog(context, "Please Choose D.o.B");
+                      } else {
+                        Navigator.of(context)
+                            .pushReplacementNamed('custom_address');
+                      }
+                    }),
               )
             ],
           ),
@@ -465,7 +558,6 @@ class _CustomDobState extends State<CustomDob> {
     );
   }
 }
-
 
 class CustomAddress extends StatefulWidget {
   const CustomAddress({Key? key}) : super(key: key);
@@ -482,12 +574,14 @@ class _CustomAddressState extends State<CustomAddress> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: ListView(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_dob',),
+                  CustomHeader(
+                    routeName: 'custom_dob',
+                  ),
                   Text(
                     'What\'s your Home Address',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -514,6 +608,7 @@ class _CustomAddressState extends State<CustomAddress> {
                         Container(
                             width: 250,
                             child: TextField(
+                              controller: _address,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                               ),
@@ -538,6 +633,7 @@ class _CustomAddressState extends State<CustomAddress> {
                         Container(
                             width: 250,
                             child: TextField(
+                              controller: _postal_code,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                               ),
@@ -564,14 +660,19 @@ class _CustomAddressState extends State<CustomAddress> {
                           child: DropdownButton(
                             value: radius,
                             icon: Icon(Icons.keyboard_arrow_down),
-                            items:items_radius.map((String items) {
+                            items: items_radius.map((String items) {
                               return DropdownMenuItem(
                                   value: items,
-                                  child: Center(child: Text(items, style: TextStyle(fontSize: 12,),textAlign: TextAlign.center,))
-                              );
-                            }
-                            ).toList(),
-                            onChanged: (String? newValue){
+                                  child: Center(
+                                      child: Text(
+                                    items,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )));
+                            }).toList(),
+                            onChanged: (String? newValue) {
                               setState(() {
                                 radius = newValue!;
                               });
@@ -585,9 +686,23 @@ class _CustomAddressState extends State<CustomAddress> {
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_phone');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      if (_address.text == "") {
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Enter Address");
+                      } else if (_postal_code.text == "") {
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Enter Postal Code");
+                      } else if (radius == "Select Radius") {
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Select Working Radius");
+                      } else {
+                        Navigator.of(context)
+                            .pushReplacementNamed('custom_phone');
+                      }
+                    }),
               )
             ],
           ),
@@ -596,9 +711,6 @@ class _CustomAddressState extends State<CustomAddress> {
     );
   }
 }
-
-
-
 
 class CustomPhone extends StatelessWidget {
   const CustomPhone({Key? key}) : super(key: key);
@@ -615,7 +727,9 @@ class CustomPhone extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_address',),
+                  CustomHeader(
+                    routeName: 'custom_address',
+                  ),
                   Text(
                     'What\'s your Phone Number',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -642,6 +756,7 @@ class CustomPhone extends StatelessWidget {
                         Container(
                             width: 250,
                             child: TextField(
+                              controller: _phone,
                               keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -658,9 +773,17 @@ class CustomPhone extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_agree_list');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      if (_phone.text == "") {
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Enter Phone Number");
+                      } else {
+                        Navigator.of(context)
+                            .pushReplacementNamed('custom_agree_list');
+                      }
+                    }),
               )
             ],
           ),
@@ -669,8 +792,6 @@ class CustomPhone extends StatelessWidget {
     );
   }
 }
-
-
 
 class CustomAgree extends StatelessWidget {
   const CustomAgree({Key? key}) : super(key: key);
@@ -687,7 +808,9 @@ class CustomAgree extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_phone',),
+                  CustomHeader(
+                    routeName: 'custom_phone',
+                  ),
                   Text(
                     'Please Review Our Declaration',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -703,39 +826,65 @@ class CustomAgree extends StatelessWidget {
                   ),
                   Padding(
                       padding: const EdgeInsets.only(top: 20),
-                      child: ListTile(
-                        leading: Text(
-                          'Term and Conditions.',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.normal),
-                          textAlign: TextAlign.center,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                              builder: (context) => new PrivacyPolicy(),
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          leading: Text(
+                            'Term and Conditions.',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.normal),
+                            textAlign: TextAlign.center,
+                          ),
+                          trailing: Icon(Icons.arrow_forward),
                         ),
-                        trailing: Icon(Icons.arrow_forward),
-                      )
-                  ),
+                      )),
                   Divider(
                     height: 1,
                     color: Colors.grey,
                   ),
                   Padding(
                       padding: const EdgeInsets.only(top: 20),
-                      child: ListTile(
-                        leading: Text(
-                          'Risk Disclosure.',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.normal),
-                          textAlign: TextAlign.center,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                              builder: (context) => new PrivacyPolicy(),
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          leading: Text(
+                            'Risk Disclosure.',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.normal),
+                            textAlign: TextAlign.center,
+                          ),
+                          trailing: Icon(Icons.arrow_forward),
                         ),
-                        trailing: Icon(Icons.arrow_forward),
-                      )
-                  ),
+                      )),
                 ],
+              ),
+              Text(
+                'If you click on continue you will be agree to our term and policies',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey),
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_doc_list');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed('custom_doc_list');
+                    }),
               )
             ],
           ),
@@ -744,9 +893,6 @@ class CustomAgree extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class CustomDoc extends StatelessWidget {
   const CustomDoc({Key? key}) : super(key: key);
@@ -763,7 +909,9 @@ class CustomDoc extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_agree_list',),
+                  CustomHeader(
+                    routeName: 'custom_agree_list',
+                  ),
                   Text(
                     'Documents',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -780,18 +928,18 @@ class CustomDoc extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(
                             context,
                             new MaterialPageRoute(
-                              builder: (context) =>
-                              new CustomID(),
+                              builder: (context) => new CustomID(),
                             ),
                           );
-
                         },
                         child: ListTile(
-                          leading: IDOK ? Icon(Icons.done, color: Colors.green) : Icon(Icons.cancel, color: Colors.red),
+                          leading: IDOK
+                              ? Icon(Icons.done, color: Colors.green)
+                              : Icon(Icons.cancel, color: Colors.red),
                           title: Text(
                             'Proof of ID',
                             style: TextStyle(
@@ -799,8 +947,7 @@ class CustomDoc extends StatelessWidget {
                           ),
                           trailing: Icon(Icons.arrow_forward),
                         ),
-                      )
-                  ),
+                      )),
                   Divider(
                     height: 1,
                     color: Colors.grey,
@@ -808,18 +955,18 @@ class CustomDoc extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(
                             context,
                             new MaterialPageRoute(
-                              builder: (context) =>
-                              new CustomDBS(),
+                              builder: (context) => new CustomDBS(),
                             ),
                           );
-
                         },
                         child: ListTile(
-                          leading: DBSOK ? Icon(Icons.done, color: Colors.green) : Icon(Icons.cancel, color: Colors.red),
+                          leading: DBSOK
+                              ? Icon(Icons.done, color: Colors.green)
+                              : Icon(Icons.cancel, color: Colors.red),
                           title: Text(
                             'DBS Certificate',
                             style: TextStyle(
@@ -827,8 +974,7 @@ class CustomDoc extends StatelessWidget {
                           ),
                           trailing: Icon(Icons.arrow_forward),
                         ),
-                      )
-                  ),
+                      )),
                   Divider(
                     height: 1,
                     color: Colors.grey,
@@ -836,18 +982,18 @@ class CustomDoc extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(
                             context,
                             new MaterialPageRoute(
-                              builder: (context) =>
-                              new CustomCare(),
+                              builder: (context) => new CustomCare(),
                             ),
                           );
-
                         },
                         child: ListTile(
-                          leading: CareOK ? Icon(Icons.done, color: Colors.green) : Icon(Icons.cancel, color: Colors.red),
+                          leading: CareOK
+                              ? Icon(Icons.done, color: Colors.green)
+                              : Icon(Icons.cancel, color: Colors.red),
                           title: Text(
                             'Care Qualification Certificate',
                             style: TextStyle(
@@ -855,15 +1001,17 @@ class CustomDoc extends StatelessWidget {
                           ),
                           trailing: Icon(Icons.arrow_forward),
                         ),
-                      )
-                  ),
+                      )),
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_interview');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed('custom_interview');
+                    }),
               )
             ],
           ),
@@ -872,8 +1020,6 @@ class CustomDoc extends StatelessWidget {
     );
   }
 }
-
-
 
 class CustomID extends StatefulWidget {
   const CustomID({Key? key}) : super(key: key);
@@ -895,7 +1041,9 @@ class _CustomIDState extends State<CustomID> {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_doc_list',),
+                  CustomHeader(
+                    routeName: 'custom_doc_list',
+                  ),
                   Text(
                     'Identity Verification',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -911,19 +1059,40 @@ class _CustomIDState extends State<CustomID> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 40),
-                    child: CustomButton(title: 'Upload Document', onPress: (){
-                      setState(() {
-                        IDOK = true;
-                      });
-                    }),
+                    child: CustomButton(
+                        title: 'Upload Document',
+                        onPress: () async {
+                          final picker = ImagePicker();
+                          var image = await picker.getImage(
+                              source: ImageSource.gallery);
+                          if (image != null) {
+                            imagePath = File(image.path);
+                            setState(() {
+                              IDOK = true;
+                            });
+                          } else {
+                            alertScreen().showAlertMsgDialog(
+                                context, "Failed to Upload ID picture");
+                          }
+                        }),
                   ),
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_agree_list');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      if (IDOK == false) {
+                        print(imagePath);
+                        print(identification_document);
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Upload I.D Image");
+                      } else {
+                        Navigator.of(context)
+                            .pushReplacementNamed('custom_doc_list');
+                      }
+                    }),
               )
             ],
           ),
@@ -932,7 +1101,6 @@ class _CustomIDState extends State<CustomID> {
     );
   }
 }
-
 
 class CustomDBS extends StatefulWidget {
   const CustomDBS({Key? key}) : super(key: key);
@@ -954,7 +1122,9 @@ class _CustomDBSState extends State<CustomDBS> {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_doc_list',),
+                  CustomHeader(
+                    routeName: 'custom_doc_list',
+                  ),
                   Text(
                     'DBS',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -970,28 +1140,57 @@ class _CustomDBSState extends State<CustomDBS> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 40, bottom: 20),
-                    child: CustomButton(title: 'Upload DBS', onPress: (){
-                      setState(() {
-                        DBSOK = true;
-                      });
-                    }),
+                    child: CustomButton(
+                        title: 'Upload DBS',
+                        onPress: () async {
+                          final picker = ImagePicker();
+                          var image = await picker.getImage(
+                              source: ImageSource.gallery);
+                          if (image != null) {
+                            dbs_certificate = File(image.path);
+                            setState(() {
+                              DBSOK = true;
+                            });
+                          } else {
+                            alertScreen().showAlertMsgDialog(
+                                context, "Failed to Upload D.B.S Image");
+                          }
+                        }),
                   ),
                   InkWell(
-                    onTap: (){
-                      alertScreen().showAlertDialog(context, 'Create DBS Certificate');
+                    onTap: () {
+                      alertScreen()
+                          .showAlertDialog(context, 'Create DBS Certificate');
                     },
                     child: Text(
                       'I don\'t have this',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
                     ),
                   ),
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_agree_list');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      // if (dbs_certificate.path == "") {
+                      //   alertScreen().showAlertMsgDialog(
+                      //       context, "Please Upload D.B.S Image");
+                      // }
+                      if (DBSOK == false) {
+                        print(imagePath);
+                        print(identification_document);
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Upload I.D Image");
+                      } else {
+                        Navigator.of(context)
+                            .pushReplacementNamed('custom_doc_list');
+                      }
+                    }),
               )
             ],
           ),
@@ -1021,7 +1220,9 @@ class _CustomCareState extends State<CustomCare> {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_doc_list',),
+                  CustomHeader(
+                    routeName: 'custom_doc_list',
+                  ),
                   Text(
                     'Care Qualification Certificate',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -1037,30 +1238,51 @@ class _CustomCareState extends State<CustomCare> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 40, bottom: 20),
-                    child: CustomButton(title: 'Upload Certificate', onPress: (){
-                      setState(() {
-                        print(IDOK);
-                        CareOK = true;
-                        print(IDOK);
-                      });
-                    }),
+                    child: CustomButton(
+                        title: 'Upload Certificate',
+                        onPress: () async {
+                          final picker = ImagePicker();
+                          var image = await picker.getImage(
+                              source: ImageSource.gallery);
+                          if (image != null) {
+                            care_qualification_certificate = File(image.path);
+                            setState(() {
+                              CareOK = true;
+                            });
+                          } else {
+                            alertScreen().showAlertMsgDialog(context,
+                                "Failed to Upload Care Certificate Image");
+                          }
+                        }),
                   ),
                   InkWell(
-                    onTap: (){
-                      alertScreen().showAlertDialog(context, 'Create Care Certificate');
+                    onTap: () {
+                      alertScreen()
+                          .showAlertDialog(context, 'Create Care Certificate');
                     },
                     child: Text(
                       'I don\'t have this',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
                     ),
                   ),
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_agree_list');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                      if (care_qualification_certificate.path == "") {
+                        alertScreen().showAlertMsgDialog(
+                            context, "Please Upload D.B.S Image");
+                      } else {
+                        Navigator.of(context)
+                            .pushReplacementNamed('custom_doc_list');
+                      }
+                    }),
               )
             ],
           ),
@@ -1069,7 +1291,6 @@ class _CustomCareState extends State<CustomCare> {
     );
   }
 }
-
 
 class CustomInterview extends StatefulWidget {
   const CustomInterview({Key? key}) : super(key: key);
@@ -1082,8 +1303,7 @@ class _CustomInterviewState extends State<CustomInterview> {
   void _showDatePicker(ctx) {
     showCupertinoModalPopup(
         context: ctx,
-        builder: (_) =>
-            Container(
+        builder: (_) => Container(
               height: 350,
               color: Color.fromARGB(255, 255, 255, 255),
               child: Column(
@@ -1095,7 +1315,9 @@ class _CustomInterviewState extends State<CustomInterview> {
                         mode: mode,
                         onDateTimeChanged: (val) {
                           setState(() {
-                            _chosenDateTime = val;
+                            _chosenDateTime1 = val;
+                            interview_date =
+                                '${val!.day.toString()} ${val!.month.toString()} ${val!.year.toString()}';
                           });
                         }),
                   ),
@@ -1122,7 +1344,9 @@ class _CustomInterviewState extends State<CustomInterview> {
             children: [
               Column(
                 children: [
-                  CustomHeader(routeName: 'custom_doc_list',),
+                  CustomHeader(
+                    routeName: 'custom_doc_list',
+                  ),
                   Text(
                     'Book Interview',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -1148,11 +1372,11 @@ class _CustomInterviewState extends State<CustomInterview> {
                         ),
                         Center(
                           child: InkWell(
-                            onTap: (){
+                            onTap: () {
                               _showDatePicker(context);
                             },
-                            child: Text(_chosenDateTime != null
-                                ? '${_chosenDateTime!.day.toString()} ${_chosenDateTime!.month.toString()} ${_chosenDateTime!.year.toString()}'
+                            child: Text(_chosenDateTime1 != null
+                                ? '${_chosenDateTime1!.day.toString()} ${_chosenDateTime1!.month.toString()} ${_chosenDateTime1!.year.toString()}'
                                 : 'No date time picked!'),
                           ),
                         ),
@@ -1163,14 +1387,42 @@ class _CustomInterviewState extends State<CustomInterview> {
                     height: 2,
                     color: Colors.black,
                   ),
-
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Continue', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('custom_agree_list');
-                }),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () async {
+                      if (interview_date == "No date time picked!") {
+                        alertScreen()
+                            .showAlertMsgDialog(context, "Please Choose D.o.B");
+                      } else {
+                        var response = await Utils().registerNurse(
+                          _fitstName.text,
+                          _lastName.text,
+                          _email.text,
+                          _password.text,
+                          dob,
+                          radius,
+                          _postal_code.text,
+                          interview_date,
+                          _address.text,
+                          _phone.text,
+                          _otp.text,
+                          imagePath,
+                          dbs_certificate,
+                          care_qualification_certificate,
+                        );
+                        if (response["status"] == true) {
+                          Navigator.of(context)
+                              .pushReplacementNamed('waiting_screen');
+                        } else {
+                          alertScreen()
+                              .showAlertMsgDialog(context, response["message"]);
+                        }
+                      }
+                    }),
               )
             ],
           ),
@@ -1180,17 +1432,10 @@ class _CustomInterviewState extends State<CustomInterview> {
   }
 }
 
-
-
-
-
-
-
-
-
 class CustomHeader extends StatelessWidget {
   const CustomHeader({Key? key, required this.routeName}) : super(key: key);
   final routeName;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -1199,24 +1444,26 @@ class CustomHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             InkWell(
-                onTap: () {
-                  Navigator.of(context).pushReplacementNamed(routeName);
-                },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.pink,
-                    ),
-                    Text(
-                      'Back',
-                      style: TextStyle(color: Colors.pink),
-                    ),
-                  ],
-                ),
+              onTap: () {
+                Navigator.of(context).pushReplacementNamed(routeName);
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.pink,
+                  ),
+                  Text(
+                    'Back',
+                    style: TextStyle(color: Colors.pink),
+                  ),
+                ],
               ),
+            ),
             _buildImage('logo-app.png', 40),
-            Container(width: 40,)
+            Container(
+              width: 40,
+            )
           ],
         ),
         Container(height: 20)
@@ -1224,6 +1471,3 @@ class CustomHeader extends StatelessWidget {
     );
   }
 }
-
-
-

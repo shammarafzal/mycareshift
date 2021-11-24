@@ -22,12 +22,16 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera usage description</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Your location is required for Navigation.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Your location is required for Navigation.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is required for Navigation.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library Access</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

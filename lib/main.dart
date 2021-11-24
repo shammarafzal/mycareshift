@@ -15,6 +15,7 @@ import 'View/inbox_list.dart';
 import 'View/navigation.dart';
 import 'View/new_signup.dart';
 import 'View/patientsView.dart';
+import 'View/waiting_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,7 +56,7 @@ Future<void> main() async {
         'custom_agree_list': (context) => CustomAgree(),
         'custom_doc_list': (context) => CustomDoc(),
         'custom_interview': (context) => CustomInterview(),
-
+        'waiting_screen': (context) => WaitingScreen(),
       },
     ),
   );
