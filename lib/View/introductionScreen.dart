@@ -26,7 +26,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.of(context).pushReplacementNamed('signup_screen');
+    Navigator.of(context).pushReplacementNamed('welcome_screen');
   }
 
   Widget _buildFullscrenImage() {

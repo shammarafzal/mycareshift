@@ -54,7 +54,6 @@ class Utils{
       String dob,
       String working_radius,
       String postal_code,
-      String date_of_interview,
       String address,
       String phone,
       String token,
@@ -67,6 +66,8 @@ class Utils{
         Uri.parse(
           "http://mcsportal.spphotography.info/api/nurseRegister",
         ));
+    request.fields["token"] = token;
+    request.fields["device_token"] = token;
     request.fields["first_name"] = first_name;
     request.fields["last_name"] = last_name;
     request.fields["email"] = email;
@@ -74,10 +75,9 @@ class Utils{
     request.fields["dob"] = dob;
     request.fields["working_radius"] = working_radius;
     request.fields["postal_code"] = postal_code;
-    request.fields["date_of_interview"] = date_of_interview;
     request.fields["address"] = address;
     request.fields["phone"] = phone;
-    request.fields["token"] = token;
+
     var identification_document_f = await http.MultipartFile.fromPath("identification_document", identification_document.path);
     var dbs_certificate_f = await http.MultipartFile.fromPath("dbs_certificate", dbs_certificate.path);
     var care_qualification_certificate_f = await http.MultipartFile.fromPath("care_qualification_certificate", care_qualification_certificate.path);

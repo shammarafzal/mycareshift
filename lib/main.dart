@@ -16,6 +16,7 @@ import 'View/navigation.dart';
 import 'View/new_signup.dart';
 import 'View/patientsView.dart';
 import 'View/waiting_screen.dart';
+import 'View/welcome_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,7 @@ Future<void> main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       // initialRoute: isLoggedIn! ? 'home' : 'home',
-      initialRoute: 'signup_screen',
+      initialRoute: 'intro_screen',
       theme: ThemeData(primarySwatch: Colors.blue),
       routes: {
 
@@ -57,6 +58,9 @@ Future<void> main() async {
         'custom_doc_list': (context) => CustomDoc(),
         'custom_interview': (context) => CustomInterview(),
         'waiting_screen': (context) => WaitingScreen(),
+        'welcome_screen': (context) => WelcomeScreen(),
+        'custom_promo_code': (context) => CustomPromo(),
+
       },
     ),
   );

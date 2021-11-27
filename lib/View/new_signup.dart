@@ -22,8 +22,9 @@ final _otp = TextEditingController();
 final _postal_code = TextEditingController();
 final _address = TextEditingController();
 final _phone = TextEditingController();
+final _promo = TextEditingController();
 late String dob;
-late String interview_date;
+ String interview_date ="Not Verified";
 late File imagePath;
 late File identification_document;
 late File dbs_certificate;
@@ -100,13 +101,14 @@ class CustomEmail extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Email',
+                          'Email Address',
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         Container(
-                          width: 250,
+                          width: 230,
                           child: TextField(
+                            autofocus:true,
                             controller: _email,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
@@ -124,7 +126,7 @@ class CustomEmail extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () async {
@@ -303,6 +305,7 @@ class CustomPassword extends StatelessWidget {
                         Container(
                             width: 250,
                             child: TextField(
+                              autofocus:true,
                               controller: _password,
                               obscureText: true,
                               decoration: InputDecoration(
@@ -319,7 +322,7 @@ class CustomPassword extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
@@ -384,6 +387,8 @@ class CustomName extends StatelessWidget {
                         Container(
                             width: 250,
                             child: TextField(
+                              autofocus:true,
+                              textInputAction: TextInputAction.next,
                               controller: _fitstName,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -420,7 +425,7 @@ class CustomName extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
@@ -608,6 +613,8 @@ class _CustomAddressState extends State<CustomAddress> {
                         Container(
                             width: 250,
                             child: TextField(
+                              autofocus:true,
+                              textInputAction: TextInputAction.next,
                               controller: _address,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -685,7 +692,7 @@ class _CustomAddressState extends State<CustomAddress> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
@@ -756,6 +763,7 @@ class CustomPhone extends StatelessWidget {
                         Container(
                             width: 250,
                             child: TextField(
+                              autofocus:true,
                               controller: _phone,
                               keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
@@ -772,7 +780,7 @@ class CustomPhone extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
@@ -781,8 +789,86 @@ class CustomPhone extends StatelessWidget {
                             context, "Please Enter Phone Number");
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_agree_list');
+                            .pushReplacementNamed('custom_promo_code');
                       }
+                    }),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class CustomPromo extends StatelessWidget {
+  const CustomPromo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  CustomHeader(
+                    routeName: 'custom_phone',
+                  ),
+                  Text(
+                    'Enter Promo Code (optional)',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Text(
+                      'Please Enter Promo Code for discounts',
+                      style: TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.normal),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Code',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Container(
+                            width: 250,
+                            child: TextField(
+                              autofocus:true,
+                              controller: _promo,
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    height: 2,
+                    color: Colors.black,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: CustomButton(
+                    title: 'Continue',
+                    onPress: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed('custom_agree_list');
                     }),
               )
             ],
@@ -849,36 +935,11 @@ class CustomAgree extends StatelessWidget {
                     height: 1,
                     color: Colors.grey,
                   ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                              builder: (context) => new PrivacyPolicy(),
-                            ),
-                          );
-                        },
-                        child: ListTile(
-                          leading: Text(
-                            'Risk Disclosure.',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.normal),
-                            textAlign: TextAlign.center,
-                          ),
-                          trailing: Icon(Icons.arrow_forward),
-                        ),
-                      )),
+
                 ],
               ),
-              Text(
-                'If you click on continue you will be agree to our term and policies',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
-              ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
@@ -937,7 +998,7 @@ class CustomDoc extends StatelessWidget {
                           );
                         },
                         child: ListTile(
-                          leading: IDOK
+                          trailing: IDOK
                               ? Icon(Icons.done, color: Colors.green)
                               : Icon(Icons.cancel, color: Colors.red),
                           title: Text(
@@ -945,7 +1006,7 @@ class CustomDoc extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.normal),
                           ),
-                          trailing: Icon(Icons.arrow_forward),
+                          leading: Icon(Icons.account_box),
                         ),
                       )),
                   Divider(
@@ -964,7 +1025,7 @@ class CustomDoc extends StatelessWidget {
                           );
                         },
                         child: ListTile(
-                          leading: DBSOK
+                          trailing: DBSOK
                               ? Icon(Icons.done, color: Colors.green)
                               : Icon(Icons.cancel, color: Colors.red),
                           title: Text(
@@ -972,7 +1033,7 @@ class CustomDoc extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.normal),
                           ),
-                          trailing: Icon(Icons.arrow_forward),
+                          leading: Icon(Icons.assignment_outlined),
                         ),
                       )),
                   Divider(
@@ -991,7 +1052,7 @@ class CustomDoc extends StatelessWidget {
                           );
                         },
                         child: ListTile(
-                          leading: CareOK
+                          trailing: CareOK
                               ? Icon(Icons.done, color: Colors.green)
                               : Icon(Icons.cancel, color: Colors.red),
                           title: Text(
@@ -999,7 +1060,7 @@ class CustomDoc extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.normal),
                           ),
-                          trailing: Icon(Icons.arrow_forward),
+                          leading: Icon(Icons.contact_mail),
                         ),
                       )),
                 ],
@@ -1008,9 +1069,34 @@ class CustomDoc extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: CustomButton(
                     title: 'Continue',
-                    onPress: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed('custom_interview');
+                    onPress: () async {
+                      if (interview_date == "No date time picked!") {
+                        alertScreen()
+                            .showAlertMsgDialog(context, "Please Choose D.o.B");
+                      } else {
+                        var response = await Utils().registerNurse(
+                          _fitstName.text,
+                          _lastName.text,
+                          _email.text,
+                          _password.text,
+                          dob,
+                          radius,
+                          _postal_code.text,
+                          _address.text,
+                          _phone.text,
+                          _otp.text,
+                          imagePath,
+                          dbs_certificate,
+                          care_qualification_certificate,
+                        );
+                        if (response["status"] == true) {
+                          Navigator.of(context)
+                              .pushReplacementNamed('waiting_screen');
+                        } else {
+                          alertScreen()
+                              .showAlertMsgDialog(context, response["message"]);
+                        }
+                      }
                     }),
               )
             ],
@@ -1406,7 +1492,6 @@ class _CustomInterviewState extends State<CustomInterview> {
                           dob,
                           radius,
                           _postal_code.text,
-                          interview_date,
                           _address.text,
                           _phone.text,
                           _otp.text,

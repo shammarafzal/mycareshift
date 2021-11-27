@@ -19,10 +19,10 @@ class WaitingScreen extends StatelessWidget {
                       height: 100,
                       child: Image.asset('assets/logo-app.png')),
                     ),
-              Text('MyCareShift', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+              Text('Thank you for uploading Documents', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Soon you will notify through email when your profile is approved', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+                child: Text('You will be notified once your account has b verified', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
               ),
 
             ],

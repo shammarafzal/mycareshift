@@ -20,7 +20,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
           title: Text('License Agreement'),
         ),
         body: WebView(
-          initialUrl: 'https://mycareshift.com/agreement',
+          initialUrl: 'https://www.mycareshift.com/user-agreement',
           onWebViewCreated: (WebViewController webViewController){
             _controller.complete(webViewController);
           },
