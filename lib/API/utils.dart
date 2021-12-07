@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils{
   final String baseUrl = 'mcsportal.spphotography.info';
@@ -89,5 +90,51 @@ class Utils{
     var decode = String.fromCharCodes(responseData);
     print(jsonDecode(decode));
     return jsonDecode(decode);
+  }
+  login(String email, String password) async {
+    var url = Uri.http(baseUrl, '/api/nurseLogin', {"q": "dart"});
+    final response = await http.post(url, body: {
+      "email": email,
+      "password": password,
+    });
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 401) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 500) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    }
+  }
+  feedback(String name, String email, String message) async {
+    final SharedPreferences prefs =
+    await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/sendFeedback', {"q": "dart"});
+    final response = await http.post(url, body: {
+      "name": name,
+      "email": email,
+      "comments": message,
+    }, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 401) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 500) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    }
   }
 }

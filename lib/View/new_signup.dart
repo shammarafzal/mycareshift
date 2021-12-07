@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget _buildImage(String assetName, [double width = 350]) {
   return Image.asset('assets/$assetName', width: width);
@@ -1480,6 +1481,8 @@ class _CustomInterviewState extends State<CustomInterview> {
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () async {
+                      final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                       if (interview_date == "No date time picked!") {
                         alertScreen()
                             .showAlertMsgDialog(context, "Please Choose D.o.B");
@@ -1500,6 +1503,7 @@ class _CustomInterviewState extends State<CustomInterview> {
                           care_qualification_certificate,
                         );
                         if (response["status"] == true) {
+                          prefs.setString('id', response['nurse']['is_approved']);
                           Navigator.of(context)
                               .pushReplacementNamed('waiting_screen');
                         } else {

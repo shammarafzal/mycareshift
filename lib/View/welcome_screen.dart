@@ -48,8 +48,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             height: MediaQuery.of(context).orientation == Orientation.portrait ? SizeConfig.screenHeight * 0.08 : SizeConfig.screenHeight * 0.15,
                             width: MediaQuery.of(context).orientation == Orientation.portrait ? SizeConfig.screenWidth * 0.4 : SizeConfig.screenWidth * 0.3,
                             child: CustomButton(title: 'Sign In', onPress: (){
-                              // Navigator.of(context)
-                              //     .pushReplacementNamed('login');
+                              Navigator.of(context)
+                                  .pushReplacementNamed('login');
                             }, colors: Color.fromRGBO(105,105,105,0.1), textColor: Colors.black,)),
                         Container(
                             height: MediaQuery.of(context).orientation == Orientation.portrait ? SizeConfig.screenHeight * 0.08 : SizeConfig.screenHeight * 0.15,

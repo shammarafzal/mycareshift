@@ -29,7 +29,7 @@ Future<void> main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       // initialRoute: isLoggedIn! ? 'home' : 'home',
-      initialRoute: 'intro_screen',
+      initialRoute: 'welcome_screen',
       theme: ThemeData(primarySwatch: Colors.blue),
       routes: {
 

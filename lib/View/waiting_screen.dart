@@ -1,3 +1,4 @@
+import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:flutter/material.dart';
 
@@ -26,8 +27,14 @@ class WaitingScreen extends StatelessWidget {
               Text('Thank you for uploading Documents', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('You will be notified once your account has b verified', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+                child: Text('You will be notified once your account has been verified', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
               ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: CustomButton(title: 'Go Back', onPress: (){
+                  Navigator.of(context).pushReplacementNamed('login');
+                }),
+              )
 
             ],
           ),

@@ -43,6 +43,7 @@ dependencies:
   url_launcher: ^6.0.3
   image_picker: ^0.8.1+4
   webview_flutter: ^2.0.4
+  get: ^4.5.1
 
 dev_dependencies:
   flutter_test:
