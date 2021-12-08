@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:becaring/API/utils.dart';
+import 'package:becaring/Models/get_notifications.dart';
 import 'package:becaring/Models/get_videos.dart';
 import 'package:get/get.dart';
 
 
-class VideoController extends GetxController{
+class NotificationController extends GetxController{
   // var isLoading = true.obs;
   // var categoryList = <Category>[].obs;
-  RxList<TrainingVideo> videoList = <TrainingVideo>[].obs;
+  RxList<Notification> notificationList = <Notification>[].obs;
   // @override
   // void onInit(){
   //   fetchCategories();
@@ -25,9 +26,9 @@ class VideoController extends GetxController{
 
   @override
   void onInit() {
-    fetchVideos();
+    fetchNotifications();
     super.onInit();
-    timer = Timer.periodic(Duration(seconds: 8), (Timer t) => fetchVideos());
+    timer = Timer.periodic(Duration(seconds: 8), (Timer t) => fetchNotifications());
   }
 
   @override
@@ -36,12 +37,12 @@ class VideoController extends GetxController{
     super.dispose();
   }
 
-  void fetchVideos() async{
+  void fetchNotifications() async{
     try {
       // isLoading(true);
-      var videos = await Utils().getVideos();
-      if(videos != null){
-        videoList.value = videos;
+      var notifications = await Utils().getNotifications();
+      if(notifications != null){
+        notificationList.value = notifications;
       }
     } finally {
       // isLoading(false);

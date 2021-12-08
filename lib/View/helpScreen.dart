@@ -1,46 +1,34 @@
+import 'package:becaring/Controllers/help_controller.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'helpDetails.dart';
 
 class HelpCardList extends StatelessWidget {
+  final HelpController helpController = Get.put(HelpController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Help'),
       ),
-      body: Container(
-        color: Colors.white,
-        child: ListView(
-          children: [
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: HelpScreen(
-                question: 'Contact Us',
-                question_details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-              ),
-            ),
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: HelpScreen(
-                question: 'Report an Issue',
-                question_details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-              ),
-            ),
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: HelpScreen(
-                question: 'Recommend a friend',
-                question_details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-              ),
-            ),
-            
-          ],
-        ),
-      ),
+     body: Container(child: Obx(() {
+        return ListView.builder(
+          itemCount: helpController.helpList.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, index) {
+            return Card(
+                        color: Colors.white,
+                        elevation: 5,
+                        child: HelpScreen(
+                          question: helpController.helpList[index].name,
+                          question_details: helpController.helpList[index].description,
+                        ),
+                      );
+          },
+        );
+      })),
+
     );
   }
 }

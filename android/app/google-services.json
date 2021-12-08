@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "198120982154",
+    "project_id": "mycareshift",
+    "storage_bucket": "mycareshift.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198120982154:android:49f41931c8969175e0cf73",
+        "android_client_info": {
+          "package_name": "uk.co.mycareshift"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198120982154-36o0nvqu1kmi2hvdijv5r81h3t6r1v06.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvw456PB-C42zcpnj8mQ9WjMcbUcSEDEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198120982154-36o0nvqu1kmi2hvdijv5r81h3t6r1v06.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

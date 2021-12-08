@@ -1,11 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:becaring/Models/get_help.dart';
+import 'package:becaring/Models/get_me.dart';
+import 'package:becaring/Models/get_notifications.dart';
+import 'package:becaring/Models/get_videos.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils{
-  final String baseUrl = 'mcsportal.spphotography.info';
 
+  static var client = http.Client();
+  final String baseUrl = 'mcsportal.spphotography.info';
+  var image_base_url = 'http://mcsportal.spphotography.info/storage/';
 
   verifyEmail(String email) async {
     var url = Uri.http(baseUrl, '/api/verifyEmail', {"q": "dart"});
@@ -58,6 +64,7 @@ class Utils{
       String address,
       String phone,
       String token,
+      String device_token,
       File identification_document,
       File dbs_certificate,
       File care_qualification_certificate
@@ -68,7 +75,7 @@ class Utils{
           "http://mcsportal.spphotography.info/api/nurseRegister",
         ));
     request.fields["token"] = token;
-    request.fields["device_token"] = token;
+    request.fields["device_token"] = device_token;
     request.fields["first_name"] = first_name;
     request.fields["last_name"] = last_name;
     request.fields["email"] = email;
@@ -137,4 +144,61 @@ class Utils{
       return jsonDecode(responseString);
     }
   }
+  Future<List<TrainingVideo>> getVideos() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/fetchTrainingVideos', {"q": "dart"});
+    var response = await client.get(url, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if(response.statusCode == 200){
+      return trainingVideoFromJson(response.body);
+    }
+    else{
+      return trainingVideoFromJson(response.statusCode.toString());
+    }
+  }
+  Future<List<Help>> getHelp() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/fetchHelps', {"q": "dart"});
+    var response = await client.get(url, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if(response.statusCode == 200){
+      return helpFromJson(response.body);
+    }
+    else{
+      return helpFromJson(response.statusCode.toString());
+    }
+  }
+  Future<List<Notification>> getNotifications() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/fetchNotifications', {"q": "dart"});
+    var response = await client.get(url, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if(response.statusCode == 200){
+      return notificationFromJson(response.body);
+    }
+    else{
+      return notificationFromJson(response.statusCode.toString());
+    }
+  }
+  Future<List<Me>> getMe() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/nurse', {"q": "dart"});
+    var response = await client.get(url, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if(response.statusCode == 200){
+      return meFromJson(response.body);
+    }
+    else{
+      return meFromJson(response.statusCode.toString());
+    }
+  }
+
 }

@@ -5,7 +5,6 @@ import 'package:becaring/View/introductionScreen.dart';
 import 'package:becaring/View/patientDetails.dart';
 import 'package:becaring/View/proofOfWork.dart';
 import 'package:becaring/View/signinScreen.dart';
-import 'package:becaring/View/signupScreen.dart';
 import 'package:becaring/View/verifycodeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,9 +16,12 @@ import 'View/new_signup.dart';
 import 'View/patientsView.dart';
 import 'View/waiting_screen.dart';
 import 'View/welcome_screen.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'View/notifications_test.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   var prefs = await SharedPreferences.getInstance();
   var isLoggedIn = (prefs.getBool('isLoggedIn') == null)
       ? false
@@ -32,7 +34,6 @@ Future<void> main() async {
       initialRoute: 'welcome_screen',
       theme: ThemeData(primarySwatch: Colors.blue),
       routes: {
-
         'login': (context) => SignIn(),
         'signup_screen': (context) => SignupUser(),
         'intro_screen': (context) => IntroScreen(),
@@ -60,7 +61,7 @@ Future<void> main() async {
         'waiting_screen': (context) => WaitingScreen(),
         'welcome_screen': (context) => WelcomeScreen(),
         'custom_promo_code': (context) => CustomPromo(),
-
+        'noti': (context) => HomePageNoti(),
       },
     ),
   );

@@ -1,3 +1,4 @@
+import 'package:becaring/Controllers/me_controller.dart';
 import 'package:becaring/View/account.dart';
 import 'package:becaring/View/myDay.dart';
 import 'package:becaring/View/inbox.dart';
@@ -5,6 +6,7 @@ import 'package:becaring/View/earnings.dart';
 import 'package:becaring/View/feedback.dart';
 import 'package:becaring/View/rewards.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'VideosViewer/VideosScreen.dart';
 import 'calenderView.dart';
 import 'helpScreen.dart';
@@ -19,7 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
+  final MeController meController = Get.put(MeController());
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -62,28 +64,17 @@ class _HomePageState extends State<HomePage> {
         drawer: new Drawer(
             child: ListView(
               children: <Widget>[
-                FutureBuilder(
-                    // future:  Utils().fetchuser(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
+                      Obx(() {
                         return UserAccountsDrawerHeader(
-
-                          accountName: Text('ss',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                          accountEmail: Text('ss'),
-                          decoration: new BoxDecoration(color: Colors.blue),
-                        );
-                      }
-                      return UserAccountsDrawerHeader(
                         currentAccountPicture: CircleAvatar(
                           backgroundImage: AssetImage("assets/logo-app.png"),
 
                         ),
-                        accountName: Text('Ammar',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                        accountEmail: Text('ammarafzal075@gmail.com'),
+                        accountName: Text(meController.meList[0].name,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                        accountEmail: Text(meController.meList[0].email),
                         decoration: new BoxDecoration(color: Colors.blue),
                       );
-                    }
-                ),
+                      }),
                 InkWell(
                   onTap: () {
                   },

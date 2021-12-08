@@ -1,6 +1,3 @@
-import 'package:becaring/Controllers/notification_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +8,17 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
 
-class NotificationList extends StatefulWidget {
 
+
+
+class HomePageNoti extends StatefulWidget {
   @override
-  State<NotificationList> createState() => _NotificationListState();
+  _HomePageNotiState createState() => _HomePageNotiState();
 }
 
-class _NotificationListState extends State<NotificationList> {
+class _HomePageNotiState extends State<HomePageNoti> {
   late final FirebaseMessaging _messaging;
-
   late int _totalNotifications;
-
   PushNotification? _notificationInfo;
 
   void registerNotification() async {
@@ -73,6 +70,7 @@ class _NotificationListState extends State<NotificationList> {
     }
   }
 
+  // For handling notification when the app is in terminated state
   checkForInitialMessage() async {
     await Firebase.initializeApp();
     RemoteMessage? initialMessage =
@@ -118,67 +116,50 @@ class _NotificationListState extends State<NotificationList> {
     super.initState();
   }
 
-  final NotificationController notificationController = Get.put(NotificationController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(child: Obx(() {
-        return ListView.builder(
-          itemCount: notificationController.notificationList.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, index) {
-            return Card(
-              color: Colors.white,
-              elevation: 5,
-              child: NotificationScreen(
-                img: 'https://googleflutter.com/sample_image.jpg',
-                title: notificationController.notificationList[index].title,
-                body: notificationController.notificationList[index].body,
+      appBar: AppBar(
+        title: Text('Notify'),
+        brightness: Brightness.dark,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'App for capturing Firebase Push Notifications',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+            ),
+          ),
+          SizedBox(height: 16.0),
+          NotificationBadge(totalNotifications: _totalNotifications),
+          SizedBox(height: 16.0),
+          _notificationInfo != null
+              ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'TITLE: ${_notificationInfo!.dataTitle ?? _notificationInfo!.title}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),
               ),
-            );
-          },
-        );
-      })),
-    );
-  }
-}
-
-
-class NotificationScreen extends StatefulWidget {
-  final String img;
-  final String title;
-  final String body;
-  NotificationScreen({
-    required this.img,
-    required this.title,
-    required this.body,
-  });
-
-  @override
-  _NotificationScreenState createState() => _NotificationScreenState();
-}
-
-class _NotificationScreenState extends State<NotificationScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-              image: NetworkImage(widget.img), fit: BoxFit.fill),
-        ),
-      ),
-      title: Text(
-        widget.title,
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      subtitle: Text(
-        widget.body,
-        style: TextStyle(fontWeight: FontWeight.normal),
+              SizedBox(height: 8.0),
+              Text(
+                'BODY: ${_notificationInfo!.dataBody ?? _notificationInfo!.body}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),
+              ),
+            ],
+          )
+              : Container(),
+        ],
       ),
     );
   }
