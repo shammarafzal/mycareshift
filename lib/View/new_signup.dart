@@ -964,7 +964,6 @@ class CustomPromo extends StatelessWidget {
                             child: TextField(
                               autofocus:true,
                               controller: _promo,
-                              keyboardType: TextInputType.phone,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                               ),
@@ -1202,9 +1201,11 @@ class CustomDoc extends StatelessWidget {
                           _phone.text,
                           _otp.text,
                           token,
+                          _promo.text,
                           imagePath,
                           dbs_certificate,
                           care_qualification_certificate,
+
                         );
                         if (response["status"] == true) {
                           Navigator.of(context)
@@ -1615,6 +1616,7 @@ class _CustomInterviewState extends State<CustomInterview> {
                           _phone.text,
                           _otp.text,
                           token,
+                          _promo.text,
                           imagePath,
                           dbs_certificate,
                           care_qualification_certificate,
