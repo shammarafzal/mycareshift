@@ -1,33 +1,42 @@
+import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
+import 'package:becaring/Controllers/appointment_controller.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
+import 'package:becaring/Settings/alert_dialog.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 class OfferCardList extends StatelessWidget {
+  final AppointmentController appointmentController =
+      Get.put(AppointmentController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Container(
-        color: Colors.white,
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Colors.white,
-                elevation: 5,
-                child: Offers(
-                  time: "10:00 AM - 12:00 PM",
-                  hours: '3 HR',
-                  ammount: '\£36.00',
-                  address: 'London Uk ',
-                  tip: '£12 p/h',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          color: Colors.white,
+          child: Obx(() {
+            return ListView.builder(
+              itemCount: appointmentController.appointmentList.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, index) {
+                // final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                // final String formatted = formatter.format(appointmentController.appointmentList[index].startDate);
+                return Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  child: Offers(
+                    time: '${appointmentController.appointmentList[index].startDate}',
+                    hours: appointmentController.appointmentList[index].visitDuration,
+                    ammount: '\£${appointmentController.appointmentList[index].minHourlyRate}',
+                    address: appointmentController.appointmentList[index].patient.user.address,
+                    tip: appointmentController.appointmentList[index].time,
+                    patient_id: appointmentController.appointmentList[index].patientId,
+                  ),
+                );
+              },
+            );
+          })),
     );
   }
 }
@@ -38,12 +47,14 @@ class Offers extends StatefulWidget {
   final String address;
   final String ammount;
   final String tip;
+  final String patient_id;
   Offers({
     required this.time,
     required this.hours,
     required this.address,
     required this.ammount,
     required this.tip,
+    required this.patient_id
   });
 
   @override
@@ -57,11 +68,17 @@ class _OffersState extends State<Offers> {
     return Column(
       children: [
         ListTile(
-          title: Text(widget.time, style: TextStyle(fontWeight: FontWeight.bold),),
+          title: Text(
+            widget.time,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
         ListTile(
           title: Text(widget.hours),
-          trailing: Text(widget.ammount, style: TextStyle(fontWeight: FontWeight.bold),),
+          trailing: Text(
+            widget.ammount,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
         ListTile(
           title: Text(widget.address),
@@ -69,11 +86,20 @@ class _OffersState extends State<Offers> {
         ),
         Padding(
           padding: const EdgeInsets.all(10),
-          child: CustomButton(title: 'Accept offer', onPress: (){
-            Navigator.of(context).pushReplacementNamed('home');
-          },),
+          child: CustomButton(
+            title: 'Accept offer',
+            onPress: () async {
+              var response =
+                  await Utils().bookAppointment(widget.patient_id);
+              if (response['status'] == false) {
+                alertScreen()
+                    .showAlertMsgDialog(context, response['message']);
+              } else {
+                  Navigator.of(context).pushReplacementNamed('home');
+              }
+            },
+          ),
         ),
-
       ],
     );
   }

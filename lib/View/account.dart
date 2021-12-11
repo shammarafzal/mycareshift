@@ -1,5 +1,7 @@
+import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Components/customTextField.dart';
+import 'package:becaring/Settings/alert_dialog.dart';
 import 'package:becaring/View/verifycodeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,13 @@ class _AccountPageState extends State<AccountPage> {
   final _email = TextEditingController();
   final _phone = TextEditingController();
   final _location = TextEditingController();
+  String radius = 'Select Radius';
+  var items_radius = [
+    'Select Radius',
+    '0-10 Miles',
+    '11-20 Miles',
+    '21-30 Miles'
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,44 +82,44 @@ class _AccountPageState extends State<AccountPage> {
                                 fontWeight: FontWeight.w600, fontSize: 22),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text(
-                                'First Name',
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
-                            child: CustomTextField(controller: _firstname,)
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text(
-                                'Last Name',
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
-                            child: CustomTextField(controller: _lastname,)
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text(
-                                'Email',
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
-                            child: CustomTextField(controller: _email,)),
+                        // Align(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Padding(
+                        //       padding: const EdgeInsets.only(top: 10),
+                        //       child: Text(
+                        //         'First Name',
+                        //         style: TextStyle(color: Colors.grey),
+                        //       )),
+                        // ),
+                        // Padding(
+                        //     padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                        //     child: CustomTextField(controller: _firstname,)
+                        // ),
+                        // Align(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Padding(
+                        //       padding: const EdgeInsets.only(top: 10),
+                        //       child: Text(
+                        //         'Last Name',
+                        //         style: TextStyle(color: Colors.grey),
+                        //       )),
+                        // ),
+                        // Padding(
+                        //     padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                        //     child: CustomTextField(controller: _lastname,)
+                        // ),
+                        // Align(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Padding(
+                        //       padding: const EdgeInsets.only(top: 10),
+                        //       child: Text(
+                        //         'Email',
+                        //         style: TextStyle(color: Colors.grey),
+                        //       )),
+                        // ),
+                        // Padding(
+                        //     padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                        //     child: CustomTextField(controller: _email,)),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
@@ -140,48 +149,105 @@ class _AccountPageState extends State<AccountPage> {
                           child: Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Text(
-                                'Date of Birth',
+                                'Working Radius',
                                 style: TextStyle(color: Colors.grey),
                               )),
                         ),
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromRGBO(246, 247, 249, 1),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                ),
-                              ),
-                            )),
-                        Container(
-                            width: double.infinity,
-                            child: ElevatedButton.icon(
-                                onPressed: null,
-                                icon: Icon(Icons.upload_rounded),
-                                label: Text('Identity Document'))),
-                        Container(
-                            width: double.infinity,
-                            child: ElevatedButton.icon(
-                                onPressed: null,
-                                icon: Icon(Icons.upload_rounded),
-                                label: Text('DBS Certificate'))),
-                        Container(
-                            width: double.infinity,
-                            child: ElevatedButton.icon(
-                                onPressed: null,
-                                icon: Icon(Icons.upload_rounded),
-                                label: Text('Care Qualification Certificate'))),
-                        Divider(height: 10,),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            width: 200,
+                            child: DropdownButton(
+                              value: radius,
+                              icon: Icon(Icons.keyboard_arrow_down),
+                              items: items_radius.map((String items) {
+                                return DropdownMenuItem(
+                                    value: items,
+                                    child: Center(
+                                        child: Text(
+                                          items,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )));
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  radius = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        // Align(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Padding(
+                        //       padding: const EdgeInsets.only(top: 10),
+                        //       child: Text(
+                        //         'Date of Birth',
+                        //         style: TextStyle(color: Colors.grey),
+                        //       )),
+                        // ),
+                        // Padding(
+                        //     padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                        //     child: TextField(
+                        //       decoration: InputDecoration(
+                        //         filled: true,
+                        //         fillColor: Color.fromRGBO(246, 247, 249, 1),
+                        //         enabledBorder: OutlineInputBorder(
+                        //           borderSide: BorderSide(color: Colors.grey),
+                        //         ),
+                        //         focusedBorder: OutlineInputBorder(
+                        //           borderSide: BorderSide(color: Colors.grey),
+                        //         ),
+                        //       ),
+                        //     )),
+                        // Container(
+                        //     width: double.infinity,
+                        //     child: ElevatedButton.icon(
+                        //         onPressed: null,
+                        //         icon: Icon(Icons.upload_rounded),
+                        //         label: Text('Identity Document'))),
+                        // Container(
+                        //     width: double.infinity,
+                        //     child: ElevatedButton.icon(
+                        //         onPressed: null,
+                        //         icon: Icon(Icons.upload_rounded),
+                        //         label: Text('DBS Certificate'))),
+                        // Container(
+                        //     width: double.infinity,
+                        //     child: ElevatedButton.icon(
+                        //         onPressed: null,
+                        //         icon: Icon(Icons.upload_rounded),
+                        //         label: Text('Care Qualification Certificate'))),
+                        // Divider(height: 10,),
 
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: CustomButton(title: 'Update Profile', onPress: (){
-                            // Navigator.of(context).pushReplacementNamed('home');
+                          child: CustomButton(title: 'Update Profile', onPress: () async {
+                             if (_phone.text == "") {
+                              alertScreen().showAlertMsgDialog(
+                                  context, "Please Enter Phone");
+                            }
+                             else if (_location.text == "") {
+                               alertScreen().showAlertMsgDialog(
+                                   context, "Please Enter Address");
+                             }
+                             if (radius == "") {
+                               alertScreen().showAlertMsgDialog(
+                                   context, "Please Enter Working Radius");
+                             }
+                             else {
+                              var response =
+                                  await Utils().updateProfile(_phone.text, _location.text, radius);
+                              if (response['status'] == false) {
+                                alertScreen()
+                                    .showAlertMsgDialog(context, response['message']);
+                              } else {
+                                  Navigator.of(context).pop();
+                              }
+                            }
                           },),
                         ),
                       ],

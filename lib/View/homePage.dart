@@ -77,6 +77,7 @@ class _HomePageState extends State<HomePage> {
                       }),
                 InkWell(
                   onTap: () {
+                    Navigator.pop(context);
                   },
                   child: ListTile(
                     title: Text('Home'),

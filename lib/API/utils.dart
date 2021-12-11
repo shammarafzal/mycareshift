@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:becaring/Models/get_appointment.dart';
+import 'package:becaring/Models/get_booking.dart';
 import 'package:becaring/Models/get_help.dart';
 import 'package:becaring/Models/get_me.dart';
 import 'package:becaring/Models/get_notifications.dart';
+import 'package:becaring/Models/get_rewards.dart';
 import 'package:becaring/Models/get_videos.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,9 +33,10 @@ class Utils{
     }
   }
 
-  checkToken(String token) async {
+  checkToken(String email, String token) async {
     var url = Uri.http(baseUrl, '/api/verifyToken', {"q": "dart"});
     final response = await http.post(url, body: {
+      "email": email,
       "token": token,
     });
     if (response.statusCode == 200) {
@@ -199,6 +203,91 @@ class Utils{
     }
     else{
       return meFromJson(response.statusCode.toString());
+    }
+  }
+  Future<List<Rewards>> getRewards() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/fetchReward', {"q": "dart"});
+    var response = await client.get(url, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if(response.statusCode == 200){
+      return rewardsFromJson(response.body);
+    }
+    else{
+      return rewardsFromJson(response.statusCode.toString());
+    }
+  }
+  Future<List<Appointment>> getAppointment() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/fetchAppointments', {"q": "dart"});
+    var response = await client.get(url, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if(response.statusCode == 200){
+      return appointmentFromJson(response.body);
+    }
+    else{
+      return appointmentFromJson(response.statusCode.toString());
+    }
+  }
+  Future<List<Booking>> getBooking() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/fetchBookings', {"q": "dart"});
+    var response = await client.get(url, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if(response.statusCode == 200){
+      return bookingFromJson(response.body);
+    }
+    else{
+      return bookingFromJson(response.statusCode.toString());
+    }
+  }
+  bookAppointment(String patient_id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/bookAppointment', {"q": "dart"});
+    final response = await http.post(url, body: {
+      "patient_id": patient_id,
+    },headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 500) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    }
+  }
+  updateProfile(String phone, String location, String radius) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var id = prefs.getInt('id');
+    var url = Uri.http(baseUrl, '/api/nurseUpdate/${id}', {"q": "dart"});
+    final response = await http.post(url, body: {
+      "phone": phone,
+      "working_radius": radius,
+      "address": location,
+    },headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 500) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
     }
   }
 

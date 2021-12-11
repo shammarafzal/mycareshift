@@ -1,33 +1,41 @@
 import 'package:becaring/Components/customButton.dart';
+import 'package:becaring/Controllers/booking_controller.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
-import 'package:becaring/View/patientsView.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 class MyDayCardList extends StatelessWidget {
+  final BookingController bookingController = Get.put(BookingController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Container(
-        color: Colors.white,
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Colors.white,
-                elevation: 5,
-                child: MyDay(
-                  date: '10-Nov-2021',
-                  time: "10:00 AM - 12:00 PM",
-                  noOfPatients: '3',
-                  ammount: '130',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          color: Colors.white,
+          child: Obx(() {
+            return ListView.builder(
+              itemCount: bookingController.bookingList.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, index) {
+                // final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                // final String formatted = formatter.format(
+                //     bookingController.bookingList[index].startDate);
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 5,
+                    child: MyDay(
+                      date: '${bookingController.bookingList[index].startDate}',
+                      time:  bookingController.bookingList[index].time,
+                      noOfPatients:  bookingController.bookingList[index].noOfCarers,
+                      ammount: bookingController.bookingList[index].minHourlyRate,
+                    ),
+                  ),
+                );
+              },
+            );
+          })),
     );
   }
 }
@@ -37,12 +45,14 @@ class MyDay extends StatefulWidget {
   final String time;
   final String noOfPatients;
   final String ammount;
+
   MyDay({
     required this.time,
     required this.noOfPatients,
     required this.date,
     required this.ammount,
   });
+
   @override
   _MyDayState createState() => _MyDayState();
 }
@@ -55,7 +65,10 @@ class _MyDayState extends State<MyDay> {
       children: [
         ListTile(
           leading: Icon(Icons.calendar_today),
-          title: Text(widget.date, style: TextStyle(fontWeight: FontWeight.bold),),
+          title: Text(
+            widget.date,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
         Container(
           height: 30,
@@ -63,8 +76,12 @@ class _MyDayState extends State<MyDay> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                width: SizeConfig.screenWidth / 3,
-                  child: Text('No of Patients', style: TextStyle(fontSize: 12, color: Colors.grey),textAlign: TextAlign.center,)),
+                  width: SizeConfig.screenWidth / 3,
+                  child: Text(
+                    'No of Carers',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  )),
               Container(
                 width: 1,
                 height: double.maxFinite,
@@ -72,7 +89,11 @@ class _MyDayState extends State<MyDay> {
               ),
               Container(
                   width: SizeConfig.screenWidth / 3,
-                  child: Text('Amount', style: TextStyle(fontSize: 12, color: Colors.grey),textAlign: TextAlign.center,)),
+                  child: Text(
+                    'Amount',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  )),
               Container(
                 width: 1,
                 height: double.maxFinite,
@@ -80,7 +101,11 @@ class _MyDayState extends State<MyDay> {
               ),
               Container(
                   width: SizeConfig.screenWidth / 4,
-                  child: Text('Time', style: TextStyle(fontSize: 12, color: Colors.grey),textAlign: TextAlign.center,))
+                  child: Text(
+                    'Time',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ))
             ],
           ),
         ),
@@ -90,22 +115,37 @@ class _MyDayState extends State<MyDay> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                width: SizeConfig.screenWidth / 4,
-                  child: Text(widget.noOfPatients, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),textAlign: TextAlign.center,)),
-              Container(
-                width: SizeConfig.screenWidth / 4,
-                  child: Text(widget.ammount, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),textAlign: TextAlign.center,)),
+                  width: SizeConfig.screenWidth / 4,
+                  child: Text(
+                    widget.noOfPatients,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  )),
               Container(
                   width: SizeConfig.screenWidth / 4,
-                  child: Text(widget.time, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),textAlign: TextAlign.right,)),
+                  child: Text(
+                    widget.ammount,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  )),
+              Container(
+                  width: SizeConfig.screenWidth / 4,
+                  child: Text(
+                    widget.time,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.right,
+                  )),
             ],
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(10),
-          child: CustomButton(title: 'View Details', onPress: (){
-            Navigator.of(context).pushReplacementNamed('patients_list');
-          },),
+          child: CustomButton(
+            title: 'View Details',
+            onPress: () {
+              Navigator.of(context).pushReplacementNamed('patients_list');
+            },
+          ),
         ),
       ],
     );

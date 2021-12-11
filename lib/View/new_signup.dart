@@ -358,7 +358,7 @@ class _CustomOTPState extends State<CustomOTP> {
                         alertScreen().showAlertMsgDialog(
                             context, "Please Enter Verification Code");
                       } else {
-                        var response = await Utils().checkToken(_otp.text);
+                        var response = await Utils().checkToken(_email.text, _otp.text);
                         if (response['status'] == false) {
                           alertScreen()
                               .showAlertMsgDialog(context, response['message']);
@@ -590,7 +590,7 @@ class _CustomDobState extends State<CustomDob> {
                           setState(() {
                             _chosenDateTime = val;
                             dob =
-                                '${val!.day.toString()} ${val!.month.toString()} ${val!.year.toString()}';
+                                '${val.day.toString()} ${val.month.toString()} ${val.year.toString()}';
                           });
                         }),
                   ),
@@ -1521,7 +1521,7 @@ class _CustomInterviewState extends State<CustomInterview> {
                           setState(() {
                             _chosenDateTime1 = val;
                             interview_date =
-                                '${val!.day.toString()} ${val!.month.toString()} ${val!.year.toString()}';
+                                '${val.day.toString()} ${val.month.toString()} ${val.year.toString()}';
                           });
                         }),
                   ),
