@@ -2,7 +2,6 @@ import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Components/customTextField.dart';
 import 'package:becaring/Settings/alert_dialog.dart';
-import 'package:becaring/View/verifycodeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +11,6 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  final _firstname = TextEditingController();
-  final _lastname = TextEditingController();
-  final _email = TextEditingController();
   final _phone = TextEditingController();
   final _location = TextEditingController();
   String radius = 'Select Radius';
@@ -82,44 +78,7 @@ class _AccountPageState extends State<AccountPage> {
                                 fontWeight: FontWeight.w600, fontSize: 22),
                           ),
                         ),
-                        // Align(
-                        //   alignment: Alignment.centerLeft,
-                        //   child: Padding(
-                        //       padding: const EdgeInsets.only(top: 10),
-                        //       child: Text(
-                        //         'First Name',
-                        //         style: TextStyle(color: Colors.grey),
-                        //       )),
-                        // ),
-                        // Padding(
-                        //     padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
-                        //     child: CustomTextField(controller: _firstname,)
-                        // ),
-                        // Align(
-                        //   alignment: Alignment.centerLeft,
-                        //   child: Padding(
-                        //       padding: const EdgeInsets.only(top: 10),
-                        //       child: Text(
-                        //         'Last Name',
-                        //         style: TextStyle(color: Colors.grey),
-                        //       )),
-                        // ),
-                        // Padding(
-                        //     padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
-                        //     child: CustomTextField(controller: _lastname,)
-                        // ),
-                        // Align(
-                        //   alignment: Alignment.centerLeft,
-                        //   child: Padding(
-                        //       padding: const EdgeInsets.only(top: 10),
-                        //       child: Text(
-                        //         'Email',
-                        //         style: TextStyle(color: Colors.grey),
-                        //       )),
-                        // ),
-                        // Padding(
-                        //     padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
-                        //     child: CustomTextField(controller: _email,)),
+
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
@@ -180,48 +139,6 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                           ),
                         ),
-                        // Align(
-                        //   alignment: Alignment.centerLeft,
-                        //   child: Padding(
-                        //       padding: const EdgeInsets.only(top: 10),
-                        //       child: Text(
-                        //         'Date of Birth',
-                        //         style: TextStyle(color: Colors.grey),
-                        //       )),
-                        // ),
-                        // Padding(
-                        //     padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
-                        //     child: TextField(
-                        //       decoration: InputDecoration(
-                        //         filled: true,
-                        //         fillColor: Color.fromRGBO(246, 247, 249, 1),
-                        //         enabledBorder: OutlineInputBorder(
-                        //           borderSide: BorderSide(color: Colors.grey),
-                        //         ),
-                        //         focusedBorder: OutlineInputBorder(
-                        //           borderSide: BorderSide(color: Colors.grey),
-                        //         ),
-                        //       ),
-                        //     )),
-                        // Container(
-                        //     width: double.infinity,
-                        //     child: ElevatedButton.icon(
-                        //         onPressed: null,
-                        //         icon: Icon(Icons.upload_rounded),
-                        //         label: Text('Identity Document'))),
-                        // Container(
-                        //     width: double.infinity,
-                        //     child: ElevatedButton.icon(
-                        //         onPressed: null,
-                        //         icon: Icon(Icons.upload_rounded),
-                        //         label: Text('DBS Certificate'))),
-                        // Container(
-                        //     width: double.infinity,
-                        //     child: ElevatedButton.icon(
-                        //         onPressed: null,
-                        //         icon: Icon(Icons.upload_rounded),
-                        //         label: Text('Care Qualification Certificate'))),
-                        // Divider(height: 10,),
 
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),

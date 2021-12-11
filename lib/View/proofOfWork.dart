@@ -112,7 +112,7 @@ class _ProofWorkState extends State<ProofWork> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                           child: CustomButton(title: 'Complete', onPress: (){
-                            Navigator.of(context).pushReplacementNamed('home');
+                            Navigator.of(context).pushReplacementNamed('/home');
                           },),
                         ),
                       ],

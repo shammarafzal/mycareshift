@@ -5,7 +5,7 @@ import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:becaring/Settings/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 class OfferCardList extends StatelessWidget {
   final AppointmentController appointmentController =
       Get.put(AppointmentController());
@@ -20,8 +20,6 @@ class OfferCardList extends StatelessWidget {
               itemCount: appointmentController.appointmentList.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, index) {
-                // final DateFormat formatter = DateFormat('yyyy-MM-dd');
-                // final String formatted = formatter.format(appointmentController.appointmentList[index].startDate);
                 return Card(
                   color: Colors.white,
                   elevation: 5,
@@ -95,7 +93,7 @@ class _OffersState extends State<Offers> {
                 alertScreen()
                     .showAlertMsgDialog(context, response['message']);
               } else {
-                  Navigator.of(context).pushReplacementNamed('home');
+                  Navigator.of(context).pushReplacementNamed('/home');
               }
             },
           ),

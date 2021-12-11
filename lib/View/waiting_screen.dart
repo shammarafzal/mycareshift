@@ -32,7 +32,7 @@ class WaitingScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: CustomButton(title: 'Go Back', onPress: (){
-                  Navigator.of(context).pushReplacementNamed('login');
+                  Navigator.of(context).pushReplacementNamed('/login');
                 }),
               )
 

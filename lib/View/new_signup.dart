@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
@@ -12,8 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:becaring/Models/push_notification.dart';
 import 'package:overlay_support/overlay_support.dart';
 
@@ -256,7 +253,7 @@ class CustomEmail extends StatelessWidget {
                               .showAlertMsgDialog(context, response['message']);
                         } else {
                           Navigator.of(context)
-                              .pushReplacementNamed('custom_otp');
+                              .pushReplacementNamed('/custom_otp');
                         }
                       }
                     }),
@@ -290,7 +287,7 @@ class _CustomOTPState extends State<CustomOTP> {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_email',
+                    routeName: '/custom_email',
                   ),
                   Text(
                     'OTP Veification',
@@ -364,7 +361,7 @@ class _CustomOTPState extends State<CustomOTP> {
                               .showAlertMsgDialog(context, response['message']);
                         } else {
                           Navigator.of(context)
-                              .pushReplacementNamed('custom_password');
+                              .pushReplacementNamed('/custom_password');
                         }
                       }
                     }),
@@ -393,7 +390,7 @@ class CustomPassword extends StatelessWidget {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_otp',
+                    routeName: '/custom_otp',
                   ),
                   Text(
                     'Choose a password',
@@ -447,7 +444,7 @@ class CustomPassword extends StatelessWidget {
                             context, "Please Enter Password");
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_name');
+                            .pushReplacementNamed('/custom_name');
                       }
                     }),
               )
@@ -475,7 +472,7 @@ class CustomName extends StatelessWidget {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_password',
+                    routeName: '/custom_password',
                   ),
                   Text(
                     'What\'s your legal name',
@@ -553,7 +550,7 @@ class CustomName extends StatelessWidget {
                             context, "Please Enter Last Name");
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_dob');
+                            .pushReplacementNamed('/custom_dob');
                       }
                     }),
               )
@@ -618,7 +615,7 @@ class _CustomDobState extends State<CustomDob> {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_name',
+                    routeName: '/custom_name',
                   ),
                   Text(
                     'When\'s your birthday?',
@@ -668,7 +665,7 @@ class _CustomDobState extends State<CustomDob> {
                             .showAlertMsgDialog(context, "Please Choose D.o.B");
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_address');
+                            .pushReplacementNamed('/custom_address');
                       }
                     }),
               )
@@ -701,7 +698,7 @@ class _CustomAddressState extends State<CustomAddress> {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_dob',
+                    routeName: '/custom_dob',
                   ),
                   Text(
                     'What\'s your Home Address',
@@ -823,7 +820,7 @@ class _CustomAddressState extends State<CustomAddress> {
                             context, "Please Select Working Radius");
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_phone');
+                            .pushReplacementNamed('/custom_phone');
                       }
                     }),
               )
@@ -851,7 +848,7 @@ class CustomPhone extends StatelessWidget {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_address',
+                    routeName: '/custom_address',
                   ),
                   Text(
                     'What\'s your Phone Number',
@@ -905,7 +902,7 @@ class CustomPhone extends StatelessWidget {
                             context, "Please Enter Phone Number");
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_promo_code');
+                            .pushReplacementNamed('/custom_promo');
                       }
                     }),
               )
@@ -934,7 +931,7 @@ class CustomPromo extends StatelessWidget {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_phone',
+                    routeName: '/custom_phone',
                   ),
                   Text(
                     'Enter Promo Code (optional)',
@@ -983,7 +980,7 @@ class CustomPromo extends StatelessWidget {
                     title: 'Continue',
                     onPress: () {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_agree_list');
+                            .pushReplacementNamed('/custom_aggree');
                     }),
               )
             ],
@@ -1010,7 +1007,7 @@ class CustomAgree extends StatelessWidget {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_phone',
+                    routeName: '/custom_phone',
                   ),
                   Text(
                     'Please Review Our Declaration',
@@ -1059,7 +1056,7 @@ class CustomAgree extends StatelessWidget {
                     title: 'Continue',
                     onPress: () {
                       Navigator.of(context)
-                          .pushReplacementNamed('custom_doc_list');
+                          .pushReplacementNamed('/custom_doc');
                     }),
               )
             ],
@@ -1086,7 +1083,7 @@ class CustomDoc extends StatelessWidget {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_agree_list',
+                    routeName: '/custom_aggree',
                   ),
                   Text(
                     'Documents',
@@ -1209,7 +1206,7 @@ class CustomDoc extends StatelessWidget {
                         );
                         if (response["status"] == true) {
                           Navigator.of(context)
-                              .pushReplacementNamed('waiting_screen');
+                              .pushReplacementNamed('/waiting_screen');
                         } else {
                           alertScreen()
                               .showAlertMsgDialog(context, response["message"]);
@@ -1246,7 +1243,7 @@ class _CustomIDState extends State<CustomID> {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_doc_list',
+                    routeName: '/custom_doc',
                   ),
                   Text(
                     'Identity Verification',
@@ -1294,7 +1291,7 @@ class _CustomIDState extends State<CustomID> {
                             context, "Please Upload I.D Image");
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_doc_list');
+                            .pushReplacementNamed('/custom_doc');
                       }
                     }),
               )
@@ -1327,7 +1324,7 @@ class _CustomDBSState extends State<CustomDBS> {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_doc_list',
+                    routeName: '/custom_doc',
                   ),
                   Text(
                     'DBS',
@@ -1392,7 +1389,7 @@ class _CustomDBSState extends State<CustomDBS> {
                             context, "Please Upload I.D Image");
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_doc_list');
+                            .pushReplacementNamed('/custom_doc');
                       }
                     }),
               )
@@ -1425,7 +1422,7 @@ class _CustomCareState extends State<CustomCare> {
               Column(
                 children: [
                   CustomHeader(
-                    routeName: 'custom_doc_list',
+                    routeName: '/custom_doc',
                   ),
                   Text(
                     'Care Qualification Certificate',
@@ -1484,7 +1481,7 @@ class _CustomCareState extends State<CustomCare> {
                             context, "Please Upload D.B.S Image");
                       } else {
                         Navigator.of(context)
-                            .pushReplacementNamed('custom_doc_list');
+                            .pushReplacementNamed('/custom_doc');
                       }
                     }),
               )
@@ -1495,151 +1492,151 @@ class _CustomCareState extends State<CustomCare> {
     );
   }
 }
-
-class CustomInterview extends StatefulWidget {
-  const CustomInterview({Key? key}) : super(key: key);
-
-  @override
-  State<CustomInterview> createState() => _CustomInterviewState();
-}
-
-class _CustomInterviewState extends State<CustomInterview> {
-  void _showDatePicker(ctx) {
-    showCupertinoModalPopup(
-        context: ctx,
-        builder: (_) => Container(
-              height: 350,
-              color: Color.fromARGB(255, 255, 255, 255),
-              child: Column(
-                children: [
-                  Container(
-                    height: 250,
-                    child: CupertinoDatePicker(
-                        initialDateTime: DateTime.now(),
-                        mode: mode,
-                        onDateTimeChanged: (val) {
-                          setState(() {
-                            _chosenDateTime1 = val;
-                            interview_date =
-                                '${val.day.toString()} ${val.month.toString()} ${val.year.toString()}';
-                          });
-                        }),
-                  ),
-
-                  // Close the modal
-                  CupertinoButton(
-                    child: Text('OK'),
-                    onPressed: () => Navigator.of(ctx).pop(),
-                  )
-                ],
-              ),
-            ));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  CustomHeader(
-                    routeName: 'custom_doc_list',
-                  ),
-                  Text(
-                    'Book Interview',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text(
-                      'Please pick a date to book interview!',
-                      style: TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.normal),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Date of Interview',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Center(
-                          child: InkWell(
-                            onTap: () {
-                              _showDatePicker(context);
-                            },
-                            child: Text(_chosenDateTime1 != null
-                                ? '${_chosenDateTime1!.day.toString()} ${_chosenDateTime1!.month.toString()} ${_chosenDateTime1!.year.toString()}'
-                                : 'No date time picked!'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    height: 2,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: CustomButton(
-                    title: 'Continue',
-                    onPress: () async {
-                      final SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                      if (interview_date == "No date time picked!") {
-                        alertScreen()
-                            .showAlertMsgDialog(context, "Please Choose D.o.B");
-                      } else {
-                        var response = await Utils().registerNurse(
-                          _fitstName.text,
-                          _lastName.text,
-                          _email.text,
-                          _password.text,
-                          dob,
-                          radius,
-                          _postal_code.text,
-                          _address.text,
-                          _phone.text,
-                          _otp.text,
-                          token,
-                          _promo.text,
-                          imagePath,
-                          dbs_certificate,
-                          care_qualification_certificate,
-
-                        );
-                        if (response["status"] == true) {
-                          prefs.setString('id', response['nurse']['is_approved']);
-                          Navigator.of(context)
-                              .pushReplacementNamed('waiting_screen');
-                        } else {
-                          alertScreen()
-                              .showAlertMsgDialog(context, response["message"]);
-                        }
-                      }
-                    }),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//
+// class CustomInterview extends StatefulWidget {
+//   const CustomInterview({Key? key}) : super(key: key);
+//
+//   @override
+//   State<CustomInterview> createState() => _CustomInterviewState();
+// }
+//
+// class _CustomInterviewState extends State<CustomInterview> {
+//   void _showDatePicker(ctx) {
+//     showCupertinoModalPopup(
+//         context: ctx,
+//         builder: (_) => Container(
+//               height: 350,
+//               color: Color.fromARGB(255, 255, 255, 255),
+//               child: Column(
+//                 children: [
+//                   Container(
+//                     height: 250,
+//                     child: CupertinoDatePicker(
+//                         initialDateTime: DateTime.now(),
+//                         mode: mode,
+//                         onDateTimeChanged: (val) {
+//                           setState(() {
+//                             _chosenDateTime1 = val;
+//                             interview_date =
+//                                 '${val.day.toString()} ${val.month.toString()} ${val.year.toString()}';
+//                           });
+//                         }),
+//                   ),
+//
+//                   // Close the modal
+//                   CupertinoButton(
+//                     child: Text('OK'),
+//                     onPressed: () => Navigator.of(ctx).pop(),
+//                   )
+//                 ],
+//               ),
+//             ));
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     SizeConfig().init(context);
+//     return Scaffold(
+//       body: SafeArea(
+//         child: Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               Column(
+//                 children: [
+//                   CustomHeader(
+//                     routeName: 'custom_doc_list',
+//                   ),
+//                   Text(
+//                     'Book Interview',
+//                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsets.only(top: 5),
+//                     child: Text(
+//                       'Please pick a date to book interview!',
+//                       style: TextStyle(
+//                           fontSize: 14, fontWeight: FontWeight.normal),
+//                       textAlign: TextAlign.center,
+//                     ),
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsets.only(top: 20),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: [
+//                         Text(
+//                           'Date of Interview',
+//                           style: TextStyle(
+//                               fontSize: 16, fontWeight: FontWeight.bold),
+//                         ),
+//                         Center(
+//                           child: InkWell(
+//                             onTap: () {
+//                               _showDatePicker(context);
+//                             },
+//                             child: Text(_chosenDateTime1 != null
+//                                 ? '${_chosenDateTime1!.day.toString()} ${_chosenDateTime1!.month.toString()} ${_chosenDateTime1!.year.toString()}'
+//                                 : 'No date time picked!'),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   Divider(
+//                     height: 2,
+//                     color: Colors.black,
+//                   ),
+//                 ],
+//               ),
+//               Padding(
+//                 padding: const EdgeInsets.all(20.0),
+//                 child: CustomButton(
+//                     title: 'Continue',
+//                     onPress: () async {
+//                       final SharedPreferences prefs =
+//                       await SharedPreferences.getInstance();
+//                       if (interview_date == "No date time picked!") {
+//                         alertScreen()
+//                             .showAlertMsgDialog(context, "Please Choose D.o.B");
+//                       } else {
+//                         var response = await Utils().registerNurse(
+//                           _fitstName.text,
+//                           _lastName.text,
+//                           _email.text,
+//                           _password.text,
+//                           dob,
+//                           radius,
+//                           _postal_code.text,
+//                           _address.text,
+//                           _phone.text,
+//                           _otp.text,
+//                           token,
+//                           _promo.text,
+//                           imagePath,
+//                           dbs_certificate,
+//                           care_qualification_certificate,
+//
+//                         );
+//                         if (response["status"] == true) {
+//                           prefs.setString('id', response['nurse']['is_approved']);
+//                           Navigator.of(context)
+//                               .pushReplacementNamed('waiting_screen');
+//                         } else {
+//                           alertScreen()
+//                               .showAlertMsgDialog(context, response["message"]);
+//                         }
+//                       }
+//                     }),
+//               )
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class CustomHeader extends StatelessWidget {
   const CustomHeader({Key? key, required this.routeName}) : super(key: key);

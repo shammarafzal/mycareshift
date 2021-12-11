@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:becaring/Models/get_appointment.dart';
 import 'package:becaring/Models/get_booking.dart';
+import 'package:becaring/Models/get_bookings_details.dart';
 import 'package:becaring/Models/get_help.dart';
 import 'package:becaring/Models/get_me.dart';
 import 'package:becaring/Models/get_notifications.dart';
@@ -247,6 +248,7 @@ class Utils{
       return bookingFromJson(response.statusCode.toString());
     }
   }
+
   bookAppointment(String patient_id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
@@ -288,6 +290,23 @@ class Utils{
     } else {
       final String responseString = response.body;
       return jsonDecode(responseString);
+    }
+  }
+
+  Future<List<BookingDetails>> getBookingDetails(String appointment_id) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/fetchAppointmentDetails', {"q": "dart"});
+    var response = await client.post(url, body: {
+      'appointment_id': appointment_id
+    },headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if(response.statusCode == 200){
+      return bookingDetailsFromJson(response.body);
+    }
+    else{
+      return bookingDetailsFromJson(response.statusCode.toString());
     }
   }
 

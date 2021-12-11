@@ -121,10 +121,10 @@ class _SignInState extends State<SignIn> {
                                 prefs.setString('token', response['token']);
                                 prefs.setInt('id', response['nurse']['id']);
                                 if(response['nurse']['is_approved'] == "Not Approved"){
-                                  Navigator.of(context).pushReplacementNamed('waiting_screen');
+                                  Navigator.of(context).pushReplacementNamed('/waiting_screen');
                                 }
                                 else{
-                                  Navigator.of(context).pushReplacementNamed('home');
+                                  Navigator.of(context).pushReplacementNamed('/home');
                                 }
 
                               }
@@ -142,7 +142,7 @@ class _SignInState extends State<SignIn> {
                   padding: const EdgeInsets.only(top: 10),
                   child: InkWell(
                     onTap: (){
-                      Navigator.of(context).pushReplacementNamed('signup_screen');
+                      Navigator.of(context).pushReplacementNamed('/signup');
                     },
                     child: Text(
                       'Don\'t have an account? Register here.',

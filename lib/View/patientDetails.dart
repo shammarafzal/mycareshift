@@ -316,7 +316,7 @@ class _PatientInfoState extends State<PatientInfo> {
                   width: SizeConfig.screenWidth / 4,
                   height: 50,
                   child: CustomButton(title: 'Stop Service', onPress: (){
-                    Navigator.of(context).pushReplacementNamed('proof_work');
+                    Navigator.of(context).pushReplacementNamed('/proof_work');
                   },),
                 ),
               ),

@@ -3,7 +3,7 @@ import 'package:becaring/Controllers/booking_controller.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 class MyDayCardList extends StatelessWidget {
   final BookingController bookingController = Get.put(BookingController());
 
@@ -17,9 +17,6 @@ class MyDayCardList extends StatelessWidget {
               itemCount: bookingController.bookingList.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, index) {
-                // final DateFormat formatter = DateFormat('yyyy-MM-dd');
-                // final String formatted = formatter.format(
-                //     bookingController.bookingList[index].startDate);
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
@@ -30,6 +27,7 @@ class MyDayCardList extends StatelessWidget {
                       time:  bookingController.bookingList[index].time,
                       noOfPatients:  bookingController.bookingList[index].noOfCarers,
                       ammount: bookingController.bookingList[index].minHourlyRate,
+                      patient_id: bookingController.bookingList[index].id.toString(),
                     ),
                   ),
                 );
@@ -45,12 +43,15 @@ class MyDay extends StatefulWidget {
   final String time;
   final String noOfPatients;
   final String ammount;
+  final String patient_id;
 
   MyDay({
     required this.time,
     required this.noOfPatients,
     required this.date,
     required this.ammount,
+    required this.patient_id,
+
   });
 
   @override
@@ -143,7 +144,7 @@ class _MyDayState extends State<MyDay> {
           child: CustomButton(
             title: 'View Details',
             onPress: () {
-              Navigator.of(context).pushReplacementNamed('patients_list');
+              Navigator.of(context).pushReplacementNamed('/patients_list', arguments: {'patient_id': widget.patient_id});
             },
           ),
         ),

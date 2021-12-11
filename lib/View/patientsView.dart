@@ -1,75 +1,63 @@
 import 'package:becaring/Components/customButton.dart';
+import 'package:becaring/Controllers/booking_details.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class PatientsCardList extends StatelessWidget {
+  final arguments = Get.arguments as Map;
+
   @override
   Widget build(BuildContext context) {
+    BookingDetailsController bookingDetailsController = Get.put(
+        BookingDetailsController(appointment_id: arguments['patient_id']));
     return Scaffold(
       appBar: AppBar(
         title: Text('My Patients'),
         leading: InkWell(
-            onTap: (){
-              Navigator.of(context).pushReplacementNamed('home');
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('/home');
             },
             child: Icon(Icons.arrow_back_ios)),
       ),
       body: Container(
-        color: Colors.white,
-        child: ListView(
-          children: [
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: PatientsView(
-                name: 'Ammar Afzal',
-                address: "Room No 520, Floor No 13, Burj Al-Arab Dubai",
-                phone: '+923216316351',
-                disease: 'Persistent Cough',
-                date: 'Dec 8, 2021',
-                time: '7:30 AM',
-              ),
-            ),
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: PatientsView(
-                name: 'Alex',
-                address: "London United kingdom",
-                phone: '+443216316351',
-                disease: 'Persistent Cough',
-                date: 'Dec 8, 2021',
-                time: '9:30 AM',
-              ),
-            ),
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: PatientsView(
-                name: 'Jason Roy',
-                address: "New York America",
-                phone: '+13216316351',
-                disease: 'Persistent Cough',
-                date: 'Dec 8, 2021',
-                time: '11:30 AM',
-              ),
-            ),
-          ],
-        ),
-      ),
+          color: Colors.white,
+          child: Obx(() {
+            return ListView.builder(
+              itemCount: bookingDetailsController.bookingDetailstList.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 5,
+                    child: PatientsView(
+                      name: bookingDetailsController.bookingDetailstList[0].patient.user.name,
+                      address: bookingDetailsController.bookingDetailstList[0].patient.user.address,
+                      phone: bookingDetailsController.bookingDetailstList[0].patient.user.phone,
+                      disease: bookingDetailsController.bookingDetailstList[0].patient.bloodGroup,
+                      date: bookingDetailsController.bookingDetailstList[0].startDate,
+                      time: bookingDetailsController.bookingDetailstList[0].time,
+                    ),
+                  ),
+                );
+              },
+            );
+          })),
     );
   }
 }
 
 class PatientsView extends StatefulWidget {
-
   final String name;
   final String address;
   final String phone;
   final String disease;
   final String date;
   final String time;
+
   PatientsView({
     required this.name,
     required this.address,
@@ -78,6 +66,7 @@ class PatientsView extends StatefulWidget {
     required this.date,
     required this.time,
   });
+
   @override
   _PatientsViewState createState() => _PatientsViewState();
 }
@@ -86,10 +75,14 @@ class _PatientsViewState extends State<PatientsView> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return  TimelineTile(
+    return TimelineTile(
       alignment: TimelineAlign.manual,
       lineXY: 0.2,
-      indicatorStyle: IndicatorStyle(color: Colors.blueAccent, width: 20, indicatorXY: 0, padding: EdgeInsets.all(1)),
+      indicatorStyle: IndicatorStyle(
+          color: Colors.blueAccent,
+          width: 20,
+          indicatorXY: 0,
+          padding: EdgeInsets.all(1)),
       endChild: Container(
         constraints: const BoxConstraints(
           minHeight: 120,
@@ -97,20 +90,44 @@ class _PatientsViewState extends State<PatientsView> {
         child: Column(
           children: [
             ListTile(
-              leading: Icon(Icons.person_pin_sharp, color: Colors.blueAccent,),
-              title: Text(widget.name, style: TextStyle(fontWeight: FontWeight.bold),),
+              leading: Icon(
+                Icons.person_pin_sharp,
+                color: Colors.blueAccent,
+              ),
+              title: Text(
+                widget.name,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
             ListTile(
-              leading: Icon(Icons.maps_home_work_rounded, color: Colors.blueAccent,),
-              title: Text(widget.address, style: TextStyle(),),
+              leading: Icon(
+                Icons.maps_home_work_rounded,
+                color: Colors.blueAccent,
+              ),
+              title: Text(
+                widget.address,
+                style: TextStyle(),
+              ),
             ),
             ListTile(
-              leading: Icon(Icons.phone, color: Colors.blueAccent,),
-              title: Text(widget.phone, style: TextStyle(),),
+              leading: Icon(
+                Icons.phone,
+                color: Colors.blueAccent,
+              ),
+              title: Text(
+                widget.phone,
+                style: TextStyle(),
+              ),
             ),
             ListTile(
-              leading: Icon(Icons.coronavirus, color: Colors.blueAccent,),
-              title: Text(widget.disease, style: TextStyle(),),
+              leading: Icon(
+                Icons.coronavirus,
+                color: Colors.blueAccent,
+              ),
+              title: Text(
+                widget.disease,
+                style: TextStyle(),
+              ),
             ),
             Container(
               width: 300,
@@ -121,9 +138,13 @@ class _PatientsViewState extends State<PatientsView> {
                     padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: Container(
                       width: SizeConfig.screenWidth / 3,
-                      child: CustomButton(title: 'Start Navigation', onPress: (){
-                        Navigator.of(context).pushReplacementNamed('navigation_screen');
-                      },),
+                      child: CustomButton(
+                        title: 'Start Navigation',
+                        onPress: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed('/navigation');
+                        },
+                      ),
                     ),
                   ),
                 ],
@@ -133,7 +154,10 @@ class _PatientsViewState extends State<PatientsView> {
         ),
       ),
       startChild: Container(
-        child: Text(widget.time, style: TextStyle(fontWeight: FontWeight.bold),),
+        child: Text(
+          widget.time,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }

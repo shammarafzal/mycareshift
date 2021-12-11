@@ -1,7 +1,6 @@
 import 'package:becaring/Controllers/me_controller.dart';
 import 'package:becaring/View/account.dart';
 import 'package:becaring/View/myDay.dart';
-import 'package:becaring/View/inbox.dart';
 import 'package:becaring/View/earnings.dart';
 import 'package:becaring/View/feedback.dart';
 import 'package:becaring/View/rewards.dart';
@@ -207,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).pushReplacementNamed('login');
+                    Navigator.of(context).pushReplacementNamed('/login');
                   },
                   child: ListTile(
                     title: Text('Logout'),

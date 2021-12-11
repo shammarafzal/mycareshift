@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 
-class Navidation extends StatelessWidget {
+class Navigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +15,7 @@ class Navidation extends StatelessWidget {
         title: Text('Map'),
         leading: InkWell(
             onTap: (){
-              Navigator.of(context).pushReplacementNamed('patients_list');
+              Navigator.of(context).pushReplacementNamed('/patients_list');
             },
             child: Icon(Icons.arrow_back_ios)),
       ),
@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
             padding: const EdgeInsets.all(18.0),
             child: CustomButton(title: 'Arrived', onPress: (){
-              Navigator.of(context).pushReplacementNamed('patients_details_list');
+              Navigator.of(context).pushReplacementNamed('/patients_details');
             },),
           ),
         ],

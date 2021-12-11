@@ -12,9 +12,6 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('fluttermaster.com - Message Chat'),
-      // ),
       body: Container(
         child: ListView.builder(
           itemCount: ChatModel.dummyData.length,
@@ -34,7 +31,6 @@ class _ChatListState extends State<ChatList> {
                               Inbox()
                       ),
                     );
-                    // Navigator.of(context).pushReplacementNamed('inbox');
                   },
                   child: ListTile(
                     leading: CircleAvatar(

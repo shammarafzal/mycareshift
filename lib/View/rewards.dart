@@ -18,14 +18,6 @@ class _RewardsScreenState extends State<RewardsScreen> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: InkWell(
-      //       onTap: (){
-      //         Navigator.of(context).pop();
-      //         // Navigator.of(context).pushReplacementNamed('inbox_list');
-      //       },
-      //       child: Icon(Icons.arrow_back_ios)),
-      // ),
       body: ListView(
         children: [
           Container(

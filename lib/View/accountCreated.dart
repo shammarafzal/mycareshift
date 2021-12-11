@@ -38,7 +38,7 @@ class _AccountCreatedState extends State<AccountCreated> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(title: 'Go to Homepage', onPress: (){
-              Navigator.of(context).pushReplacementNamed('home');
+              Navigator.of(context).pushReplacementNamed('/home');
             }
             ),
           ),
