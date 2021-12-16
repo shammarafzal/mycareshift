@@ -24,14 +24,14 @@ class WaitingScreen extends StatelessWidget {
                       width: MediaQuery.of(context).orientation == Orientation.portrait ? SizeConfig.screenHeight * 1 : SizeConfig.screenHeight * 1,
                       child: Image.asset('assets/logo-app.png')),
                     ),
-              Text('Thank you for uploading Documents', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+              Text('Thank you for creating your account', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text('You will be notified once your account has been verified', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: CustomButton(title: 'Go Back', onPress: (){
+                child: CustomButton(title: 'Go To Offers', onPress: (){
                   Navigator.of(context).pushReplacementNamed('/login');
                 }),
               )

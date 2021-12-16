@@ -104,6 +104,49 @@ class Utils{
     print(jsonDecode(decode));
     return jsonDecode(decode);
   }
+  registerNurseDocs(
+      String first_name,
+      String last_name,
+      String email,
+      String password,
+      String dob,
+      String working_radius,
+      String postal_code,
+      String address,
+      String phone,
+      String token,
+      String device_token,
+      String promo_code,
+      ) async {
+    var url = Uri.http(baseUrl, '/api/nurseRegister', {"q": "dart"});
+    final response = await http.post(url, body: {
+      "token": token,
+      "device_token": device_token,
+      "first_name": first_name,
+      "last_name": last_name,
+      "email": email,
+      "password": password,
+      "dob": dob,
+      "working_radius": working_radius,
+      "postal_code": postal_code,
+      "address": address,
+      "phone": phone,
+      "promo_code": promo_code,
+    });
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 401) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 500) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    }
+  }
   login(String email, String password) async {
     var url = Uri.http(baseUrl, '/api/nurseLogin', {"q": "dart"});
     final response = await http.post(url, body: {

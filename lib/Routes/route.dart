@@ -128,6 +128,11 @@ class Routes{
       name: '/custom_promo',
       page: () => CustomPromo(),
     ),
+    GetPage(
+      name: '/custom_selfie',
+      page: () => CustomSelfie(),
+    ),
+
   ];
 }
 
