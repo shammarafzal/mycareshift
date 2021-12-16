@@ -10,7 +10,7 @@ Future<void> main() async {
   runApp(
     GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/custom_doc',
+        initialRoute: '/welcome_screen',
         getPages: Routes.routes
     ),
   );

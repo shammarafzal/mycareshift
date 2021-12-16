@@ -71,6 +71,7 @@ class Utils{
       String token,
       String device_token,
       String promo_code,
+      File imagePath,
       File identification_document,
       File dbs_certificate,
       File care_qualification_certificate
@@ -92,9 +93,12 @@ class Utils{
     request.fields["address"] = address;
     request.fields["phone"] = phone;
     request.fields["promo_code"] = promo_code;
+    var imagePath_f = await http.MultipartFile.fromPath("image", imagePath.path);
     var identification_document_f = await http.MultipartFile.fromPath("identification_document", identification_document.path);
     var dbs_certificate_f = await http.MultipartFile.fromPath("dbs_certificate", dbs_certificate.path);
     var care_qualification_certificate_f = await http.MultipartFile.fromPath("care_qualification_certificate", care_qualification_certificate.path);
+
+    request.files.add(imagePath_f);
     request.files.add(identification_document_f);
     request.files.add(dbs_certificate_f);
     request.files.add(care_qualification_certificate_f);

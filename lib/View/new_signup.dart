@@ -12,7 +12,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:becaring/Models/push_notification.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:camera_camera/camera_camera.dart';
 
 Widget _buildImage(String assetName, [double width = 350]) {
   return Image.asset('assets/$assetName', width: width);
@@ -1287,6 +1286,7 @@ class CustomDoc extends StatelessWidget {
                                   token,
                                   _promo.text,
                                   imagePath!,
+                                  identification_document!,
                                   dbs_certificate!,
                                   care_qualification_certificate!,
                                 );
@@ -1834,6 +1834,26 @@ class _CustomSelfieState extends State<CustomSelfie> {
                         onPress: () async {
                           _showPicker(context);
                         }
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Card(
+                      elevation: 5,
+                      child: imagePath != null
+                          ? Image.file(
+                        imagePath!,
+                        width: 400,
+                        height: SizeConfig.screenHeight * 0.3,
+                        fit: BoxFit.cover,
+                      )
+                          : Container(
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(50)),
+                        width: 100,
+                        height: 100,
+                      ),
                     ),
                   ),
                 ],
