@@ -21,12 +21,12 @@ class _FeedBackState extends State<FeedBack> {
         SizedBox(
           height: 100,
           child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/nurse.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              // decoration: BoxDecoration(
+              //   image: DecorationImage(
+              //     image: AssetImage("assets/nurse.png"),
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: InkWell(

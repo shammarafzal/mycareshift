@@ -17,18 +17,11 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        SizedBox(
-          height: 100,
-          child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/nurse.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: null),
-        ),
+      resizeToAvoidBottomInset: false,
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(padding: EdgeInsets.only(top: 20)),
         Expanded(
           child: ListView(
             children: [
@@ -116,17 +109,17 @@ class _SignInState extends State<SignIn> {
                                 alertScreen()
                                     .showAlertMsgDialog(context, response['message']);
                               } else {
-                                prefs.setString('id', response['nurse']['is_approved']);
+                                prefs.setString('isApproved', response['nurse']['is_approved']);
                                 prefs.setBool('isLoggedIn', true);
                                 prefs.setString('token', response['token']);
                                 prefs.setInt('id', response['nurse']['id']);
-                                if(response['nurse']['is_approved'] == "Not Approved"){
-                                  Navigator.of(context).pushReplacementNamed('/waiting_screen');
-                                }
-                                else{
-                                  Navigator.of(context).pushReplacementNamed('/home');
-                                }
-
+                                // if(response['nurse']['is_approved'] == "Not Approved"){
+                                //   Navigator.of(context).pushReplacementNamed('/waiting_screen');
+                                // }
+                                // else{
+                                //   Navigator.of(context).pushReplacementNamed('/home');
+                                // }
+                                Navigator.of(context).pushReplacementNamed('/home');
                               }
                             }
 

@@ -16,6 +16,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:becaring/Models/push_notification.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'config_maps.dart';
 
@@ -59,6 +60,7 @@ var items_radius = [
 bool IDOK = false;
 bool DBSOK = false;
 bool CareOK = false;
+bool SelfieOK = false;
 late String token;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -196,7 +198,10 @@ class CustomEmail extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  _buildImage('logo-app.png', 40),
+                  CustomHeader(
+                    routeName: '/welcome_screen',
+                  ),
+                  // _buildImage('logo-app.png', 40),
                   Container(
                     height: 40,
                   ),
@@ -1264,7 +1269,7 @@ class CustomDoc extends StatelessWidget {
                           );
                         },
                         child: ListTile(
-                          trailing: DBSOK
+                          trailing: SelfieOK
                               ? Icon(Icons.done, color: Colors.green)
                               : Icon(Icons.cancel, color: Colors.red),
                           title: Text(
@@ -1289,6 +1294,8 @@ class CustomDoc extends StatelessWidget {
                             title: 'Skip',
                             colors: Colors.black,
                             onPress: () async {
+                              final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
                               var response = await Utils().registerNurseDocs(
                                 _fitstName.text,
                                 _lastName.text,
@@ -1304,8 +1311,10 @@ class CustomDoc extends StatelessWidget {
                                 _promo.text,
                               );
                               if (response["status"] == true) {
+                                prefs.setString('token', response['token']);
+                                prefs.setString('isApproved', response['nurse']['is_approved']);
                                 Navigator.of(context)
-                                    .pushReplacementNamed('/waiting_screen');
+                                    .pushReplacementNamed('/home');
                               } else {
                                 alertScreen().showAlertMsgDialog(
                                     context, response["message"]);
@@ -1320,6 +1329,8 @@ class CustomDoc extends StatelessWidget {
                           child: CustomButton(
                               title: 'Continue',
                               onPress: () async {
+                                final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
                                 var response = await Utils().registerNurse(
                                   _fitstName.text,
                                   _lastName.text,
@@ -1339,8 +1350,11 @@ class CustomDoc extends StatelessWidget {
                                   care_qualification_certificate!,
                                 );
                                 if (response["status"] == true) {
+                                  print(response);
+                                  prefs.setString('token', response['token']);
+                                  prefs.setString('isApproved', response['nurse']['is_approved']);
                                   Navigator.of(context)
-                                      .pushReplacementNamed('/waiting_screen');
+                                      .pushReplacementNamed('/home');
                                 } else {
                                   alertScreen().showAlertMsgDialog(
                                       context, response["message"]);
@@ -1479,7 +1493,9 @@ class _CustomIDState extends State<CustomID> {
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
-                      Navigator.pop(context);
+                      Navigator.of(context)
+                          .pushReplacementNamed('/custom_doc');
+                      //Navigator.pop(context);
                     }),
               )
             ],
@@ -1505,6 +1521,7 @@ class _CustomDBSState extends State<CustomDBS> {
     setState(() {
       dbs_certificate = File(image!.path);
       DBSOK = true;
+      print(DBSOK);
     });
   }
 
@@ -1515,6 +1532,7 @@ class _CustomDBSState extends State<CustomDBS> {
     setState(() {
       dbs_certificate = File(image!.path);
       DBSOK = true;
+      print(DBSOK);
     });
   }
 
@@ -1624,7 +1642,8 @@ class _CustomDBSState extends State<CustomDBS> {
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
-                      Navigator.pop(context);
+                      Navigator.of(context)
+                          .pushReplacementNamed('/custom_doc');
                     }),
               )
             ],
@@ -1770,7 +1789,8 @@ class _CustomCareState extends State<CustomCare> {
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
-                      Navigator.pop(context);
+                      Navigator.of(context)
+                          .pushReplacementNamed('/custom_doc');
                     }),
               )
             ],
@@ -1796,7 +1816,7 @@ class _CustomSelfieState extends State<CustomSelfie> {
 
     setState(() {
       imagePath = File(image!.path);
-      CareOK = true;
+      SelfieOK = true;
     });
   }
 
@@ -1806,7 +1826,7 @@ class _CustomSelfieState extends State<CustomSelfie> {
 
     setState(() {
       imagePath = File(image!.path);
-      CareOK = true;
+      SelfieOK = true;
     });
   }
 
@@ -1903,7 +1923,8 @@ class _CustomSelfieState extends State<CustomSelfie> {
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
-                      Navigator.pop(context);
+                      Navigator.of(context)
+                          .pushReplacementNamed('/custom_doc');
                     }),
               )
             ],

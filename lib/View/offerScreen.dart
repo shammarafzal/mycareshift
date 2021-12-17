@@ -5,6 +5,7 @@ import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:becaring/Settings/alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OfferCardList extends StatelessWidget {
   final AppointmentController appointmentController =
@@ -87,13 +88,24 @@ class _OffersState extends State<Offers> {
           child: CustomButton(
             title: 'Accept offer',
             onPress: () async {
+              final SharedPreferences prefs =
+              await SharedPreferences.getInstance();
+              var isApproved = prefs.getString('isApproved');
               var response =
                   await Utils().bookAppointment(widget.patient_id);
-              if (response['status'] == false) {
+
+              if (isApproved == "Not Approved") {
                 alertScreen()
-                    .showAlertMsgDialog(context, response['message']);
+                    .showAlertMsgDialog(context, 'You are not approved');
               } else {
-                  Navigator.of(context).pushReplacementNamed('/home');
+                  if(response['status'] == true){
+                    Navigator.of(context).pushReplacementNamed('/home');
+                  }
+                  else{
+                    alertScreen()
+                        .showAlertMsgDialog(context, response['message']);
+                  }
+
               }
             },
           ),
