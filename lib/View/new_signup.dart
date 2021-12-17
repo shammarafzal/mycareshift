@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
+import 'package:becaring/Models/get_address.dart';
+import 'package:becaring/Models/place_prediction.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:becaring/Settings/alert_dialog.dart';
 import 'package:becaring/View/license_agreement.dart';
@@ -12,6 +15,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:becaring/Models/push_notification.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:http/http.dart' as http;
+
+import 'config_maps.dart';
 
 Widget _buildImage(String assetName, [double width = 350]) {
   return Image.asset('assets/$assetName', width: width);
@@ -26,12 +32,14 @@ final _postal_code = TextEditingController();
 final _address = TextEditingController();
 final _phone = TextEditingController();
 final _promo = TextEditingController();
+
 late String dob;
 // String interview_date ="Not Verified";
- File? imagePath;
- File? identification_document ;
- File? dbs_certificate;
- File? care_qualification_certificate;
+File? imagePath;
+File? identification_document;
+
+File? dbs_certificate;
+File? care_qualification_certificate;
 
 int pinLength = 4;
 bool hasError = false;
@@ -685,6 +693,8 @@ class CustomAddress extends StatefulWidget {
 }
 
 class _CustomAddressState extends State<CustomAddress> {
+  List<PlacePredictions> placePredictionList = [];
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -729,13 +739,30 @@ class _CustomAddressState extends State<CustomAddress> {
                               autofocus: true,
                               textInputAction: TextInputAction.next,
                               controller: _address,
+                              onChanged: (val) {
+                                findPlace(val);
+                              },
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                               ),
-                            ))
+                            )),
+
+
                       ],
                     ),
                   ),
+                  (placePredictionList.length > 0) ? Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+                    child: ListView.separated(
+                      itemBuilder: (context, index){
+                        return PredictionTile(placePrediction: placePredictionList[index]);
+                      },
+                      separatorBuilder: (BuildContext context, int index)=> Divider(),
+                      itemCount: placePredictionList.length,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                    ),
+                  ) : Container(),
                   Divider(
                     height: 2,
                     color: Colors.black,
@@ -829,6 +856,27 @@ class _CustomAddressState extends State<CustomAddress> {
         ),
       ),
     );
+  }
+
+  void findPlace(String placeName) async {
+    if (placeName.length > 1) {
+      var autoCompleteUrl = Uri.parse(
+          "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&key=$mapKey");
+      final res = await http.get(autoCompleteUrl);
+      if (res == "failed") {
+        return;
+      }
+      final decodeResponse = jsonDecode(res.body);
+      if (decodeResponse["status"] == "OK") {
+        var predictions = decodeResponse["predictions"];
+        var placesList = (predictions as List)
+            .map((e) => PlacePredictions.fromJson(e))
+            .toList();
+        setState(() {
+          placePredictionList = placesList;
+        });
+      }
+    }
   }
 }
 
@@ -1320,8 +1368,7 @@ class CustomID extends StatefulWidget {
 class _CustomIDState extends State<CustomID> {
   _imgFromCamera() async {
     final picker = ImagePicker();
-    var image = await picker.pickImage(
-        source: ImageSource.camera);
+    var image = await picker.pickImage(source: ImageSource.camera);
 
     setState(() {
       identification_document = File(image!.path);
@@ -1331,14 +1378,14 @@ class _CustomIDState extends State<CustomID> {
 
   _imgFromGallery() async {
     final picker = ImagePicker();
-    var image = await picker.pickImage(
-        source: ImageSource.gallery);
+    var image = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       identification_document = File(image!.path);
       IDOK = true;
     });
   }
+
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -1366,9 +1413,9 @@ class _CustomIDState extends State<CustomID> {
               ),
             ),
           );
-        }
-    );
+        });
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -1411,18 +1458,18 @@ class _CustomIDState extends State<CustomID> {
                       elevation: 5,
                       child: identification_document != null
                           ? Image.file(
-                        identification_document!,
-                        width: 400,
-                        height: SizeConfig.screenHeight * 0.3,
-                        fit: BoxFit.cover,
-                      )
+                              identification_document!,
+                              width: 400,
+                              height: SizeConfig.screenHeight * 0.3,
+                              fit: BoxFit.cover,
+                            )
                           : Container(
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(50)),
-                        width: 100,
-                        height: 100,
-                      ),
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(50)),
+                              width: 100,
+                              height: 100,
+                            ),
                     ),
                   ),
                 ],
@@ -1432,7 +1479,6 @@ class _CustomIDState extends State<CustomID> {
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () {
-
                       Navigator.pop(context);
                     }),
               )
@@ -1454,8 +1500,7 @@ class CustomDBS extends StatefulWidget {
 class _CustomDBSState extends State<CustomDBS> {
   _imgFromCamera() async {
     final picker = ImagePicker();
-    var image = await picker.pickImage(
-        source: ImageSource.camera);
+    var image = await picker.pickImage(source: ImageSource.camera);
 
     setState(() {
       dbs_certificate = File(image!.path);
@@ -1465,14 +1510,14 @@ class _CustomDBSState extends State<CustomDBS> {
 
   _imgFromGallery() async {
     final picker = ImagePicker();
-    var image = await picker.pickImage(
-        source: ImageSource.gallery);
+    var image = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       dbs_certificate = File(image!.path);
       DBSOK = true;
     });
   }
+
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -1500,8 +1545,7 @@ class _CustomDBSState extends State<CustomDBS> {
               ),
             ),
           );
-        }
-    );
+        });
   }
 
   @override
@@ -1559,18 +1603,18 @@ class _CustomDBSState extends State<CustomDBS> {
                       elevation: 5,
                       child: dbs_certificate != null
                           ? Image.file(
-                        dbs_certificate!,
-                        width: 400,
-                        height: SizeConfig.screenHeight * 0.3,
-                        fit: BoxFit.cover,
-                      )
+                              dbs_certificate!,
+                              width: 400,
+                              height: SizeConfig.screenHeight * 0.3,
+                              fit: BoxFit.cover,
+                            )
                           : Container(
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(50)),
-                        width: 100,
-                        height: 100,
-                      ),
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(50)),
+                              width: 100,
+                              height: 100,
+                            ),
                     ),
                   ),
                 ],
@@ -1602,8 +1646,7 @@ class _CustomCareState extends State<CustomCare> {
   // late File _image;
   _imgFromCamera() async {
     final picker = ImagePicker();
-    var image = await picker.pickImage(
-        source: ImageSource.camera);
+    var image = await picker.pickImage(source: ImageSource.camera);
 
     setState(() {
       care_qualification_certificate = File(image!.path);
@@ -1613,14 +1656,14 @@ class _CustomCareState extends State<CustomCare> {
 
   _imgFromGallery() async {
     final picker = ImagePicker();
-    var image = await picker.pickImage(
-        source: ImageSource.gallery);
+    var image = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       care_qualification_certificate = File(image!.path);
       CareOK = true;
     });
   }
+
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -1648,9 +1691,9 @@ class _CustomCareState extends State<CustomCare> {
               ),
             ),
           );
-        }
-    );
+        });
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -1685,8 +1728,7 @@ class _CustomCareState extends State<CustomCare> {
                         title: 'Upload Certificate',
                         onPress: () async {
                           _showPicker(context);
-                        }
-                        ),
+                        }),
                   ),
                   InkWell(
                     onTap: () {
@@ -1707,18 +1749,18 @@ class _CustomCareState extends State<CustomCare> {
                       elevation: 5,
                       child: care_qualification_certificate != null
                           ? Image.file(
-                        care_qualification_certificate!,
-                        width: 400,
-                        height: SizeConfig.screenHeight * 0.3,
-                        fit: BoxFit.cover,
-                      )
+                              care_qualification_certificate!,
+                              width: 400,
+                              height: SizeConfig.screenHeight * 0.3,
+                              fit: BoxFit.cover,
+                            )
                           : Container(
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(50)),
-                        width: 100,
-                        height: 100,
-                      ),
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(50)),
+                              width: 100,
+                              height: 100,
+                            ),
                     ),
                   ),
                 ],
@@ -1750,8 +1792,7 @@ class _CustomSelfieState extends State<CustomSelfie> {
   // late File _image;
   _imgFromCamera() async {
     final picker = ImagePicker();
-    var image = await picker.pickImage(
-        source: ImageSource.camera);
+    var image = await picker.pickImage(source: ImageSource.camera);
 
     setState(() {
       imagePath = File(image!.path);
@@ -1761,14 +1802,14 @@ class _CustomSelfieState extends State<CustomSelfie> {
 
   _imgFromGallery() async {
     final picker = ImagePicker();
-    var image = await picker.pickImage(
-        source: ImageSource.gallery);
+    var image = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       imagePath = File(image!.path);
       CareOK = true;
     });
   }
+
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,
@@ -1796,9 +1837,9 @@ class _CustomSelfieState extends State<CustomSelfie> {
               ),
             ),
           );
-        }
-    );
+        });
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -1833,8 +1874,7 @@ class _CustomSelfieState extends State<CustomSelfie> {
                         title: 'Upload Image',
                         onPress: () async {
                           _showPicker(context);
-                        }
-                    ),
+                        }),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
@@ -1842,18 +1882,18 @@ class _CustomSelfieState extends State<CustomSelfie> {
                       elevation: 5,
                       child: imagePath != null
                           ? Image.file(
-                        imagePath!,
-                        width: 400,
-                        height: SizeConfig.screenHeight * 0.3,
-                        fit: BoxFit.cover,
-                      )
+                              imagePath!,
+                              width: 400,
+                              height: SizeConfig.screenHeight * 0.3,
+                              fit: BoxFit.cover,
+                            )
                           : Container(
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(50)),
-                        width: 100,
-                        height: 100,
-                      ),
+                              decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(50)),
+                              width: 100,
+                              height: 100,
+                            ),
                     ),
                   ),
                 ],
@@ -2083,5 +2123,66 @@ class NotificationBadge extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class PredictionTile extends StatelessWidget {
+  final PlacePredictions placePrediction;
+
+  const PredictionTile({Key? key, required this.placePrediction})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        getPlaceAddress(placePrediction.place_id);
+      },
+      child: Container(
+          child: Column(children: [
+        SizedBox(width: 10),
+        Row(
+          children: [
+            Icon(Icons.add_location),
+            SizedBox(width: 14.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      placePrediction.main_text,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 16,
+                      )),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  Text(
+                      placePrediction.secondary_text,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 12, color: Colors.grey)),
+                ],
+              ),
+            )
+          ],
+        ),
+        SizedBox(width: 10),
+      ])),
+    );
+  }
+   getPlaceAddress(String place_id) async{
+    var placeAddress =  Uri.parse("https://maps.googleapis.com/maps/api/place/details/json?place_id=$place_id&key=$mapKey");
+    final res = await http.get(placeAddress);
+    if (res == "failed") {
+      return;
+    }
+    final decodeResponse = jsonDecode(res.body);
+    print(decodeResponse);
+    if (decodeResponse["status"] == "OK") {
+     Address address = Address(place_id: place_id, latitude: decodeResponse["result"]["geometry"]["location"]["lat"].toString(), longitude: decodeResponse["result"]["geometry"]["location"]["lng"].toString(), placeName: decodeResponse["result"]["name"] );
+     _address.text = address.placeName;
+     print(address.placeName);
+    }
   }
 }
