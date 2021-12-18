@@ -151,6 +151,36 @@ class Utils{
       return jsonDecode(responseString);
     }
   }
+  uploadNurseDocs(
+      File imagePath,
+      File identification_document,
+      File dbs_certificate,
+      File care_qualification_certificate
+      ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    print(token);
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    var request = http.MultipartRequest(
+        "POST",
+        Uri.parse(
+          "http://mcsportal.spphotography.info/api/completeProfile",
+        ));
+    var imagePath_f = await http.MultipartFile.fromPath("image", imagePath.path);
+    var identification_document_f = await http.MultipartFile.fromPath("identification_document", identification_document.path);
+    var dbs_certificate_f = await http.MultipartFile.fromPath("dbs_certificate", dbs_certificate.path);
+    var care_qualification_certificate_f = await http.MultipartFile.fromPath("care_qualification_certificate", care_qualification_certificate.path);
+    request.headers.addAll(headers);
+    request.files.add(imagePath_f);
+    request.files.add(identification_document_f);
+    request.files.add(dbs_certificate_f);
+    request.files.add(care_qualification_certificate_f);
+    var response = await request.send();
+    var responseData = await response.stream.toBytes();
+    var decode = String.fromCharCodes(responseData);
+    print(jsonDecode(decode));
+    return jsonDecode(decode);
+  }
   login(String email, String password) async {
     var url = Uri.http(baseUrl, '/api/nurseLogin', {"q": "dart"});
     final response = await http.post(url, body: {

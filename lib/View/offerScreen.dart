@@ -95,8 +95,7 @@ class _OffersState extends State<Offers> {
                   await Utils().bookAppointment(widget.patient_id);
 
               if (isApproved == "Not Approved") {
-                alertScreen()
-                    .showAlertMsgDialog(context, 'You are not approved');
+                Navigator.of(context).pushReplacementNamed('/custom_doc_complete');
               } else {
                   if(response['status'] == true){
                     Navigator.of(context).pushReplacementNamed('/home');

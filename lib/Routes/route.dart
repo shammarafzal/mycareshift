@@ -10,6 +10,7 @@ import 'package:becaring/View/patientDetails.dart';
 import 'package:becaring/View/patientsView.dart';
 import 'package:becaring/View/proofOfWork.dart';
 import 'package:becaring/View/signinScreen.dart';
+import 'package:becaring/View/submit_documents.dart' as ddc;
 import 'package:becaring/View/waiting_screen.dart';
 import 'package:becaring/View/welcome_screen.dart';
 import 'package:get/get.dart';
@@ -128,10 +129,17 @@ class Routes{
       name: '/custom_promo',
       page: () => CustomPromo(),
     ),
+
     GetPage(
       name: '/custom_selfie',
       page: () => CustomSelfie(),
     ),
+
+    GetPage(
+      name: '/custom_doc_complete',
+      page: () => ddc.CustomDocSubmit(),
+    ),
+
 
   ];
 }

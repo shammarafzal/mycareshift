@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Components/customTextField.dart';
@@ -5,13 +7,14 @@ import 'package:becaring/Settings/alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 class SignIn extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
+  Timer? _timer;
   final _email = TextEditingController();
   final _password = TextEditingController();
   @override
@@ -85,31 +88,18 @@ class _SignInState extends State<SignIn> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                           child: CustomButton(title: 'Login', onPress: () async {
-                            final SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            bool emailValid = RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(_email.text);
-                            if (_email.text == "") {
-                              alertScreen()
-                                  .showAlertMsgDialog(context, "Please Enter Email");
-                            } else if (emailValid == false) {
-                              alertScreen().showAlertMsgDialog(
-                                  context, "Please Enter Valid Email");
-                            } else if (_password.text == "") {
-                              alertScreen().showAlertMsgDialog(
-                                  context, "Please Enter Password");
-                            } else if (_password.text.length <= 7) {
-                              alertScreen().showAlertMsgDialog(
-                                  context, "Please Length Must Greater than 8");
-                            } else {
+                            try {
+                              final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
                               var response =
-                                  await Utils().login(_email.text, _password.text);
+                              await Utils().login(_email.text, _password.text);
                               if (response['status'] == false) {
-                                alertScreen()
-                                    .showAlertMsgDialog(context, response['message']);
+                                _timer?.cancel();
+                                await EasyLoading.showError(
+                                    response['message']);
                               } else {
-                                prefs.setString('isApproved', response['nurse']['is_approved']);
+                                prefs.setString('isApproved',
+                                    response['nurse']['is_approved']);
                                 prefs.setBool('isLoggedIn', true);
                                 prefs.setString('token', response['token']);
                                 prefs.setInt('id', response['nurse']['id']);
@@ -119,11 +109,19 @@ class _SignInState extends State<SignIn> {
                                 // else{
                                 //   Navigator.of(context).pushReplacementNamed('/home');
                                 // }
-                                Navigator.of(context).pushReplacementNamed('/home');
+                                _timer?.cancel();
+                                await EasyLoading.showSuccess(
+                                    response['message']);
+                                Navigator.of(context).pushReplacementNamed(
+                                    '/home');
                               }
                             }
-
-                          },),
+                            catch(e){
+                              _timer?.cancel();
+                              await EasyLoading.showSuccess(e.toString());
+                            }
+                          }
+                            ),
                         ),
                       ],
                     ),

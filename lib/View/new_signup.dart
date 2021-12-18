@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:becaring/API/utils.dart';
@@ -17,7 +18,7 @@ import 'package:becaring/Models/push_notification.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'config_maps.dart';
 
 Widget _buildImage(String assetName, [double width = 350]) {
@@ -56,13 +57,13 @@ var items_radius = [
   '11-20 Miles',
   '21-30 Miles'
 ];
-
+List<PlacePredictions> placePredictionList = [];
 bool IDOK = false;
 bool DBSOK = false;
 bool CareOK = false;
 bool SelfieOK = false;
 late String token;
-
+Timer? _timer;
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
@@ -253,18 +254,22 @@ class CustomEmail extends StatelessWidget {
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () async {
-                      if (_email.text == "") {
-                        alertScreen()
-                            .showAlertMsgDialog(context, "Please Enter Email");
-                      } else {
+                      try {
                         var response = await Utils().verifyEmail(_email.text);
                         if (response['status'] == false) {
-                          alertScreen()
-                              .showAlertMsgDialog(context, response['message']);
+                          _timer?.cancel();
+                          await EasyLoading.showError(
+                              response['message']);
                         } else {
+                          _timer?.cancel();
+                          await EasyLoading.showSuccess(
+                              response['message']);
                           Navigator.of(context)
                               .pushReplacementNamed('/custom_otp');
                         }
+                      }
+                      catch(e){
+
                       }
                     }),
               )
@@ -361,19 +366,23 @@ class _CustomOTPState extends State<CustomOTP> {
                 child: CustomButton(
                     title: 'Continue',
                     onPress: () async {
-                      if (_otp.text == "") {
-                        alertScreen().showAlertMsgDialog(
-                            context, "Please Enter Verification Code");
-                      } else {
+                       try {
                         var response =
                             await Utils().checkToken(_email.text, _otp.text);
                         if (response['status'] == false) {
-                          alertScreen()
-                              .showAlertMsgDialog(context, response['message']);
+                          _timer?.cancel();
+                          await EasyLoading.showError(
+                              response['message']);
                         } else {
+                          _timer?.cancel();
+                          await EasyLoading.showSuccess(
+                              response['message']);
                           Navigator.of(context)
                               .pushReplacementNamed('/custom_password');
                         }
+                      }
+                      catch (e){
+                         
                       }
                     }),
               )
@@ -449,10 +458,11 @@ class CustomPassword extends StatelessWidget {
                 padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
-                    onPress: () {
+                    onPress: () async {
                       if (_password.text == "") {
-                        alertScreen().showAlertMsgDialog(
-                            context, "Please Enter Password");
+                        _timer?.cancel();
+                        await EasyLoading.showError(
+                            'Please Enter Password');
                       } else {
                         Navigator.of(context)
                             .pushReplacementNamed('/custom_name');
@@ -554,13 +564,15 @@ class CustomName extends StatelessWidget {
                 padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
-                    onPress: () {
+                    onPress: () async {
                       if (_fitstName.text == "") {
-                        alertScreen().showAlertMsgDialog(
-                            context, "Please Enter First Name");
+                        _timer?.cancel();
+                        await EasyLoading.showError(
+                            'Please Enter First Name');
                       } else if (_lastName.text == "") {
-                        alertScreen().showAlertMsgDialog(
-                            context, "Please Enter Last Name");
+                        _timer?.cancel();
+                        await EasyLoading.showError(
+                            'Please Enter Last Name');
                       } else {
                         Navigator.of(context)
                             .pushReplacementNamed('/custom_dob');
@@ -672,10 +684,11 @@ class _CustomDobState extends State<CustomDob> {
                 padding: const EdgeInsets.all(20.0),
                 child: CustomButton(
                     title: 'Continue',
-                    onPress: () {
+                    onPress: () async {
                       if (_chosenDateTime == null) {
-                        alertScreen()
-                            .showAlertMsgDialog(context, "Please Choose D.o.B");
+                        _timer?.cancel();
+                        await EasyLoading.showError(
+                            'Please Enter D.O.B');
                       } else {
                         Navigator.of(context)
                             .pushReplacementNamed('/custom_address');
@@ -698,7 +711,7 @@ class CustomAddress extends StatefulWidget {
 }
 
 class _CustomAddressState extends State<CustomAddress> {
-  List<PlacePredictions> placePredictionList = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -840,16 +853,19 @@ class _CustomAddressState extends State<CustomAddress> {
                 padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
-                    onPress: () {
+                    onPress: () async {
                       if (_address.text == "") {
-                        alertScreen().showAlertMsgDialog(
-                            context, "Please Enter Address");
+                        _timer?.cancel();
+                        await EasyLoading.showError(
+                            'Please Enter Address');
                       } else if (_postal_code.text == "") {
-                        alertScreen().showAlertMsgDialog(
-                            context, "Please Enter Postal Code");
+                        _timer?.cancel();
+                        await EasyLoading.showError(
+                            'Please Enter Postal Code');
                       } else if (radius == "Select Radius") {
-                        alertScreen().showAlertMsgDialog(
-                            context, "Please Select Working Radius");
+                        _timer?.cancel();
+                        await EasyLoading.showError(
+                            'Please Enter Working Radius');
                       } else {
                         Navigator.of(context)
                             .pushReplacementNamed('/custom_phone');
@@ -949,10 +965,11 @@ class CustomPhone extends StatelessWidget {
                 padding: const EdgeInsets.all(30.0),
                 child: CustomButton(
                     title: 'Continue',
-                    onPress: () {
+                    onPress: () async {
                       if (_phone.text == "") {
-                        alertScreen().showAlertMsgDialog(
-                            context, "Please Enter Phone Number");
+                        _timer?.cancel();
+                        await EasyLoading.showError(
+                            'Please Enter Phone Number');
                       } else {
                         Navigator.of(context)
                             .pushReplacementNamed('/custom_promo');
@@ -1049,10 +1066,11 @@ class CustomPromo extends StatelessWidget {
                         padding: const EdgeInsets.all(30.0),
                         child: CustomButton(
                             title: 'Continue',
-                            onPress: () {
+                            onPress: () async {
                               if (_promo.text == "") {
-                                alertScreen().showAlertMsgDialog(
-                                    context, "Please Enter Promo Code");
+                                _timer?.cancel();
+                                await EasyLoading.showError(
+                                    'Please Enter Promo Code');
                               } else {
                                 Navigator.of(context)
                                     .pushReplacementNamed('/custom_aggree');
@@ -1294,30 +1312,43 @@ class CustomDoc extends StatelessWidget {
                             title: 'Skip',
                             colors: Colors.black,
                             onPress: () async {
-                              final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                              var response = await Utils().registerNurseDocs(
-                                _fitstName.text,
-                                _lastName.text,
-                                _email.text,
-                                _password.text,
-                                dob,
-                                radius,
-                                _postal_code.text,
-                                _address.text,
-                                _phone.text,
-                                _otp.text,
-                                token,
-                                _promo.text,
-                              );
-                              if (response["status"] == true) {
-                                prefs.setString('token', response['token']);
-                                prefs.setString('isApproved', response['nurse']['is_approved']);
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/home');
-                              } else {
-                                alertScreen().showAlertMsgDialog(
-                                    context, response["message"]);
+                              try {
+                                final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                                var response = await Utils().registerNurseDocs(
+                                  _fitstName.text,
+                                  _lastName.text,
+                                  _email.text,
+                                  _password.text,
+                                  dob,
+                                  radius,
+                                  _postal_code.text,
+                                  _address.text,
+                                  _phone.text,
+                                  _otp.text,
+                                  token,
+                                  _promo.text,
+                                );
+                                if (response["status"] == true) {
+                                  print(response);
+                                  prefs.setString('token', response['token']);
+                                  prefs.setString('isApproved',
+                                      response['nurse']['is_approved']);
+                                  _timer?.cancel();
+                                  await EasyLoading.showSuccess(
+                                      response['message']);
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('/home');
+                                } else {
+                                  _timer?.cancel();
+                                  await EasyLoading.showError(
+                                     response['message']);
+                                }
+                              }
+                              catch(e){
+                                _timer?.cancel();
+                                await EasyLoading.showError(
+                                   e.toString());
                               }
                             }),
                       ),
@@ -1329,6 +1360,7 @@ class CustomDoc extends StatelessWidget {
                           child: CustomButton(
                               title: 'Continue',
                               onPress: () async {
+                                try{
                                 final SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                                 var response = await Utils().registerNurse(
@@ -1353,11 +1385,19 @@ class CustomDoc extends StatelessWidget {
                                   print(response);
                                   prefs.setString('token', response['token']);
                                   prefs.setString('isApproved', response['nurse']['is_approved']);
+                                  _timer?.cancel();
+                                  await EasyLoading.showSuccess(
+                                      response['message']);
                                   Navigator.of(context)
                                       .pushReplacementNamed('/home');
                                 } else {
-                                  alertScreen().showAlertMsgDialog(
-                                      context, response["message"]);
+                                  _timer?.cancel();
+                                  await EasyLoading.showError(
+                                      response['message']);
+                                }
+                                }
+                                catch(e){
+
                                 }
                               }),
                         )),
