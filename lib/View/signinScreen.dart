@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Components/customTextField.dart';
-import 'package:becaring/Settings/alert_dialog.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

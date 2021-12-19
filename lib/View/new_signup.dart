@@ -269,7 +269,9 @@ class CustomEmail extends StatelessWidget {
                         }
                       }
                       catch(e){
-
+                        _timer?.cancel();
+                        await EasyLoading.showSuccess(
+                            e.toString());
                       }
                     }),
               )
@@ -382,7 +384,9 @@ class _CustomOTPState extends State<CustomOTP> {
                         }
                       }
                       catch (e){
-                         
+                        _timer?.cancel();
+                        await EasyLoading.showSuccess(
+                           e.toString());
                       }
                     }),
               )
@@ -1397,7 +1401,9 @@ class CustomDoc extends StatelessWidget {
                                 }
                                 }
                                 catch(e){
-
+                                  _timer?.cancel();
+                                  await EasyLoading.showError(
+                                      e.toString());
                                 }
                               }),
                         )),

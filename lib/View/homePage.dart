@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:becaring/API/utils.dart';
 import 'package:becaring/Controllers/me_controller.dart';
 import 'package:becaring/View/account.dart';
 import 'package:becaring/View/myDay.dart';
@@ -6,6 +9,7 @@ import 'package:becaring/View/feedback.dart';
 import 'package:becaring/View/rewards.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'VideosViewer/VideosScreen.dart';
 import 'calenderView.dart';
 import 'helpScreen.dart';
@@ -13,6 +17,7 @@ import 'inbox_list.dart';
 import 'notifications.dart';
 import 'offerScreen.dart';
 import 'offerScreenDrawer.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,6 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Timer? _timer;
   final MeController meController = Get.put(MeController());
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
@@ -205,8 +211,30 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushReplacementNamed('/login');
+                  onTap: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    try{
+                      var response =
+                      await Utils().logout();
+                      print(response);
+                      if (response['status'] == false) {
+                        _timer?.cancel();
+                        await EasyLoading.showError(
+                            response['message']);
+                      } else {
+                        _timer?.cancel();
+                        await EasyLoading.showSuccess(
+                            response['message']);
+                        prefs.remove("token");
+                        Navigator.of(context).pushReplacementNamed('/login');
+                      }
+                    }
+                    catch(e){
+                      _timer?.cancel();
+                      await EasyLoading.showError(
+                          e.toString());
+                    }
+
                   },
                   child: ListTile(
                     title: Text('Logout'),

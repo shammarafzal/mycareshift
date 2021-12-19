@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Components/customTextField.dart';
-import 'package:becaring/Settings/alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class FeedBack extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _FeedBackState extends State<FeedBack> {
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _message = TextEditingController();
+  Timer? _timer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,26 +121,26 @@ class _FeedBackState extends State<FeedBack> {
                             width: double.infinity,
                             height: 50,
                             child: CustomButton(title: 'Send Feedback', onPress: () async {
-                              if (_name.text == "") {
-                                alertScreen()
-                                    .showAlertMsgDialog(context, "Please Enter Name");
-                              }
-                              else if (_email.text == "") {
-                                alertScreen().showAlertMsgDialog(
-                                    context, "Please Enter Email");
-                              }
-                              else {
+
+                              try {
                                 var response =
                                     await Utils().feedback(_name.text, _email.text, _message.text);
                                 print(response);
                                 if (response['status'] == false) {
-                                  alertScreen()
-                                      .showAlertMsgDialog(context, response['message']);
+                                  _timer?.cancel();
+                                  await EasyLoading.showError(
+                                      response['message']);
                                 } else {
-                                  alertScreen()
-                                      .showAlertMsgDialog(context, response['message']);
-
+                                  _timer?.cancel();
+                                  await EasyLoading.showSuccess(
+                                      response['message']);
+                                  Navigator.of(context).pop();
                                 }
+                              }
+                              catch(e){
+                                _timer?.cancel();
+                                await EasyLoading.showError(
+                                    e.toString());
                               }
                             },),
                           ),

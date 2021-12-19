@@ -40,6 +40,8 @@ class PatientsCardList extends StatelessWidget {
                       disease: bookingDetailsController.bookingDetailstList[0].patient.bloodGroup,
                       date: bookingDetailsController.bookingDetailstList[0].startDate,
                       time: bookingDetailsController.bookingDetailstList[0].time,
+                      lat: bookingDetailsController.bookingDetailstList[0].patient.user.addressLatitude,
+                      lng: bookingDetailsController.bookingDetailstList[0].patient.user.addressLongitude,
                     ),
                   ),
                 );
@@ -57,6 +59,8 @@ class PatientsView extends StatefulWidget {
   final String disease;
   final String date;
   final String time;
+  final String lat;
+  final String lng;
 
   PatientsView({
     required this.name,
@@ -65,6 +69,8 @@ class PatientsView extends StatefulWidget {
     required this.disease,
     required this.date,
     required this.time,
+    required this.lat,
+    required this.lng,
   });
 
   @override
@@ -104,9 +110,13 @@ class _PatientsViewState extends State<PatientsView> {
                 Icons.maps_home_work_rounded,
                 color: Colors.blueAccent,
               ),
-              title: Text(
-                widget.address,
-                style: TextStyle(),
+              title: Expanded(
+                child: Text(
+                  widget.address,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextStyle(),
+                ),
               ),
             ),
             ListTile(
@@ -142,7 +152,7 @@ class _PatientsViewState extends State<PatientsView> {
                         title: 'Start Navigation',
                         onPress: () {
                           Navigator.of(context)
-                              .pushReplacementNamed('/navigation');
+                              .pushReplacementNamed('/navigation', arguments: {'lat': widget.lat, 'lng': widget.lng});
                         },
                       ),
                     ),

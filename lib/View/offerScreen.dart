@@ -91,12 +91,12 @@ class _OffersState extends State<Offers> {
               final SharedPreferences prefs =
               await SharedPreferences.getInstance();
               var isApproved = prefs.getString('isApproved');
-              var response =
-                  await Utils().bookAppointment(widget.patient_id);
 
               if (isApproved == "Not Approved") {
                 Navigator.of(context).pushReplacementNamed('/custom_doc_complete');
               } else {
+                var response =
+                await Utils().bookAppointment(widget.patient_id);
                   if(response['status'] == true){
                     Navigator.of(context).pushReplacementNamed('/home');
                   }

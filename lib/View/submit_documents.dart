@@ -184,7 +184,7 @@ class CustomDocSubmit extends StatelessWidget {
                                   // prefs.setString('isApproved', response['nurse']['is_approved']);
                                   _timer?.cancel();
                                   await EasyLoading.showSuccess(
-                                      response['message']);
+                                      'Thanks for Submitting documnets, You will be notified once your account will be approved.');
                                   Navigator.of(context)
                                       .pushReplacementNamed('/home');
                                 } else {

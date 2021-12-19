@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Components/customTextField.dart';
-import 'package:becaring/Settings/alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 class AccountPage extends StatefulWidget {
   @override
   _AccountPageState createState() => _AccountPageState();
@@ -20,6 +21,7 @@ class _AccountPageState extends State<AccountPage> {
     '11-20 Miles',
     '21-30 Miles'
   ];
+  Timer? _timer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,27 +145,36 @@ class _AccountPageState extends State<AccountPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                           child: CustomButton(title: 'Update Profile', onPress: () async {
-                             if (_phone.text == "") {
-                              alertScreen().showAlertMsgDialog(
-                                  context, "Please Enter Phone");
-                            }
-                             else if (_location.text == "") {
-                               alertScreen().showAlertMsgDialog(
-                                   context, "Please Enter Address");
-                             }
-                             if (radius == "") {
-                               alertScreen().showAlertMsgDialog(
-                                   context, "Please Enter Working Radius");
-                             }
-                             else {
+                            //  if (_phone.text == "") {
+                            //   alertScreen().showAlertMsgDialog(
+                            //       context, "Please Enter Phone");
+                            // }
+                            //  else if (_location.text == "") {
+                            //    alertScreen().showAlertMsgDialog(
+                            //        context, "Please Enter Address");
+                            //  }
+                            //  if (radius == "") {
+                            //    alertScreen().showAlertMsgDialog(
+                            //        context, "Please Enter Working Radius");
+                            //  }
+                             try {
                               var response =
                                   await Utils().updateProfile(_phone.text, _location.text, radius);
                               if (response['status'] == false) {
-                                alertScreen()
-                                    .showAlertMsgDialog(context, response['message']);
+                                _timer?.cancel();
+                                await EasyLoading.showError(
+                                    response['message']);
                               } else {
+                                _timer?.cancel();
+                                await EasyLoading.showSuccess(
+                                    response['message']);
                                   Navigator.of(context).pop();
                               }
+                            }
+                            catch(e){
+                              _timer?.cancel();
+                              await EasyLoading.showError(
+                                  e.toString());
                             }
                           },),
                         ),
