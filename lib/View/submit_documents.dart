@@ -170,6 +170,10 @@ class CustomDocSubmit extends StatelessWidget {
                               title: 'Continue',
                               onPress: () async {
                                 try{
+                                  await EasyLoading.show(
+                                    status: 'loading...',
+                                    maskType: EasyLoadingMaskType.black,
+                                  );
                                 final SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                                 var response = await Utils().uploadNurseDocs(

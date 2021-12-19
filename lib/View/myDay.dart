@@ -2,6 +2,7 @@ import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Controllers/booking_controller.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class MyDayCardList extends StatelessWidget {
@@ -27,7 +28,7 @@ class MyDayCardList extends StatelessWidget {
                       time:  bookingController.bookingList[index].time,
                       noOfPatients:  bookingController.bookingList[index].noOfCarers,
                       ammount: bookingController.bookingList[index].minHourlyRate,
-                      patient_id: bookingController.bookingList[index].id.toString(),
+                      appointment_id: bookingController.bookingList[index].id.toString(),
                     ),
                   ),
                 );
@@ -43,14 +44,14 @@ class MyDay extends StatefulWidget {
   final String time;
   final String noOfPatients;
   final String ammount;
-  final String patient_id;
+  final String appointment_id;
 
   MyDay({
     required this.time,
     required this.noOfPatients,
     required this.date,
     required this.ammount,
-    required this.patient_id,
+    required this.appointment_id,
 
   });
 
@@ -144,7 +145,7 @@ class _MyDayState extends State<MyDay> {
           child: CustomButton(
             title: 'View Details',
             onPress: () {
-              Navigator.of(context).pushReplacementNamed('/patients_list', arguments: {'patient_id': widget.patient_id});
+              Navigator.of(context).pushReplacementNamed('/patients_list', arguments: {'appointment_id': widget.appointment_id});
             },
           ),
         ),

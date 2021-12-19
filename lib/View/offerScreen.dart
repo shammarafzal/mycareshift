@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Controllers/appointment_controller.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:becaring/Settings/alert_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,6 +64,7 @@ class Offers extends StatefulWidget {
 }
 
 class _OffersState extends State<Offers> {
+  Timer? _timer;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -88,23 +92,37 @@ class _OffersState extends State<Offers> {
           child: CustomButton(
             title: 'Accept offer',
             onPress: () async {
-              final SharedPreferences prefs =
-              await SharedPreferences.getInstance();
-              var isApproved = prefs.getString('isApproved');
+              try {
+                final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+                var isApproved = prefs.getString('isApproved');
 
-              if (isApproved == "Not Approved") {
-                Navigator.of(context).pushReplacementNamed('/custom_doc_complete');
-              } else {
-                var response =
-                await Utils().bookAppointment(widget.patient_id);
-                  if(response['status'] == true){
+                if (isApproved == "Not Approved") {
+                  Navigator.of(context).pushReplacementNamed(
+                      '/custom_doc_complete');
+                } else {
+                  await EasyLoading.show(
+                    status: 'loading...',
+                    maskType: EasyLoadingMaskType.black,
+                  );
+                  var response =
+                  await Utils().bookAppointment(widget.patient_id);
+                  if (response['status'] == true) {
+                    _timer?.cancel();
+                    await EasyLoading.showSuccess(
+                        response['message']);
                     Navigator.of(context).pushReplacementNamed('/home');
                   }
-                  else{
-                    alertScreen()
-                        .showAlertMsgDialog(context, response['message']);
+                  else {
+                    _timer?.cancel();
+                    await EasyLoading.showError(
+                        response['message']);
                   }
-
+                }
+              }
+              catch(e){
+                _timer?.cancel();
+                await EasyLoading.showError(e.toString());
               }
             },
           ),

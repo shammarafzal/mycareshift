@@ -11,7 +11,7 @@ class PatientsCardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BookingDetailsController bookingDetailsController = Get.put(
-        BookingDetailsController(appointment_id: arguments['patient_id']));
+        BookingDetailsController(appointment_id: arguments['appointment_id']));
     return Scaffold(
       appBar: AppBar(
         title: Text('My Patients'),
@@ -42,6 +42,7 @@ class PatientsCardList extends StatelessWidget {
                       time: bookingDetailsController.bookingDetailstList[0].time,
                       lat: bookingDetailsController.bookingDetailstList[0].patient.user.addressLatitude,
                       lng: bookingDetailsController.bookingDetailstList[0].patient.user.addressLongitude,
+                      appointment_id: bookingDetailsController.bookingDetailstList[0].id.toString(),
                     ),
                   ),
                 );
@@ -61,6 +62,7 @@ class PatientsView extends StatefulWidget {
   final String time;
   final String lat;
   final String lng;
+  final String appointment_id;
 
   PatientsView({
     required this.name,
@@ -71,6 +73,7 @@ class PatientsView extends StatefulWidget {
     required this.time,
     required this.lat,
     required this.lng,
+    required this.appointment_id,
   });
 
   @override
@@ -151,8 +154,9 @@ class _PatientsViewState extends State<PatientsView> {
                       child: CustomButton(
                         title: 'Start Navigation',
                         onPress: () {
+                          print(widget.appointment_id);
                           Navigator.of(context)
-                              .pushReplacementNamed('/navigation', arguments: {'lat': widget.lat, 'lng': widget.lng});
+                              .pushReplacementNamed('/navigation', arguments: {'lat': widget.lat, 'lng': widget.lng, 'appointment_id': widget.appointment_id});
                         },
                       ),
                     ),

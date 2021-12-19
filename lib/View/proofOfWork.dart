@@ -15,17 +15,17 @@ class _ProofWorkState extends State<ProofWork> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
-        SizedBox(
-          height: 100,
-          child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/nurse.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: null),
-        ),
+        // SizedBox(
+        //   height: 100,
+        //   child: Container(
+        //       decoration: BoxDecoration(
+        //         image: DecorationImage(
+        //           image: AssetImage("assets/nurse.png"),
+        //           fit: BoxFit.cover,
+        //         ),
+        //       ),
+        //       child: null),
+        // ),
         Expanded(
           child: ListView(
             children: [

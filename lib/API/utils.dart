@@ -379,6 +379,7 @@ class Utils{
     },headers: {
       'Authorization': 'Bearer $token',
     });
+    print(response.body);
     if(response.statusCode == 200){
       return bookingDetailsFromJson(response.body);
     }
@@ -398,6 +399,27 @@ class Utils{
       final String responseString = response.body;
       return jsonDecode(responseString);
     } else if (response.statusCode == 401) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 500) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    }
+  }
+  completeAppointmnet(String appointment_id) async {
+    final SharedPreferences prefs =
+    await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/completeAppointment', {"q": "dart"});
+    final response = await http.post(url, body: {
+      "appointment_id": appointment_id,
+    }, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
       final String responseString = response.body;
       return jsonDecode(responseString);
     } else if (response.statusCode == 500) {

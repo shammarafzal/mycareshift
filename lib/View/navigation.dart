@@ -8,9 +8,11 @@ import 'package:becaring/Components/customButton.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
+
 // import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:location/location.dart';
 // import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -214,7 +216,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 //   }
 // }
 class Navigation extends StatefulWidget {
-   Navigation({Key? key}) : super(key: key);
+  Navigation({Key? key}) : super(key: key);
+
   @override
   State<Navigation> createState() => _NavigationState();
 }
@@ -231,36 +234,41 @@ class _NavigationState extends State<Navigation> {
   Set<Polyline> polyLinesSet = {};
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
-
-
-  void locatePosition() async{
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  var detailGlobal;
+  var detailGlobal1;
+  void locatePosition() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
     LatLng latlnPosition = LatLng(position.latitude, position.longitude);
-    CameraPosition cameraPosition = new CameraPosition(target: latlnPosition, zoom: 14);
-    newGoogleMapController!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latlnPosition, zoom: 14);
+    newGoogleMapController!
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(30.1735893, 71.5089637),
-    zoom: 14.4746
-  );
+  static final CameraPosition _kGooglePlex =
+      CameraPosition(target: LatLng(30.1735893, 71.5089637), zoom: 14.4746);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Map'),
-        leading: InkWell(
-            onTap: (){
-              Navigator.of(context).pushReplacementNamed('/patients_list');
-            },
-            child: Icon(Icons.arrow_back_ios)),
+        // leading: InkWell(
+        //     onTap: () {
+        //       Navigator.of(context).pushReplacementNamed('/patients_list');
+        //     },
+        //     child: Icon(Icons.arrow_back_ios)),
       ),
       body: Column(
         children: [
-          Container(
-            height: 450,
-            child: GoogleMap(
+          Stack(
+              alignment: Alignment.center,
+              children: [
+            Container(
+              height: 400,
+              child: GoogleMap(
                 mapType: MapType.normal,
                 myLocationButtonEnabled: true,
                 myLocationEnabled: true,
@@ -270,35 +278,81 @@ class _NavigationState extends State<Navigation> {
                 polylines: polyLinesSet,
                 markers: markersSet,
                 circles: circlesSet,
-                onMapCreated: (GoogleMapController controller){
-                    _controllerGoogleMap.complete(controller);
-                    newGoogleMapController = controller;
-                    locatePosition();
+                onMapCreated: (GoogleMapController controller) {
+                  _controllerGoogleMap.complete(controller);
+                  newGoogleMapController = controller;
+                  locatePosition();
                 },
+              ),
+            ),
+            detailGlobal != null ?
+            Positioned(
+                top: 20,
+                child: Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 6,
+                  horizontal: 12
+                ),
+                  decoration: BoxDecoration(
+                    color: Colors.yellowAccent,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const[
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(0,2),
+                        blurRadius: 6
+                      )
+                    ]
+                  ),
+                  child: Text('${detailGlobal} | ${detailGlobal1}'),
+            )) : Text('')
+          ]),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: CustomButton(
+              title: 'Navigate',
+              onPress: () {
+                getPlaceDirection();
+              },
             ),
           ),
-      Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: CustomButton(title: 'Navigate', onPress: (){
-              getPlaceDirection();
-            },),)
+          Padding(
+            padding: const EdgeInsets.all(
+              18.0,
+            ),
+            child: CustomButton(
+              title: 'Arrived',
+              colors: Colors.black,
+              onPress: () {
+                Navigator.of(context).pushReplacementNamed('/patients_details', arguments: {'appointment_id': arguments['appointment_id']});
+              },
+            ),
+          ),
         ],
       ),
     );
   }
-  Future<void> getPlaceDirection() async{
 
-    var pickUpLatLng = LatLng(currentPosition!.latitude, currentPosition!.longitude);
-    var dropOffLatLng = LatLng(double.parse(arguments['lat']), double.parse(arguments['lng']));
+  Future<void> getPlaceDirection() async {
+    var pickUpLatLng =
+        LatLng(currentPosition!.latitude, currentPosition!.longitude);
+    var dropOffLatLng =
+        LatLng(double.parse(arguments['lat']), double.parse(arguments['lng']));
     // showDialog(context: context, builder: (BuildContext context) => ProgressDialog(me));
-    var details = await AssistantMethods.obtainPlaceDirectionDetails(pickUpLatLng, dropOffLatLng);
+    var details = await AssistantMethods.obtainPlaceDirectionDetails(
+        pickUpLatLng, dropOffLatLng);
+    setState(() {
+      detailGlobal = details.distanceText;
+      detailGlobal1 = details.durationText;
+    });
     PolylinePoints polylinePoints = PolylinePoints();
-    List<PointLatLng> decodePolyLinesPointsResults = polylinePoints.decodePolyline(details.encodedPoints);
+    List<PointLatLng> decodePolyLinesPointsResults =
+        polylinePoints.decodePolyline(details.encodedPoints);
     pLineCoordinates.clear();
-    if(decodePolyLinesPointsResults.isNotEmpty){
+    if (decodePolyLinesPointsResults.isNotEmpty) {
       decodePolyLinesPointsResults.forEach((PointLatLng pointLatLng) {
-        pLineCoordinates.add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
-
+        pLineCoordinates
+            .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
       });
     }
     polyLinesSet.clear();
@@ -311,49 +365,60 @@ class _NavigationState extends State<Navigation> {
           points: pLineCoordinates,
           startCap: Cap.roundCap,
           endCap: Cap.roundCap,
-          geodesic: true
-      );
+          geodesic: true);
       polyLinesSet.add(polyline);
     });
     LatLngBounds latLngBounds;
-    if(pickUpLatLng.latitude > dropOffLatLng.latitude && pickUpLatLng.longitude > dropOffLatLng.longitude){
-      latLngBounds = LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
+    if (pickUpLatLng.latitude > dropOffLatLng.latitude &&
+        pickUpLatLng.longitude > dropOffLatLng.longitude) {
+      latLngBounds =
+          LatLngBounds(southwest: dropOffLatLng, northeast: pickUpLatLng);
+    } else if (pickUpLatLng.longitude > dropOffLatLng.longitude) {
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude),
+          northeast: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude));
+    } else if (pickUpLatLng.latitude > dropOffLatLng.latitude) {
+      latLngBounds = LatLngBounds(
+          southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude),
+          northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
+    } else {
+      latLngBounds =
+          LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
     }
-    else if(pickUpLatLng.longitude > dropOffLatLng.longitude){
-      latLngBounds = LatLngBounds(southwest: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude), northeast: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude));
-    }
-    else if(pickUpLatLng.latitude > dropOffLatLng.latitude){
-      latLngBounds = LatLngBounds(southwest: LatLng(dropOffLatLng.latitude, pickUpLatLng.longitude), northeast: LatLng(pickUpLatLng.latitude, dropOffLatLng.longitude));
-    }
-    else{
-      latLngBounds = LatLngBounds(southwest: pickUpLatLng, northeast: dropOffLatLng);
-    }
-    newGoogleMapController!.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+    newGoogleMapController!
+        .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
     Marker pickupLocationMarker = Marker(
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-      infoWindow: InfoWindow(snippet: 'My Location'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        infoWindow: InfoWindow(snippet: 'My Location'),
         position: pickUpLatLng,
-      markerId: MarkerId('pikupID')
-    );
+        markerId: MarkerId('pikupID'));
     Marker dropLocationMarker = Marker(
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.red),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
         infoWindow: InfoWindow(snippet: 'Drop Off'),
         position: dropOffLatLng,
-        markerId: MarkerId('dropID')
-    );
+        markerId: MarkerId('dropID'));
     setState(() {
       markersSet.add(pickupLocationMarker);
       markersSet.add(dropLocationMarker);
     });
 
     Circle pickUpCircle = Circle(
-      fillColor: Colors.yellow,
-      center: pickUpLatLng,
-      radius: 12,
-      strokeWidth: 4,
-      strokeColor: Colors.yellowAccent,
-      circleId: CircleId('pickCirId')
-    );
-
+        fillColor: Colors.yellow,
+        center: pickUpLatLng,
+        radius: 12,
+        strokeWidth: 4,
+        strokeColor: Colors.yellowAccent,
+        circleId: CircleId('pickCirId'));
+    Circle dropoffCircle = Circle(
+        fillColor: Colors.red,
+        center: dropOffLatLng,
+        radius: 12,
+        strokeWidth: 4,
+        strokeColor: Colors.redAccent,
+        circleId: CircleId('pickCirId'));
+    setState(() {
+      circlesSet.add(pickUpCircle);
+      circlesSet.add(dropoffCircle);
+    });
   }
 }

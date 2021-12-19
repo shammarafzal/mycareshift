@@ -89,6 +89,10 @@ class _SignInState extends State<SignIn> {
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                           child: CustomButton(title: 'Login', onPress: () async {
                             try {
+                              await EasyLoading.show(
+                                status: 'loading...',
+                                maskType: EasyLoadingMaskType.black,
+                              );
                               final SharedPreferences prefs =
                               await SharedPreferences.getInstance();
                               var response =
@@ -118,7 +122,7 @@ class _SignInState extends State<SignIn> {
                             }
                             catch(e){
                               _timer?.cancel();
-                              await EasyLoading.showSuccess(e.toString());
+                              await EasyLoading.showError(e.toString());
                             }
                           }
                             ),

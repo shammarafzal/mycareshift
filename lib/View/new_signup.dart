@@ -255,6 +255,10 @@ class CustomEmail extends StatelessWidget {
                     title: 'Continue',
                     onPress: () async {
                       try {
+                        await EasyLoading.show(
+                          status: 'loading...',
+                          maskType: EasyLoadingMaskType.black,
+                        );
                         var response = await Utils().verifyEmail(_email.text);
                         if (response['status'] == false) {
                           _timer?.cancel();
@@ -369,6 +373,10 @@ class _CustomOTPState extends State<CustomOTP> {
                     title: 'Continue',
                     onPress: () async {
                        try {
+                         await EasyLoading.show(
+                           status: 'loading...',
+                           maskType: EasyLoadingMaskType.black,
+                         );
                         var response =
                             await Utils().checkToken(_email.text, _otp.text);
                         if (response['status'] == false) {
@@ -1317,6 +1325,10 @@ class CustomDoc extends StatelessWidget {
                             colors: Colors.black,
                             onPress: () async {
                               try {
+                                await EasyLoading.show(
+                                  status: 'loading...',
+                                  maskType: EasyLoadingMaskType.black,
+                                );
                                 final SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                                 var response = await Utils().registerNurseDocs(
@@ -1365,6 +1377,10 @@ class CustomDoc extends StatelessWidget {
                               title: 'Continue',
                               onPress: () async {
                                 try{
+                                  await EasyLoading.show(
+                                    status: 'loading...',
+                                    maskType: EasyLoadingMaskType.black,
+                                  );
                                 final SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                                 var response = await Utils().registerNurse(

@@ -158,6 +158,10 @@ class _AccountPageState extends State<AccountPage> {
                             //        context, "Please Enter Working Radius");
                             //  }
                              try {
+                               await EasyLoading.show(
+                                 status: 'loading...',
+                                 maskType: EasyLoadingMaskType.black,
+                               );
                               var response =
                                   await Utils().updateProfile(_phone.text, _location.text, radius);
                               if (response['status'] == false) {
