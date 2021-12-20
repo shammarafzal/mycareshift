@@ -59,7 +59,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => !Navigator.of(context).userGestureInProgress,
+      onWillPop: () async =>
+      !Navigator
+          .of(context)
+          .userGestureInProgress,
       child: Scaffold(
         appBar: new AppBar(
           elevation: 0.0,
@@ -69,17 +72,24 @@ class _HomePageState extends State<HomePage> {
         drawer: new Drawer(
             child: ListView(
               children: <Widget>[
-                      Obx(() {
+                Obx(() {
+                  return ListView.builder(
+                      itemCount: meController.meList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, index) {
                         return UserAccountsDrawerHeader(
-                        currentAccountPicture: CircleAvatar(
-                          backgroundImage: AssetImage("assets/logo-app.png"),
+                          currentAccountPicture: CircleAvatar(
+                            backgroundImage: AssetImage("assets/logo-app.png"),
 
-                        ),
-                        accountName: Text(meController.meList[0].name,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                        accountEmail: Text(meController.meList[0].email),
-                        decoration: new BoxDecoration(color: Colors.blue),
-                      );
-                      }),
+                          ),
+                          accountName: Text(meController.meList[index].name,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),),
+                          accountEmail: Text(meController.meList[index].email),
+                          decoration: new BoxDecoration(color: Colors.blue),
+                        );
+                      });
+                }),
                 InkWell(
                   onTap: () {
                     Navigator.pop(context);
@@ -101,7 +111,8 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: ListTile(
                     title: Text('Offers'),
-                    leading: Icon(Icons.local_offer_outlined, color: Colors.blue),
+                    leading: Icon(
+                        Icons.local_offer_outlined, color: Colors.blue),
                   ),
                 ),
                 Divider(),
@@ -117,7 +128,8 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: ListTile(
                     title: Text('Calender'),
-                    leading: Icon(Icons.calendar_today_outlined, color: Colors.blue),
+                    leading: Icon(
+                        Icons.calendar_today_outlined, color: Colors.blue),
                   ),
                 ),
                 InkWell(
@@ -132,7 +144,8 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: ListTile(
                     title: Text('Earnings'),
-                    leading: Icon(Icons.monetization_on_outlined, color: Colors.blue),
+                    leading: Icon(
+                        Icons.monetization_on_outlined, color: Colors.blue),
                   ),
                 ),
                 InkWell(
@@ -162,7 +175,8 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: ListTile(
                     title: Text('Account'),
-                    leading: Icon(Icons.account_box_outlined, color: Colors.blue),
+                    leading: Icon(
+                        Icons.account_box_outlined, color: Colors.blue),
                   ),
                 ),
                 InkWell(
@@ -177,22 +191,24 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: ListTile(
                     title: Text('Videos'),
-                    leading: Icon(Icons.video_collection_sharp, color: Colors.blue),
+                    leading: Icon(
+                        Icons.video_collection_sharp, color: Colors.blue),
                   ),
                 ),
                 InkWell(
                   onTap: () {
                     Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) =>
-                            HelpCardList()
-                    ),
-                  );
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) =>
+                              HelpCardList()
+                      ),
+                    );
                   },
                   child: ListTile(
                     title: Text('Help'),
-                    leading: Icon(Icons.help_center_outlined, color: Colors.blue),
+                    leading: Icon(
+                        Icons.help_center_outlined, color: Colors.blue),
                   ),
                 ),
                 InkWell(
@@ -212,8 +228,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 InkWell(
                   onTap: () async {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    try{
+                    SharedPreferences prefs = await SharedPreferences
+                        .getInstance();
+                    try {
                       var response =
                       await Utils().logout();
                       print(response);
@@ -229,12 +246,11 @@ class _HomePageState extends State<HomePage> {
                         Navigator.of(context).pushReplacementNamed('/login');
                       }
                     }
-                    catch(e){
+                    catch (e) {
                       _timer?.cancel();
                       await EasyLoading.showError(
                           e.toString());
                     }
-
                   },
                   child: ListTile(
                     title: Text('Logout'),

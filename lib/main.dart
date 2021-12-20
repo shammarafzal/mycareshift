@@ -1,5 +1,7 @@
+import 'package:becaring/DataHandler/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'Routes/route.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -9,11 +11,14 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   runApp(
-    GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        builder: EasyLoading.init(),
-        initialRoute: '/welcome_screen',
-        getPages: Routes.routes
+    ChangeNotifierProvider(
+      create: (context)=> AppData(),
+      child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          builder: EasyLoading.init(),
+          initialRoute: '/welcome_screen',
+          getPages: Routes.routes
+      ),
     ),
   );
   configLoading();

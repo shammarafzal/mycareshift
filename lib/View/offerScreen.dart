@@ -96,11 +96,17 @@ class _OffersState extends State<Offers> {
                 final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
                 var isApproved = prefs.getString('isApproved');
-
-                if (isApproved == "Not Approved") {
+                var responseApprove = await Utils().checkApprove();
+                if (responseApprove['nurse']['image'] == " " && responseApprove['nurse_detail']['identification_document'] == null && responseApprove['nurse_detail']['dbs_certificate'] == null && responseApprove['nurse_detail']['care_qualification_certificate'] == null) {
                   Navigator.of(context).pushReplacementNamed(
                       '/custom_doc_complete');
-                } else {
+                }
+                // else if(responseApprove['nurse']['is_approved'] != "Approved"){
+                //   _timer?.cancel();
+                //   await EasyLoading.showSuccess(
+                //       response['message']);
+                // }
+                else {
                   await EasyLoading.show(
                     status: 'loading...',
                     maskType: EasyLoadingMaskType.black,

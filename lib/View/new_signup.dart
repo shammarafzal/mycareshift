@@ -379,6 +379,7 @@ class _CustomOTPState extends State<CustomOTP> {
                          );
                         var response =
                             await Utils().checkToken(_email.text, _otp.text);
+
                         if (response['status'] == false) {
                           _timer?.cancel();
                           await EasyLoading.showError(

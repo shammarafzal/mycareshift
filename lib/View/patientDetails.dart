@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:becaring/API/utils.dart';
 import 'package:becaring/Components/customButton.dart';
 import 'package:becaring/Controllers/booking_details.dart';
+import 'package:becaring/DataHandler/providers.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:becaring/View/patientMedications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class PatientDetailsCardList extends StatelessWidget {
   final arguments = Get.arguments as Map;
@@ -78,31 +80,6 @@ class PatientInfo extends StatefulWidget {
 
 class _PatientInfoState extends State<PatientInfo> {
   Timer? _timer;
-  int _start = 120;
-  void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-          (Timer timer) {
-        if (_start == 0) {
-          setState(() {
-            timer.cancel();
-          });
-        } else {
-          setState(() {
-            _start--;
-          });
-        }
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    // _timer.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -336,7 +313,10 @@ class _PatientInfoState extends State<PatientInfo> {
             ],
           ),
         ),
-        Text("$_start"),
+        Consumer<AppData>(
+          builder: (context, data, child){
+            return Text(data.getRemainingTime().toString());
+          }),
         Container(
           width: 300,
           child: Row(
@@ -350,7 +330,13 @@ class _PatientInfoState extends State<PatientInfo> {
                   child: CustomButton(
                     title: 'Start Service',
                     onPress: () {
-                      startTimer();
+                      Timer.periodic(Duration(seconds: 1), (timer) {
+                          var timerInfo = Provider.of<AppData>(context, listen: false);
+                          if(timerInfo.getRemainingTime() == 0){
+                              timer.cancel();
+                          }
+                          timerInfo.updateRemainingTime();
+                      });
                     },
                   ),
                 ),

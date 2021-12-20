@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'package:becaring/Assistant/assistant_method.dart';
 import 'package:becaring/Components/customButton.dart';
+import 'package:becaring/DataHandler/providers.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:location/location.dart';
@@ -324,6 +326,7 @@ class _NavigationState extends State<Navigation> {
               title: 'Arrived',
               colors: Colors.black,
               onPress: () {
+                Provider.of<AppData>(context, listen: false).getTime(46);
                 Navigator.of(context).pushReplacementNamed('/patients_details', arguments: {'appointment_id': arguments['appointment_id']});
               },
             ),

@@ -431,4 +431,50 @@ class Utils{
     }
   }
 
+  proofWork(
+      String notes,
+      File imagePath,
+      File signature,
+      ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    var request = http.MultipartRequest(
+        "POST",
+        Uri.parse(
+          "http://mcsportal.spphotography.info/api/completeProfile",
+        ));
+    var imagePath_f = await http.MultipartFile.fromPath("image", imagePath.path);
+    var signature_f = await http.MultipartFile.fromPath("signature", signature.path);
+    request.fields["notes"] = notes;
+    request.headers.addAll(headers);
+    request.files.add(imagePath_f);
+    request.files.add(signature_f);
+    var response = await request.send();
+    var responseData = await response.stream.toBytes();
+    var decode = String.fromCharCodes(responseData);
+    return jsonDecode(decode);
+  }
+  checkApprove() async {
+    final SharedPreferences prefs =
+    await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var url = Uri.http(baseUrl, '/api/checkApprove', {"q": "dart"});
+    final response = await http.get(url, headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 401) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else if (response.statusCode == 500) {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    } else {
+      final String responseString = response.body;
+      return jsonDecode(responseString);
+    }
+  }
 }

@@ -87,81 +87,94 @@ class _RewardsScreenState extends State<RewardsScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(18.0),
                           child: Obx(() {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Oct 1 - Dec 31'),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 10),
-                                  child: Text(
-                                    rewardController.rewardList[0].points,
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 10, bottom: 5),
-                                  child: LinearPercentIndicator(
-                                    width: 250.0,
-                                    animation: true,
-                                    animationDuration: 1000,
-                                    lineHeight: 20.0,
-                                    percent: double.parse('${rewardController.rewardList[0].points}')/1500 * 100 /10,
-                                    // center: Text("20.0%"),
-                                    linearStrokeCap: LinearStrokeCap.butt,
-                                    progressColor: Colors.black,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 20, left: 10, right: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                            return ListView.builder(
+                                itemCount: rewardController.rewardList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, index) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text('0'),
-                                      Text('1500'),
+                                      Text('Oct 1 - Dec 31'),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 10),
+                                        child: Text(
+                                          rewardController
+                                              .rewardList[index].points,
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 5),
+                                        child: LinearPercentIndicator(
+                                          width: 250.0,
+                                          animation: true,
+                                          animationDuration: 1000,
+                                          lineHeight: 20.0,
+                                          percent: double.parse(
+                                                  '${rewardController.rewardList[index].points}') /
+                                              1500 *
+                                              100 /
+                                              10,
+                                          // center: Text("20.0%"),
+                                          linearStrokeCap: LinearStrokeCap.butt,
+                                          progressColor: Colors.black,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 20, left: 10, right: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('0'),
+                                            Text('1500'),
+                                          ],
+                                        ),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black,
+                                          ),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                                text: 'Earn 1,000 more points ',
+                                                style: new TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            TextSpan(text: 'and '),
+                                            TextSpan(
+                                                text: 'give great service ',
+                                                style: new TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            TextSpan(
+                                                text:
+                                                    'to keep Diamond for another 3-month period'),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 30),
+                                        child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Text(
+                                              'See Details',
+                                              style: TextStyle(
+                                                  color: Colors.blue,
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                      ),
                                     ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                    ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: 'Earn 1,000 more points ',
-                                          style: new TextStyle(
-                                              fontWeight: FontWeight.bold)),
-                                      TextSpan(text: 'and '),
-                                      TextSpan(
-                                          text: 'give great service ',
-                                          style: new TextStyle(
-                                              fontWeight: FontWeight.bold)),
-                                      TextSpan(
-                                          text:
-                                              'to keep Diamond for another 3-month period'),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 30),
-                                  child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Text(
-                                        'See Details',
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                ),
-                              ],
-                            );
+                                  );
+                                });
                           }),
                         ),
                       ),
