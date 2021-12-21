@@ -43,6 +43,7 @@ class PatientsCardList extends StatelessWidget {
                       lat: bookingDetailsController.bookingDetailstList[0].patient.user.addressLatitude,
                       lng: bookingDetailsController.bookingDetailstList[0].patient.user.addressLongitude,
                       appointment_id: bookingDetailsController.bookingDetailstList[0].id.toString(),
+                      duration: bookingDetailsController.bookingDetailstList[0].visitDuration,
                     ),
                   ),
                 );
@@ -63,6 +64,7 @@ class PatientsView extends StatefulWidget {
   final String lat;
   final String lng;
   final String appointment_id;
+  final String duration;
 
   PatientsView({
     required this.name,
@@ -74,6 +76,7 @@ class PatientsView extends StatefulWidget {
     required this.lat,
     required this.lng,
     required this.appointment_id,
+    required this.duration,
   });
 
   @override
@@ -156,7 +159,7 @@ class _PatientsViewState extends State<PatientsView> {
                         onPress: () {
                           print(widget.appointment_id);
                           Navigator.of(context)
-                              .pushReplacementNamed('/navigation', arguments: {'lat': widget.lat, 'lng': widget.lng, 'appointment_id': widget.appointment_id});
+                              .pushReplacementNamed('/navigation', arguments: {'lat': widget.lat, 'lng': widget.lng, 'appointment_id': widget.appointment_id, 'duration': widget.duration});
                         },
                       ),
                     ),

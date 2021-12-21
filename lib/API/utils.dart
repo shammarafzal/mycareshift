@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:becaring/Models/get_appointment.dart';
 import 'package:becaring/Models/get_booking.dart';
 import 'package:becaring/Models/get_bookings_details.dart';
+import 'package:becaring/Models/get_earning.dart';
 import 'package:becaring/Models/get_help.dart';
 import 'package:becaring/Models/get_me.dart';
 import 'package:becaring/Models/get_notifications.dart';
@@ -409,32 +410,13 @@ class Utils{
       return jsonDecode(responseString);
     }
   }
-  completeAppointmnet(String appointment_id) async {
-    final SharedPreferences prefs =
-    await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-    var url = Uri.http(baseUrl, '/api/completeAppointment', {"q": "dart"});
-    final response = await http.post(url, body: {
-      "appointment_id": appointment_id,
-    }, headers: {
-      'Authorization': 'Bearer $token',
-    });
-    if (response.statusCode == 200) {
-      final String responseString = response.body;
-      return jsonDecode(responseString);
-    } else if (response.statusCode == 500) {
-      final String responseString = response.body;
-      return jsonDecode(responseString);
-    } else {
-      final String responseString = response.body;
-      return jsonDecode(responseString);
-    }
-  }
 
   proofWork(
       String notes,
+          String appointment_id,
       File imagePath,
       File signature,
+
       ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token = prefs.getString('token');
@@ -442,11 +424,12 @@ class Utils{
     var request = http.MultipartRequest(
         "POST",
         Uri.parse(
-          "http://mcsportal.spphotography.info/api/completeProfile",
+          "http://mcsportal.spphotography.info/api/completeAppointment",
         ));
-    var imagePath_f = await http.MultipartFile.fromPath("image", imagePath.path);
+    var imagePath_f = await http.MultipartFile.fromPath("photo", imagePath.path);
     var signature_f = await http.MultipartFile.fromPath("signature", signature.path);
-    request.fields["notes"] = notes;
+    request.fields["note"] = notes;
+    request.fields["appointment_id"] = appointment_id;
     request.headers.addAll(headers);
     request.files.add(imagePath_f);
     request.files.add(signature_f);
@@ -475,6 +458,23 @@ class Utils{
     } else {
       final String responseString = response.body;
       return jsonDecode(responseString);
+    }
+  }
+  Future<List<Earning>> getEarning() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var id = prefs.getInt('id');
+    var url = Uri.http(baseUrl, '/api/fetchEarnings', {"q": "dart"});
+    var response = await client.post(url, body:{
+      'nurse_id': id.toString()
+    },headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if(response.statusCode == 200){
+      return earningFromJson(response.body);
+    }
+    else{
+      return earningFromJson(response.statusCode.toString());
     }
   }
 }

@@ -7,8 +7,10 @@ import 'package:becaring/Components/customTextField.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:signature/signature.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProofWork extends StatefulWidget {
   @override
@@ -16,6 +18,14 @@ class ProofWork extends StatefulWidget {
 }
 
 class _ProofWorkState extends State<ProofWork> {
+
+  Future<String> getFilePath(uniqueFileName) async {
+    String path = '';
+    Directory dir = await getApplicationDocumentsDirectory();
+    path = '${dir.path}/$uniqueFileName';
+    return path;
+  }
+  final arguments = Get.arguments as Map;
   Timer? _timer;
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 1,
@@ -33,7 +43,7 @@ class _ProofWorkState extends State<ProofWork> {
 
   final _notes = TextEditingController();
   File? imagePath;
-  var signature;
+  File? signature;
 
   _imgFromCamera() async {
     final picker = ImagePicker();
@@ -146,9 +156,9 @@ class _ProofWorkState extends State<ProofWork> {
                           final Uint8List? data =
                               await _controller.toPngBytes();
                           if (data != null) {
-                            print(data);
-                            signature = MemoryImage(data);
-                            print(signature);
+                           String savePath = await getFilePath('my_img.png');
+                            var sig = await File(savePath).writeAsBytes(data);
+                            signature = sig;
                           }
                         }
                       },
@@ -195,22 +205,26 @@ class _ProofWorkState extends State<ProofWork> {
                 child: CustomButton(
                   title: 'Complete',
                   onPress: () async {
+                    print(_notes.text);
+                    print(arguments['appointment_id']);
+                    print(imagePath);
+                    print(signature);
                     try{
                       await EasyLoading.show(
                         status: 'loading...',
                         maskType: EasyLoadingMaskType.black,
                       );
                       var response =
-                      await Utils().proofWork(_notes.text, imagePath!, signature);
+                      await Utils().proofWork(_notes.text, arguments['appointment_id'],imagePath!, signature!, );
                       if (response['status'] == false) {
                         _timer?.cancel();
                         await EasyLoading.showError(
-                            response['message']);
+                            response['appointment']);
                       }
                       else{
                         _timer?.cancel();
                         await EasyLoading.showSuccess(
-                            response['message']);
+                            response['appointment']);
                         Navigator.of(context).pushReplacementNamed('/home');
                       }
                     }catch(e){

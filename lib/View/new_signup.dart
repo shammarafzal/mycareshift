@@ -1347,10 +1347,11 @@ class CustomDoc extends StatelessWidget {
                                   _promo.text,
                                 );
                                 if (response["status"] == true) {
-                                  print(response);
                                   prefs.setString('token', response['token']);
                                   prefs.setString('isApproved',
                                       response['nurse']['is_approved']);
+                                  prefs.setInt(
+                                      'id', response['nurse']['id']);
                                   _timer?.cancel();
                                   await EasyLoading.showSuccess(
                                       response['message']);
@@ -1403,9 +1404,10 @@ class CustomDoc extends StatelessWidget {
                                   care_qualification_certificate!,
                                 );
                                 if (response["status"] == true) {
-                                  print(response);
                                   prefs.setString('token', response['token']);
                                   prefs.setString('isApproved', response['nurse']['is_approved']);
+                                  prefs.setInt(
+                                      'id', response['nurse']['id']);
                                   _timer?.cancel();
                                   await EasyLoading.showSuccess(
                                       response['message']);

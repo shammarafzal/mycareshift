@@ -349,29 +349,7 @@ class _PatientInfoState extends State<PatientInfo> {
                   child: CustomButton(
                     title: 'Stop Service',
                     onPress: () async {
-                      try{
-                        await EasyLoading.show(
-                          status: 'loading...',
-                          maskType: EasyLoadingMaskType.black,
-                        );
-                        var response =
-                        await Utils().completeAppointmnet(widget.appoint_id);
-                        if (response['status'] == false) {
-                          _timer?.cancel();
-                          await EasyLoading.showError(
-                              response['appointment']);
-                        } else {
-                          _timer?.cancel();
-                          await EasyLoading.showSuccess(
-                              response['appointment']);
-                          Navigator.of(context).pushReplacementNamed('/proof_work');
-                        }
-                      }
-                      catch(e){
-                        _timer?.cancel();
-                        await EasyLoading.showError(e.toString());
-                      }
-
+                      Navigator.of(context).pushReplacementNamed('/proof_work',arguments: {'appointment_id': widget.appoint_id});
                     },
                   ),
                 ),

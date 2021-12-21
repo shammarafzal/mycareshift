@@ -326,7 +326,7 @@ class _NavigationState extends State<Navigation> {
               title: 'Arrived',
               colors: Colors.black,
               onPress: () {
-                Provider.of<AppData>(context, listen: false).getTime(46);
+                Provider.of<AppData>(context, listen: false).getTime(int.parse(arguments['duration'])* 60);
                 Navigator.of(context).pushReplacementNamed('/patients_details', arguments: {'appointment_id': arguments['appointment_id']});
               },
             ),

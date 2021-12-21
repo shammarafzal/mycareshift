@@ -27,7 +27,7 @@ class MyDayCardList extends StatelessWidget {
                       date: '${bookingController.bookingList[index].startDate}',
                       time:  bookingController.bookingList[index].time,
                       noOfPatients:  bookingController.bookingList[index].noOfCarers,
-                      ammount: bookingController.bookingList[index].minHourlyRate,
+                      ammount: '\£ ${bookingController.bookingList[index].minHourlyRate}',
                       appointment_id: bookingController.bookingList[index].id.toString(),
                     ),
                   ),

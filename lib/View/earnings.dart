@@ -1,7 +1,10 @@
+import 'package:becaring/Controllers/earning_controller.dart';
 import 'package:becaring/Settings/SizeConfig.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class EarningCardList extends StatelessWidget {
+  final EarningController earningController = Get.put(EarningController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,60 +13,24 @@ class EarningCardList extends StatelessWidget {
       ),
       body: Container(
         color: Colors.white,
-        child: ListView(
-          children: [
-            Card(
+        child: Obx(() {
+    return ListView.builder(
+    itemCount: earningController.earningList.length,
+    shrinkWrap: true,
+    itemBuilder: (BuildContext context, index) {
+    return
+    Card(
               color: Colors.white,
               elevation: 5,
               child: Earnings(
-                date: 'Tuesday, Jan 24',
-                time: "10:00 AM - 12:00 PM",
+                date: earningController.earningList[index].startDate,
                 payment_details: 'Payment Pending',
-                ammount: '\$36.00 - \$50.00',
+                ammount: '\£ ${earningController.earningList[index].bidHourlyRate}',
               ),
-            ),
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: Earnings(
-                date: 'Tuesday, Jan 24',
-                time: "10:00 AM - 12:00 PM",
-                payment_details: 'Payment Pending',
-                ammount: '\$36.00 - \$50.00',
-              ),
-            ),
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: Earnings(
-                date: 'Tuesday, Jan 24',
-                time: "10:00 AM - 12:00 PM",
-                payment_details: 'Payment Pending',
-                ammount: '\$36.00 - \$50.00',
-              ),
-            ),
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: Earnings(
-                date: 'Tuesday, Jan 24',
-                time: "10:00 AM - 12:00 PM",
-                payment_details: 'Payment Pending',
-                ammount: '\$36.00 - \$50.00',
-              ),
-            ),
-            Card(
-              color: Colors.white,
-              elevation: 5,
-              child: Earnings(
-                date: 'Tuesday, Jan 24',
-                time: "10:00 AM - 12:00 PM",
-                payment_details: 'Payment Pending',
-                ammount: '\$36.00 - \$50.00',
-              ),
-            ),
-          ],
-        ),
+            );
+    },
+    );
+        })
       ),
     );
   }
@@ -71,13 +38,11 @@ class EarningCardList extends StatelessWidget {
 
 class Earnings extends StatefulWidget {
   final String date;
-  final String time;
   final String payment_details;
   final String ammount;
 
   Earnings({
     required this.date,
-    required this.time,
     required this.payment_details,
     required this.ammount,
   });
