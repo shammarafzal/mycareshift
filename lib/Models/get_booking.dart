@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final booking = bookingFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<Booking> bookingFromJson(String str) => List<Booking>.from(json.decode(str).map((x) => Booking.fromJson(x)));
@@ -20,14 +25,18 @@ class Booking {
     required this.visitInformation,
     required this.maxHourlyRate,
     required this.minHourlyRate,
+    required this.bidHourlyRate,
     required this.status,
+    required this.note,
+    required this.signature,
+    required this.photo,
     required this.createdAt,
     required this.updatedAt,
   });
 
   int id;
-  String patientId;
-  String companyId;
+  int patientId;
+  int companyId;
   String startDate;
   String day;
   String repeat;
@@ -39,7 +48,11 @@ class Booking {
   String visitInformation;
   String maxHourlyRate;
   String minHourlyRate;
+  String bidHourlyRate;
   String status;
+  String note;
+  String signature;
+  String photo;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -58,7 +71,11 @@ class Booking {
     visitInformation: json["visit_information"],
     maxHourlyRate: json["max_hourly_rate"],
     minHourlyRate: json["min_hourly_rate"],
+    bidHourlyRate: json["bid_hourly_rate"],
     status: json["status"],
+    note: json["note"],
+    signature: json["signature"],
+    photo: json["photo"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
   );
@@ -78,7 +95,11 @@ class Booking {
     "visit_information": visitInformation,
     "max_hourly_rate": maxHourlyRate,
     "min_hourly_rate": minHourlyRate,
+    "bid_hourly_rate": bidHourlyRate,
     "status": status,
+    "note": note,
+    "signature": signature,
+    "photo": photo,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
   };

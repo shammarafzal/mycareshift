@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="uk.co.mycareshift">
+    package="com.mycareshift.mycareshift">
    <application
         android:label="MyCareShift"
         android:icon="@mipmap/launcher_icon">

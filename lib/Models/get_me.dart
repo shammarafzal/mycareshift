@@ -1,4 +1,8 @@
+// To parse this JSON data, do
+//
+//     final me = meFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<Me> meFromJson(String str) => List<Me>.from(json.decode(str).map((x) => Me.fromJson(x)));
@@ -28,11 +32,11 @@ class Me {
   String name;
   String email;
   String phone;
-  dynamic image;
+  String image;
   String address;
-  dynamic addressLatitude;
-  dynamic addressLongitude;
-  dynamic parentId;
+  String addressLatitude;
+  String addressLongitude;
+  int parentId;
   String isApproved;
   DateTime createdAt;
   DateTime updatedAt;
@@ -124,8 +128,8 @@ class Pivot {
     required this.modelType,
   });
 
-  String modelId;
-  String roleId;
+  int modelId;
+  int roleId;
   String modelType;
 
   factory Pivot.fromJson(Map<String, dynamic> json) => Pivot(

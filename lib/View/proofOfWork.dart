@@ -100,142 +100,148 @@ class _ProofWorkState extends State<ProofWork> {
         padding: const EdgeInsets.all(10.0),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: ListView(
-            children: [
-              Image.asset(
-                'assets/logo-app.png',
-                width: 100,
-                height: 100,
-              ),
-              // Text(
-              //   'Be Caring',
-              //   style: TextStyle(
-              //       fontWeight: FontWeight.w600, fontSize: 22),
-              // ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Text(
-                  'Proof of Work',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600, fontSize: 22),
+          child: InkWell(
+            onTap: (){
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: ListView(
+              children: [
+                Image.asset(
+                  'assets/logo-app.png',
+                  width: 100,
+                  height: 100,
                 ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      'Note',
-                      style: TextStyle(color: Colors.grey),
+                // Text(
+                //   'Be Caring',
+                //   style: TextStyle(
+                //       fontWeight: FontWeight.w600, fontSize: 22),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Text(
+                    'Proof of Work',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 22),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        'Note',
+                        style: TextStyle(color: Colors.grey),
+                      )),
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 5, 10),
+                    child: CustomTextField(
+                      controller: _notes,
+                      maxlines: 3,
                     )),
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 5, 5, 10),
-                  child: CustomTextField(
-                    controller: _notes,
-                    maxlines: 3,
-                  )),
-              Signature(
-                controller: _controller,
-                height: 200,
-                backgroundColor: Colors.lightBlueAccent,
-              ),
-              Container(
-                width: 100,
-                decoration: const BoxDecoration(color: Colors.black),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.check),
-                      color: Colors.blue,
-                      onPressed: () async {
-                        if (_controller.isNotEmpty) {
-                          final Uint8List? data =
-                              await _controller.toPngBytes();
-                          if (data != null) {
-                           String savePath = await getFilePath('my_img.png');
-                            var sig = await File(savePath).writeAsBytes(data);
-                            signature = sig;
+                Signature(
+                  controller: _controller,
+                  height: 200,
+                  backgroundColor: Colors.lightBlueAccent,
+                ),
+                Container(
+                  width: 100,
+                  decoration: const BoxDecoration(color: Colors.black),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.check),
+                        color: Colors.blue,
+                        onPressed: () async {
+                          if (_controller.isNotEmpty) {
+                            final Uint8List? data =
+                                await _controller.toPngBytes();
+                            if (data != null) {
+                             String savePath = await getFilePath('my_img.png');
+                              var sig = await File(savePath).writeAsBytes(data);
+                              signature = sig;
+                            }
                           }
-                        }
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.clear),
-                      color: Colors.blue,
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.clear),
+                        color: Colors.blue,
+                        onPressed: () {
+                          setState(() => _controller.clear());
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                              'Signature',
+                              style: TextStyle(color: Colors.grey),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        'Attach Photo',
+                        style: TextStyle(color: Colors.grey),
+                      )),
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
+                    child: IconButton(
+                      icon: Icon(Icons.camera),
                       onPressed: () {
-                        setState(() => _controller.clear());
+                        _showPicker(context);
                       },
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(
-                            'Signature',
-                            style: TextStyle(color: Colors.grey),
-                          )),
-                    ),
-                  ],
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      'Attach Photo',
-                      style: TextStyle(color: Colors.grey),
                     )),
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 5, 5, 0),
-                  child: IconButton(
-                    icon: Icon(Icons.camera),
-                    onPressed: () {
-                      _showPicker(context);
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  child: CustomButton(
+                    title: 'Complete',
+                    onPress: () async {
+                      print(_notes.text);
+                      print(arguments['appointment_id']);
+                      print(imagePath);
+                      print(signature);
+                      try{
+                        await EasyLoading.show(
+                          status: 'loading...',
+                          maskType: EasyLoadingMaskType.black,
+                        );
+                        var response =
+                        await Utils().proofWork(_notes.text, arguments['appointment_id'],imagePath!, signature!, );
+                        print(response);
+                        if (response['status'] == false) {
+                          _timer?.cancel();
+                          await EasyLoading.showError(
+                              response['appointment']);
+                        }
+                        else{
+                          _timer?.cancel();
+                          await EasyLoading.showSuccess(
+                              response['appointment']);
+                          Navigator.of(context).pushReplacementNamed('/home');
+                        }
+                      }catch(e){
+                        _timer?.cancel();
+                        await EasyLoading.showError(e.toString());
+                      }
+
                     },
-                  )),
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: CustomButton(
-                  title: 'Complete',
-                  onPress: () async {
-                    print(_notes.text);
-                    print(arguments['appointment_id']);
-                    print(imagePath);
-                    print(signature);
-                    try{
-                      await EasyLoading.show(
-                        status: 'loading...',
-                        maskType: EasyLoadingMaskType.black,
-                      );
-                      var response =
-                      await Utils().proofWork(_notes.text, arguments['appointment_id'],imagePath!, signature!, );
-                      if (response['status'] == false) {
-                        _timer?.cancel();
-                        await EasyLoading.showError(
-                            response['appointment']);
-                      }
-                      else{
-                        _timer?.cancel();
-                        await EasyLoading.showSuccess(
-                            response['appointment']);
-                        Navigator.of(context).pushReplacementNamed('/home');
-                      }
-                    }catch(e){
-                      _timer?.cancel();
-                      await EasyLoading.showError(e.toString());
-                    }
-
-                  },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

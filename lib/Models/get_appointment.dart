@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final appointment = appointmentFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<Appointment> appointmentFromJson(String str) => List<Appointment>.from(json.decode(str).map((x) => Appointment.fromJson(x)));
@@ -8,15 +13,15 @@ class Appointment {
   Appointment({
     required this.patientId,
     required this.startDate,
-    required this.minHourlyRate,
+    required this.bidHourlyRate,
     required this.time,
     required this.visitDuration,
     required this.patient,
   });
 
-  String patientId;
+  int patientId;
   String startDate;
-  String minHourlyRate;
+  String bidHourlyRate;
   String time;
   String visitDuration;
   Patient patient;
@@ -24,7 +29,7 @@ class Appointment {
   factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
     patientId: json["patient_id"],
     startDate: json["start_date"],
-    minHourlyRate: json["min_hourly_rate"],
+    bidHourlyRate: json["bid_hourly_rate"],
     time: json["time"],
     visitDuration: json["visit_duration"],
     patient: Patient.fromJson(json["patient"]),
@@ -33,7 +38,7 @@ class Appointment {
   Map<String, dynamic> toJson() => {
     "patient_id": patientId,
     "start_date": startDate,
-    "min_hourly_rate": minHourlyRate,
+    "bid_hourly_rate": bidHourlyRate,
     "time": time,
     "visit_duration": visitDuration,
     "patient": patient.toJson(),
@@ -65,7 +70,7 @@ class Patient {
   });
 
   int id;
-  String patientId;
+  int patientId;
   String dob;
   String bloodGroup;
   String height;
@@ -75,8 +80,8 @@ class Patient {
   String fndInformation;
   String houseWork;
   String accessInformation;
-  dynamic carePlan;
-  dynamic allergies;
+  String carePlan;
+  String allergies;
   String medications;
   String immunizations;
   String labResults;
@@ -155,11 +160,11 @@ class User {
   String name;
   String email;
   String phone;
-  dynamic image;
+  String image;
   String address;
-  dynamic addressLatitude;
-  dynamic addressLongitude;
-  String parentId;
+  String addressLatitude;
+  String addressLongitude;
+  int parentId;
   String isApproved;
   DateTime createdAt;
   DateTime updatedAt;
@@ -251,8 +256,8 @@ class Pivot {
     required this.modelType,
   });
 
-  String modelId;
-  String roleId;
+  int modelId;
+  int roleId;
   String modelType;
 
   factory Pivot.fromJson(Map<String, dynamic> json) => Pivot(

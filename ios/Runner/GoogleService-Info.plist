@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>198120982154-jih923bloo6usps8qbmic0moch5j8c55.apps.googleusercontent.com</string>
+	<string>843623772760-ksjhgnkgi9981dcgjngvcdm31mj4chug.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.198120982154-jih923bloo6usps8qbmic0moch5j8c55</string>
+	<string>com.googleusercontent.apps.843623772760-ksjhgnkgi9981dcgjngvcdm31mj4chug</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC_kw9UB3CIhpF8Dc3ny0snvscCwiWShZw</string>
+	<string>AIzaSyBVnvRfB8_ZrrLmh1xjrgCjzlGdRCsEH9k</string>
 	<key>GCM_SENDER_ID</key>
-	<string>198120982154</string>
+	<string>843623772760</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>uk.co.mycareshift</string>
+	<string>com.mycareshift.mycareshift</string>
 	<key>PROJECT_ID</key>
-	<string>mycareshift</string>
+	<string>mycareshift-3a97e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>mycareshift.appspot.com</string>
+	<string>mycareshift-3a97e.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:198120982154:ios:ef4b6e875ad69747e0cf73</string>
+	<string>1:843623772760:ios:39a0468b6f033cbec7102d</string>
 </dict>
 </plist>

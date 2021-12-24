@@ -1,4 +1,8 @@
+// To parse this JSON data, do
+//
+//     final rewards = rewardsFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<Rewards> rewardsFromJson(String str) => List<Rewards>.from(json.decode(str).map((x) => Rewards.fromJson(x)));
@@ -16,7 +20,7 @@ class Rewards {
   });
 
   int id;
-  String nurseId;
+  int nurseId;
   String referalCode;
   String points;
   DateTime createdAt;

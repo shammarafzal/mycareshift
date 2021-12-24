@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "198120982154",
-    "project_id": "mycareshift",
-    "storage_bucket": "mycareshift.appspot.com"
+    "project_number": "843623772760",
+    "project_id": "mycareshift-3a97e",
+    "storage_bucket": "mycareshift-3a97e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:198120982154:android:49f41931c8969175e0cf73",
+        "mobilesdk_app_id": "1:843623772760:android:ad25301f57a89892c7102d",
         "android_client_info": {
-          "package_name": "uk.co.mycareshift"
+          "package_name": "com.mycareshift.mycareshift"
         }
       },
       "oauth_client": [
         {
-          "client_id": "198120982154-36o0nvqu1kmi2hvdijv5r81h3t6r1v06.apps.googleusercontent.com",
+          "client_id": "843623772760-0mg5mfis9c9hhue2slahr079kun7nipb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBvw456PB-C42zcpnj8mQ9WjMcbUcSEDEc"
+          "current_key": "AIzaSyByo5lnCBQSXkdwne6H6R7r7swN0Qcu2pc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "198120982154-36o0nvqu1kmi2hvdijv5r81h3t6r1v06.apps.googleusercontent.com",
+              "client_id": "843623772760-0mg5mfis9c9hhue2slahr079kun7nipb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "843623772760-ksjhgnkgi9981dcgjngvcdm31mj4chug.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycareshift.mycareshift"
+              }
             }
           ]
         }

@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final bookingDetails = bookingDetailsFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<BookingDetails> bookingDetailsFromJson(String str) => List<BookingDetails>.from(json.decode(str).map((x) => BookingDetails.fromJson(x)));
@@ -20,15 +25,19 @@ class BookingDetails {
     required this.visitInformation,
     required this.maxHourlyRate,
     required this.minHourlyRate,
+    required this.bidHourlyRate,
     required this.status,
+    required this.note,
+    required this.signature,
+    required this.photo,
     required this.createdAt,
     required this.updatedAt,
     required this.patient,
   });
 
   int id;
-  String patientId;
-  String companyId;
+  int patientId;
+  int companyId;
   String startDate;
   String day;
   String repeat;
@@ -40,7 +49,11 @@ class BookingDetails {
   String visitInformation;
   String maxHourlyRate;
   String minHourlyRate;
+  String bidHourlyRate;
   String status;
+  String note;
+  String signature;
+  String photo;
   DateTime createdAt;
   DateTime updatedAt;
   Patient patient;
@@ -60,7 +73,11 @@ class BookingDetails {
     visitInformation: json["visit_information"],
     maxHourlyRate: json["max_hourly_rate"],
     minHourlyRate: json["min_hourly_rate"],
+    bidHourlyRate: json["bid_hourly_rate"],
     status: json["status"],
+    note: json["note"],
+    signature: json["signature"],
+    photo: json["photo"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
     patient: Patient.fromJson(json["patient"]),
@@ -81,7 +98,11 @@ class BookingDetails {
     "visit_information": visitInformation,
     "max_hourly_rate": maxHourlyRate,
     "min_hourly_rate": minHourlyRate,
+    "bid_hourly_rate": bidHourlyRate,
     "status": status,
+    "note": note,
+    "signature": signature,
+    "photo": photo,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
     "patient": patient.toJson(),
@@ -113,7 +134,7 @@ class Patient {
   });
 
   int id;
-  String patientId;
+  int patientId;
   String dob;
   String bloodGroup;
   String height;
@@ -123,7 +144,7 @@ class Patient {
   String fndInformation;
   String houseWork;
   String accessInformation;
-  dynamic carePlan;
+  String carePlan;
   String allergies;
   String medications;
   String immunizations;
@@ -136,7 +157,7 @@ class Patient {
   factory Patient.fromJson(Map<String, dynamic> json) => Patient(
     id: json["id"],
     patientId: json["patient_id"],
-    dob: json["dob"],
+    dob:json["dob"],
     bloodGroup: json["blood_group"],
     height: json["height"],
     weight: json["weight"],
@@ -203,11 +224,11 @@ class User {
   String name;
   String email;
   String phone;
-  dynamic image;
+  String image;
   String address;
   String addressLatitude;
   String addressLongitude;
-  String parentId;
+  int parentId;
   String isApproved;
   DateTime createdAt;
   DateTime updatedAt;
@@ -299,8 +320,8 @@ class Pivot {
     required this.modelType,
   });
 
-  String modelId;
-  String roleId;
+  int modelId;
+  int roleId;
   String modelType;
 
   factory Pivot.fromJson(Map<String, dynamic> json) => Pivot(

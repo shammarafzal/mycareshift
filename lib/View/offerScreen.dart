@@ -30,10 +30,10 @@ class OfferCardList extends StatelessWidget {
                   child: Offers(
                     time: '${appointmentController.appointmentList[index].startDate}',
                     hours: appointmentController.appointmentList[index].visitDuration,
-                    ammount: '\£${appointmentController.appointmentList[index].minHourlyRate}',
+                    ammount: '\£${appointmentController.appointmentList[index].bidHourlyRate}',
                     address: appointmentController.appointmentList[index].patient.user.address,
                     tip: appointmentController.appointmentList[index].time,
-                    patient_id: appointmentController.appointmentList[index].patientId,
+                    patient_id: appointmentController.appointmentList[index].patientId.toString(),
                   ),
                 );
               },

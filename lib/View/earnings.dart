@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 class EarningCardList extends StatelessWidget {
   final EarningController earningController = Get.put(EarningController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,26 +13,26 @@ class EarningCardList extends StatelessWidget {
         title: Text('Earnings'),
       ),
       body: Container(
-        color: Colors.white,
-        child: Obx(() {
-    return ListView.builder(
-    itemCount: earningController.earningList.length,
-    shrinkWrap: true,
-    itemBuilder: (BuildContext context, index) {
-    return
-    Card(
-              color: Colors.white,
-              elevation: 5,
-              child: Earnings(
-                date: earningController.earningList[index].startDate,
-                payment_details: 'Payment Pending',
-                ammount: '\£ ${earningController.earningList[index].bidHourlyRate}',
-              ),
+          color: Colors.white,
+          child: Obx(() {
+            return ListView.builder(
+              itemCount: earningController.earningList.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, index) {
+                return Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  child: Earnings(
+                    date: earningController.earningList[index].date,
+                    payment_details:
+                        earningController.earningList[index].status,
+                    ammount:
+                        '\£ ${earningController.earningList[index].earning}',
+                  ),
+                );
+              },
             );
-    },
-    );
-        })
-      ),
+          })),
     );
   }
 }
@@ -46,6 +47,7 @@ class Earnings extends StatefulWidget {
     required this.payment_details,
     required this.ammount,
   });
+
   @override
   _EarningsState createState() => _EarningsState();
 }
@@ -56,11 +58,10 @@ class _EarningsState extends State<Earnings> {
     SizeConfig().init(context);
     return Column(
       children: [
-          ListTile(
-            title: Text(widget.date),
-            trailing: Text(widget.ammount),
-          ),
-
+        ListTile(
+          title: Text(widget.date),
+          trailing: Text(widget.ammount),
+        ),
         ListTile(
           title: Text(widget.payment_details),
         )

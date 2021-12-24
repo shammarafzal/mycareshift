@@ -158,6 +158,8 @@ class _PatientsViewState extends State<PatientsView> {
                         title: 'Start Navigation',
                         onPress: () {
                           print(widget.appointment_id);
+                          print(widget.lat);
+                          print(widget.lng);
                           Navigator.of(context)
                               .pushReplacementNamed('/navigation', arguments: {'lat': widget.lat, 'lng': widget.lng, 'appointment_id': widget.appointment_id, 'duration': widget.duration});
                         },

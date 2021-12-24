@@ -95,7 +95,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('Oct 1 - Dec 31'),
+                                      Center(child: Text('${rewardController.rewardList[index].referalCode}', style: TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),textAlign: TextAlign.center,)),
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 10, bottom: 10),
