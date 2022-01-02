@@ -116,13 +116,11 @@ class _PatientsViewState extends State<PatientsView> {
                 Icons.maps_home_work_rounded,
                 color: Colors.blueAccent,
               ),
-              title: Expanded(
-                child: Text(
-                  widget.address,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(),
-                ),
+              title: Text(
+                widget.address,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                // style: TextStyle(),
               ),
             ),
             ListTile(

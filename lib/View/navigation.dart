@@ -342,6 +342,8 @@ class _NavigationState extends State<Navigation> {
     var dropOffLatLng =
         LatLng(double.parse(arguments['lat']), double.parse(arguments['lng']));
     // showDialog(context: context, builder: (BuildContext context) => ProgressDialog(me));
+    print(pickUpLatLng);
+    print(dropOffLatLng);
     var details = await AssistantMethods.obtainPlaceDirectionDetails(
         pickUpLatLng, dropOffLatLng);
     setState(() {
