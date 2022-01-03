@@ -39,12 +39,12 @@ class _HomePageState extends State<HomePage> {
       'Index 1: Offers',
       style: optionStyle,
     ),
+    // Text(
+    //   'Index 2: Inbox',
+    //   style: optionStyle,
+    // ),
     Text(
-      'Index 2: Inbox',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Notifications',
+      'Index 2: Notifications',
       style: optionStyle,
     ),
   ];
@@ -115,23 +115,23 @@ class _HomePageState extends State<HomePage> {
                         Icons.local_offer_outlined, color: Colors.blue),
                   ),
                 ),
-                Divider(),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) =>
-                              TableEventsExample()
-                      ),
-                    );
-                  },
-                  child: ListTile(
-                    title: Text('Calender'),
-                    leading: Icon(
-                        Icons.calendar_today_outlined, color: Colors.blue),
-                  ),
-                ),
+                // Divider(),
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       new MaterialPageRoute(
+                //           builder: (context) =>
+                //               TableEventsExample()
+                //       ),
+                //     );
+                //   },
+                //   child: ListTile(
+                //     title: Text('Calender'),
+                //     leading: Icon(
+                //         Icons.calendar_today_outlined, color: Colors.blue),
+                //   ),
+                // ),
                 InkWell(
                   onTap: () {
                     Navigator.push(
@@ -265,7 +265,7 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             MyDayCardList(),
             OfferCardList(),
-            ChatList(),
+            // ChatList(),
             NotificationList(),
           ],
         ),
@@ -279,10 +279,10 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.local_offer_outlined),
               label: 'Offers',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble_rounded),
-              label: 'Inbox',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.chat_bubble_rounded),
+            //   label: 'Inbox',
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
               label: 'Notifications',

@@ -66,7 +66,7 @@ class BookingDetails {
     day: json["day"],
     repeat: json["repeat"],
     time: json["time"],
-    specificTime: json["specific_time"],
+    specificTime: json["specific_time"] == null ? "" : json["specific_time"],
     visitDuration: json["visit_duration"],
     noOfCarers: json["no_of_carers"],
     hoistRequired: json["hoist_required"],
@@ -239,7 +239,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     name: json["name"],
-    email: json["email"],
+    email: json["email"] == null ? "" : json["email"],
     phone: json["phone"],
     image: json["image"],
     address: json["address"],
