@@ -68,7 +68,7 @@ class _AccountPageState extends State<AccountPage> {
                           height: 100,
                         ),
                         Text(
-                          'Be Caring',
+                          'MyCareShift',
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 22),
                         ),

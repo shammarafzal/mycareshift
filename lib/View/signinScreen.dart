@@ -47,7 +47,7 @@ class _SignInState extends State<SignIn> {
                         height: 100,
                       ),
                       Text(
-                        'Be Caring',
+                        'MyCareShift',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 22),

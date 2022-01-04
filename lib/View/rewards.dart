@@ -61,12 +61,12 @@ class _RewardsScreenState extends State<RewardsScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Be Caring Pro Diamond',
+                        'MyCareShift Pro Diamond',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     ),
                     Text(
-                      'Through Dec 31',
+                      'Through Jan 01',
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ],
