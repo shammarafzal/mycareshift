@@ -33,7 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Container(
                   height: MediaQuery.of(context).orientation == Orientation.portrait ? SizeConfig.screenHeight * 0.3 : SizeConfig.screenHeight * 0.3,
                   width: MediaQuery.of(context).orientation == Orientation.portrait ? SizeConfig.screenWidth * 1 : SizeConfig.screenWidth * 1,
-                  child: Text('Welcome to My Careshift', textAlign: TextAlign.center, style: TextStyle(fontSize: 20),)
+                  child: Text('Welcome to MyCareShift', textAlign: TextAlign.center, style: TextStyle(fontSize: 20),)
 
               ),
               Padding(

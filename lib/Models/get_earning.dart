@@ -24,7 +24,7 @@ class Earning {
   int id;
   int nurseId;
   int appointmentId;
-  int earning;
+  String earning;
   String date;
   String status;
   DateTime createdAt;
@@ -34,7 +34,7 @@ class Earning {
     id: json["id"],
     nurseId: json["nurse_id"],
     appointmentId: json["appointment_id"],
-    earning: json["earning"],
+    earning: json["earning"].toString(),
     date: json["date"],
     status: json["status"],
     createdAt: DateTime.parse(json["created_at"]),
