@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                             backgroundImage: AssetImage("assets/logo-app.png"),
 
                           ),
-                          accountName: Text(meController.meList[index].name,
+                          accountName: Text(  ,
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),),
                           accountEmail: Text(meController.meList[index].email),
